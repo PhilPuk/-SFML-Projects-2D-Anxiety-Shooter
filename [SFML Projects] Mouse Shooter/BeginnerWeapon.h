@@ -11,7 +11,7 @@ class BeginnerWeapon : virtual public Weapon
 	//void initTexture();
 	//void initSprite(sf::Vector2f spawningPos);
 public:
-	BeginnerWeapon(sf::Vector2f spawnPos);
+	BeginnerWeapon(sf::Vector2f spawnPos, sf::Vector2u& winSize, sf::Font& font);
 
 	sf::Vector2f& getBulletSpawn();
 };

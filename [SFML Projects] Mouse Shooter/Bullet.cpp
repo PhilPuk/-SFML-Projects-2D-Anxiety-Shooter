@@ -23,7 +23,6 @@ void Bullet::initSprite()
 	sf::FloatRect rect = this->sprite_bullet.getLocalBounds();
 
 	this->sprite_bullet.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
-
 }
 
 Bullet::Bullet(sf::Texture& texture, sf::Vector2f& spawnPos, sf::Vector2f& Velocity)

@@ -11,9 +11,9 @@ void Player::initVariables()
 
     this->sprite.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 
-    //Shooting
-    this->ShootCDMAX = 2.f;
-    this->ShootCD = this->ShootCDMAX;
+    //Shooting  OLD Bullet sys
+    //this->ShootCDMAX = 2.f;
+    //this->ShootCD = this->ShootCDMAX;
 
     //Game logic
     this->PlayerHPMax = 30.f;
@@ -35,10 +35,12 @@ void Player::initTextures()
         std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: player0.png!\n";
     }
     
+    /*
     if (!this->Texture_bullets.loadFromFile("Textures/Player/Bullets/bullet0.png"))
     {
         std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: bullet0.png!\n";
     }
+    */
 }
 
 void Player::initHPBar()
@@ -87,11 +89,13 @@ Player::Player(sf::Font& font)
 
 Player::~Player()
 {
+    /* OLD Bullet sys
     for (size_t i = 0; i < this->bullets.size(); i++)
     {
         this->bullets.erase(this->bullets.begin(), this->bullets.end());
     }
     // std::cout << "Bullets: " << this->bullets.size() << "\n";
+    */
 }
 
 const sf::Vector2f& Player::getCenterOfPlayer() const
@@ -127,7 +131,8 @@ const float& Player::getRotationAngle() const
 void Player::TakeDamage(float dmg)
 {
     this->PlayerHP -= dmg;
-    std::cout << "HP: " << this->PlayerHP << "\n";
+    //Debug info
+    //std::cout << "HP: " << this->PlayerHP << "\n";
 }
 
 void Player::addHP(float add)
@@ -141,22 +146,18 @@ void Player::changeHP(float change)
 }
 
 //Update
-void Player::updateAimDirections(sf::Vector2f& MousePos)
+void Player::updateAimSystem(sf::Vector2f& MousePos)
 {
-   // this->playerCenter = sf::Vector2f(this->sprite.getPosition().x + this->sprite.getGlobalBounds().width / 2.f, this->sprite.getPosition().y + this->sprite.getGlobalBounds().height/ 2.f);
+    //Gets playerCenter and updates the AimDirection via Object instance Aiming aimSys
     this->playerCenter = sf::Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y);
-    this->mousePosWindow = MousePos;
-    this->aimDir = this->mousePosWindow - playerCenter;
-    this->aimDirNorm.x = this->aimDir.x / sqrt(pow(this->aimDir.x, 2) + pow(this->aimDir.y, 2));
-    this->aimDirNorm.y = this->aimDir.y / sqrt(pow(this->aimDir.x, 2) + pow(this->aimDir.y, 2));
+    this->aimSys.updateAimDirection(this->playerCenter, MousePos);
 
-    this->PlayerAngle = atan2(this->aimDirNorm.y, this->aimDirNorm.x) * 180.0f / 3.1415f;
-
-   // std::cout << "X: " << this->aimDirNorm.x << "\n";
-    //std::cout << "Y: " << this->aimDirNorm.y << "\n";
+    //Calculates the rotation the player needs  in relation to the MousePos
+    this->PlayerAngle = atan2(this->aimSys.getAimDirNorm().y, this->aimSys.getAimDirNorm().x) * 180.0f / 3.1415f;
 
     //For debugging
-    //std::cout << this->aimDirNorm.x << "   " << this->aimDirNorm.y << "\n";
+    //std::cout << "PlayerAngle: " << this->PlayerAngle << "\n";
+    
 }
 
 void Player::updatePlayerMovement()
@@ -267,6 +268,7 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
     }
 }
 
+/* OLD Bullet sys
 void Player::updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpawn)
 {
     if (this->ShootCD < this->ShootCDMAX)
@@ -278,7 +280,7 @@ void Player::updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpaw
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             this->ShootCD = 0.f;
-            sf::Vector2f currVelocity = aimDirNorm * 25.f;
+            sf::Vector2f currVelocity = this->aimSys.getAimDirNorm() * 25.f;
             
             //Temporary solution for weapon system
             //Hides bullet behind beginner weapn
@@ -299,6 +301,7 @@ void Player::updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpaw
             this->bullets.erase(this->bullets.begin() + i);
     }
 }
+*/
 
 void Player::updateHPBar()
 {
@@ -324,19 +327,20 @@ void Player::updateText()
 
 void Player::update(sf::Vector2f& MousePos, const sf::Vector2u& winSize, sf::Vector2f BulletSpawn)
 {
-    this->updateAimDirections(MousePos);
+    this->updateAimSystem(MousePos);
 
     this->updatePlayerMovement();
 
     this->updateWindowBoundCollision(winSize);
 
-    this->updateShooting(winSize, BulletSpawn);
+    //this->updateShooting(winSize, BulletSpawn);
 
     this->updateHPBar();
 
     this->updateText();
 }
 
+/* OLD BULLET SYS
 void Player::renderBullets(sf::RenderTarget& target)
 {
     for (size_t i = 0; i < this->bullets.size(); i++)
@@ -344,6 +348,7 @@ void Player::renderBullets(sf::RenderTarget& target)
         target.draw(this->bullets[i]->sprite_bullet);
     }
 }
+*/
 
 void Player::renderHitbox(sf::RenderTarget& target)
 {
@@ -368,7 +373,8 @@ void Player::renderText(sf::RenderTarget& target)
 
 void Player::render(sf::RenderTarget& target)
 {
-    this->renderBullets(target);
+    //OLD BULLET SYS
+    //this->renderBullets(target);
 
     //this->renderHitbox(target);
 

@@ -35,7 +35,7 @@ void Game::initTiles()
 
 void Game::initWeapons()
 {
-    this->weapon = new BeginnerWeapon(this->player->getPos());
+    this->weapon = new BeginnerWeapon(this->player->getPos(), this->windowSize, this->font);
 }
 
 void Game::initScoreSystem()
@@ -82,6 +82,8 @@ const bool& Game::getEndApplication() const
 
 const float& Game::getHighScore() const
 {
+    //Debug info
+    //std::cout << "Current Highscore: " << this->ScoreSys->getHighscore();
     return this->ScoreSys->getHighscore();
 }
 
@@ -96,6 +98,8 @@ void Game::run()
 
         this->render();
     }
+    this->ScoreSys->saveHighScoreinTxt();
+
 }
 
 void Game::pollEvents()
@@ -129,18 +133,18 @@ void Game::updateBulletHittingTarget()
 {
     //Checking for contact of bullet and enemy
     // If intersects then delete enemy and bullet
-    for (size_t i = 0; i < this->player->bullets.size(); i++)
+    for (size_t i = 0; i < this->weapon->bullets.size(); i++)
     {
         for (size_t n = 0; n < this->enemyManager.enemies.size(); n++)
         {
-            if (this->player->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
+            if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
             {
                 //Enemy deleting
                 this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
                 //std::cout << "Enemies: " << this->enemyManager.enemies.size() << "\n";
 
                 //Bullet deleting
-                this->player->bullets.erase(this->player->bullets.begin() + i);
+                this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
 
                 //Adding score 
                 this->currScore += 1.f;
@@ -179,7 +183,7 @@ void Game::update()
     this->player->update(this->mousePosWindow, this->windowSize, this->weapon->getBulletSpawn());
 
     //Weapon
-    this->weapon->update(this->player->getRotationAngle(), this->player->getPos());
+    this->weapon->update(this->windowSize, this->player->getRotationAngle(), this->player->getPos(), this->player->aimSys.getAimDirNorm());
 
     //Tiles
     this->tileManager->update(this->player->getTileMove(), this->player->getPos());

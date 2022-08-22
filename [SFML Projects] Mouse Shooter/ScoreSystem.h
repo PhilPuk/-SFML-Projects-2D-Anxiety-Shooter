@@ -22,7 +22,6 @@ private:
 	sf::Text Text_Score;
 	sf::Text Text_Time;
 
-	void saveHighScoreinTxt();
 	void getHighScoreFromTxt();
 	void initVariables();
 	void initFont(sf::Font& font);
@@ -35,6 +34,12 @@ public:
 	const float& getHighscore() const;
 	const int& getTimer() const;
 	int& getTime();
+
+	//Modifiers
+	void ModifyHighscore(float newHighScores);
+
+	//Saving
+	void saveHighScoreinTxt();
 
 	void updateScoreText();
 	void updateScore(float score);

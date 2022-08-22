@@ -4,7 +4,8 @@
 void BeginnerWeapon::initTexture()
 {
 	if (!this->texture_weapon.loadFromFile("Textures/weapons/beginner/weapon1.png"))
-		std::cout << " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: beginner/weapon1.png!\n";
+		
+		<< " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: beginner/weapon1.png!\n";
 
 	std::cout << "BeginnerWeapon!\n";
 }
@@ -24,11 +25,13 @@ void BeginnerWeapon::initSprite(sf::Vector2f spawningPos)
 }
 */
 
-BeginnerWeapon::BeginnerWeapon(sf::Vector2f spawnPos)
+BeginnerWeapon::BeginnerWeapon(sf::Vector2f spawnPos, sf::Vector2u& winSize, sf::Font& font)
 {
 	this->initVariables();
 	this->initTexture();
 	this->initSprite(spawnPos);
+	this->initBulletTexture();
+	this->initTexts(winSize, font);
 }
 
 sf::Vector2f& BeginnerWeapon::getBulletSpawn()

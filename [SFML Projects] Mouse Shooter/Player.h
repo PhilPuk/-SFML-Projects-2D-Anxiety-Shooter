@@ -1,6 +1,7 @@
 #pragma once
 
-#include"Bullet.h"
+//#include"Bullet.h"
+#include"Aiming.h"
 #include<string>
 #include<sstream>
 
@@ -10,21 +11,18 @@ private:
 	//Player
 	sf::Sprite sprite;
 	sf::RectangleShape shape_hitbox; // Used for window bounds collision
-	//Vectors for aiming
-	sf::Vector2f playerCenter;
-	sf::Vector2f mousePosWindow;
-	sf::Vector2f aimDir;
-	sf::Vector2f aimDirNorm;
-	float PlayerAngle;
-
 
 	//Textures
 	sf::Texture Texture_Player;
 	sf::Texture Texture_bullets;
 
+		//Variables for Aiming
+		sf::Vector2f playerCenter;
+		float PlayerAngle;
+
 	//Shooting
-	float ShootCDMAX;
-	float ShootCD;
+	//float ShootCDMAX;
+	//float ShootCD;
 
 	//Game Logic
 	float PlayerHPMax;
@@ -50,8 +48,11 @@ public:
 	Player(sf::Font& font);
 	virtual ~Player();
 
+	//Aim System
+	Aiming aimSys;
+
 	//Bullet
-	std::vector<Bullet*> bullets;
+	//std::vector<Bullet*> bullets;
 
 	//Accessors
 	const sf::Vector2f& getCenterOfPlayer() const;
@@ -67,16 +68,16 @@ public:
 	void changeHP(float change);
 
 	//Update
-	void updateAimDirections(sf::Vector2f& MousePos);
+	void updateAimSystem(sf::Vector2f& MousePos);
 	void updatePlayerMovement();
 	void updateWindowBoundCollision(const sf::Vector2u& winSize);
-	void updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpawn);
+	//void updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpawn);
 	void updateHPBar();
 	void updateText();
 	void update(sf::Vector2f& MousePos, const sf::Vector2u& winSize, sf::Vector2f BulletSpawn);
 
 	//Rendering
-	void renderBullets(sf::RenderTarget& target);
+	//void renderBullets(sf::RenderTarget& target);
 	void renderHitbox(sf::RenderTarget& target);
 	void renderPlayer(sf::RenderTarget& target);
 	void renderHPBar(sf::RenderTarget& target);

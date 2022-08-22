@@ -66,7 +66,7 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 	/// <param name="playerCenter"></param>
 
 	//Reduce spawn timing by the score
-	float TimerReduce = score / 6.f + static_cast<float>(time) / 20.f;
+	float TimerReduce = score / 8.f + static_cast<float>(time) / 50.f;
 
 	if (!this->CheckMaxEnemy)
 	{
@@ -110,20 +110,20 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 			//Modify speed by score and time once score of 10 is reached
 			if (score >= 10)
 			{
-				float multiplier = 1.f + score / 450.f + time / 500.f;
+				float multiplier = 1.f + score / 900.f + time / 2500.f;
 				for (int i = 0; i < this->enemies.size(); i++)
 				{
 					this->enemies[i]->ModifyEnemySpeed(multiplier, multiplier);
 				}
 				//Debug info
-				std::cout << "Enemy movement speed multiplier: " << multiplier << "\n";
+				//std::cout << "Enemy movement speed multiplier: " << multiplier << "\n";
 			}
 			//std::cout << this->enemies.size() << "\n";
 			if (this->enemies.size() >= this->MaxSpawnedEnemy)
 				this->CheckMaxEnemy = true;
 
 			//Debug Info
-			std::cout << "Spawn Timer: " << this->SpawnTimerMax - TimerReduce<<"\n";
+			//std::cout << "Spawn Timer: " << this->SpawnTimerMax - TimerReduce<<"\n";
 		}
 	}
 	else

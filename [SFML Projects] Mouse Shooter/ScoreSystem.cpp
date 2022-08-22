@@ -1,18 +1,5 @@
 #include "ScoreSystem.h"
 
-void ScoreSystem::saveHighScoreinTxt()
-{
-	if (this->Score > this->HighScore)
-	{
-		std::ofstream of;
-		of.open("local/Highscores.txt");
-		of << this->Score;
-
-		of.close();
-		std::cout << "Saved new Highscore: " << this->Score<<"\n";
-	}
-}
-
 void ScoreSystem::getHighScoreFromTxt()
 {
 	//Called in initVariables
@@ -50,9 +37,9 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	//Text basic settings 
 	this->Text_Score.setFont(this->font);
 	this->Text_Score.setPosition(10.f, spacingy);
-	this->Text_Score.setFillColor(sf::Color(255,255,255, 100));
+	this->Text_Score.setFillColor(sf::Color(255,255,255, 110));
 	this->Text_Score.setOutlineThickness(5.f);
-	this->Text_Score.setOutlineColor(sf::Color(0,0,0, 100));
+	this->Text_Score.setOutlineColor(sf::Color(0,0,0, 110));
 
 	//Set text content
 	std::stringstream ssScore;
@@ -95,14 +82,41 @@ int& ScoreSystem::getTime()
 	return this->Time;
 }
 
+//Modifiers
+void ScoreSystem::ModifyHighscore(float newHighScores)
+{
+	this->HighScore = newHighScores;
+}
+
+//Saving
+void ScoreSystem::saveHighScoreinTxt()
+{
+	if (this->Score > this->HighScore)
+	{
+		std::ofstream of;
+		of.open("local/Highscores.txt");
+		of << this->Score;
+
+		of.close();
+
+		this->HighScore = this->Score;
+
+		//Debug info
+		//std::cout << "Saved new Highscore: " << this->Score << "\n";
+	}
+}
+
+//Changed the score text once score got updated
 void ScoreSystem::updateScoreText()
 {
+	
 	std::stringstream ssScore;
 	ssScore << "Score: " << this->Score;
 
 	this->Text_Score.setString(ssScore.str());
 }
 
+//If score in game is bigger then here then change it here
 void ScoreSystem::updateScore(float score)
 {
 	if (this->Score < score)
