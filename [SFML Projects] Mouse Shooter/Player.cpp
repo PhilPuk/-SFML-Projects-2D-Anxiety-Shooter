@@ -16,12 +16,13 @@ void Player::initVariables()
     //this->ShootCD = this->ShootCDMAX;
 
     //Game logic
-    this->PlayerHPMax = 30.f;
+    this->PlayerHPMax = 10.f;
     this->PlayerHP = this->PlayerHPMax;
 
     //HP Bar
     this->HPBarx = 200.f;
     this->HPUpdate = -1.f;
+    this->HPMaxUpdate = -1.f;
 
     //For tiles movement
     this->tileMove.x = 0.f;
@@ -113,6 +114,11 @@ const sf::FloatRect& Player::getBounds() const
     return this->sprite.getGlobalBounds();
 }
 
+const float& Player::getHPMax() const
+{
+    return this->PlayerHPMax;
+}
+
 const float& Player::getHP() const
 {
     return this->PlayerHP;
@@ -135,6 +141,13 @@ void Player::TakeDamage(float dmg)
     //std::cout << "HP: " << this->PlayerHP << "\n";
 }
 
+//Takes the current value of HP Max and increases it by the given value
+void Player::addMaxHP(float add)
+{
+    this->PlayerHPMax += add;
+}
+
+////Takes the current value of HP and increases it by the given value
 void Player::addHP(float add)
 {
     this->PlayerHP += add;
@@ -313,13 +326,14 @@ void Player::updateHPBar()
 
 void Player::updateText()
 {
-    if (this->HPUpdate != this->PlayerHP)
+    if (this->HPUpdate != this->PlayerHP || this->HPMaxUpdate != this->PlayerHPMax)
     {
         std::stringstream ss;
         ss << this->PlayerHP << "/" << this->PlayerHPMax;
         this->Text_HP.setString(ss.str());
 
         this->HPUpdate = this->PlayerHP;
+        this->HPMaxUpdate = this->PlayerHPMax;
     }
     else
         return;

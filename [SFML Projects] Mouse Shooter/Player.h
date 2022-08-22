@@ -27,6 +27,7 @@ private:
 	//Game Logic
 	float PlayerHPMax;
 	float PlayerHP;
+	float HPMaxUpdate;
 	float HPUpdate;
 
 	//HP Bar
@@ -58,12 +59,14 @@ public:
 	const sf::Vector2f& getCenterOfPlayer() const;
 	const sf::Vector2f& getPos() const;
 	const sf::FloatRect& getBounds() const;
+	const float& getHPMax() const;
 	const float& getHP() const;
 	const sf::Vector2f& getTileMove() const;
 	const float& getRotationAngle() const;
 
 	//Modifiers
 	void TakeDamage(float dmg);
+	void addMaxHP(float add);
 	void addHP(float add);
 	void changeHP(float change);
 

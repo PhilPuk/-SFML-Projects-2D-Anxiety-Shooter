@@ -5,6 +5,7 @@
 #include"TileManager.h"
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
+#include"Upgrades.h"
 
 class Game
 {
@@ -33,6 +34,9 @@ private:
 	TileManager* tileManager;
 
 	BeginnerWeapon* weapon;
+
+	//Upgrades
+	Upgrades upgrades;
 
 	//Score
 	float currScore;

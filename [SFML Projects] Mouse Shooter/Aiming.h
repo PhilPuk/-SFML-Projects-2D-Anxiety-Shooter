@@ -27,11 +27,11 @@ public:
 	//Accessors
 	sf::Vector2f& getAimDirNorm();
 
-	//Calculates the direction  between Object 1 and Object2.
+	// Calculates the direction  between Object 1 and Object2.
 	// Example: Object1 is the player position, Object2 is the mouse position.
 	// Now the direction from Object1 towards Object2 gets calculated.
 	// To make it work perfectly center the origins of your objects.
-	//To get the caluclated value call getAimDirNorm.
+	// To get the caluclated value call getAimDirNorm.
 	void updateAimDirection(sf::Vector2f& Object1Pos, sf::Vector2f& Object2Pos);
 
 
