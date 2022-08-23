@@ -16,6 +16,7 @@ class ScoreSystem
 private:
 	float Score;
 	float HighScore;
+	float Money;
 	int Timer; // Counts time in frames 60 = 1sek
 	int Time; // Counts in sek add after Timer reached 60
 	sf::Font font;
@@ -33,6 +34,7 @@ public:
 	//Accessors
 	const float& getHighscore() const;
 	const int& getTimer() const;
+	float* getMoney();
 	int& getTime();
 
 	//Modifiers

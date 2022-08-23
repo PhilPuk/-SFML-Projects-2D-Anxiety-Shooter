@@ -48,7 +48,7 @@ void Menu::initText()
 		//Start
 	this->Text_Menu_Options[0].setString("Start");
 		//Options
-	this->Text_Menu_Options[1].setString("Settings");
+	this->Text_Menu_Options[1].setString("Shop");
 		//Stop
 	this->Text_Menu_Options[2].setString("Stop");
 
@@ -79,6 +79,11 @@ void Menu::initText()
 void Menu::initGame()
 {
 	this->game = new Game(this->window, this->font);
+}
+
+void Menu::initShop()
+{
+	this->shop = new Shop(this->window, this->font);
 }
 
 void Menu::initHighScoreText()
@@ -118,6 +123,7 @@ Menu::Menu()
 	this->initFonts();
 	this->initText();
 	this->initGame();
+	this->initShop();
 	this->initHighScoreText();
 }
 
@@ -126,13 +132,15 @@ Menu::~Menu()
 	delete this->window;
 
 	delete this->game;
+
+	delete this->shop;
 }
 
 //Functions
 void Menu::run()
 {
 	//Main loop for whole application
-	while (this->window->isOpen() && !this->game->getEndApplication())
+	while (this->window->isOpen() && !this->game->getEndApplication() && !this->shop->getEndApplication())
 	{
 		this->udpate();
 
@@ -171,7 +179,8 @@ void Menu::pollEvents()
 				}
 				else if (this->Menu_Navigation_Index == 1)
 				{
-					//Settings button action
+					//Shop button action
+					this->shop->runShop(this->game->ScoreSys->getMoney(), this->window);
 				}
 				else if (this->Menu_Navigation_Index == 2)
 				{

@@ -8,8 +8,8 @@ class BeginnerWeapon : virtual public Weapon
 	// with different texture
 		//Initialization
 	//void initVariables();
-	//void initTexture();
-	//void initSprite(sf::Vector2f spawningPos);
+	void initTexture();
+	void initSprite(sf::Vector2f spawningPos);
 public:
 	BeginnerWeapon(sf::Vector2f spawnPos, sf::Vector2u& winSize, sf::Font& font);
 

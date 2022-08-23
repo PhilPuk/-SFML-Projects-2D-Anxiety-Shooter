@@ -40,7 +40,6 @@ private:
 
 	//Score
 	float currScore;
-	ScoreSystem* ScoreSys;
 
 	void initWindow(sf::RenderWindow* window);
 	void initVariables(sf::RenderWindow* window);
@@ -52,6 +51,9 @@ private:
 public:
 	Game(sf::RenderWindow* window, sf::Font& font);
 	virtual ~Game();
+
+	//Score Sys
+	ScoreSystem* ScoreSys;
 
 	//reseter
 	void resetVariables();

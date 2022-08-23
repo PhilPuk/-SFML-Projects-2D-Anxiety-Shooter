@@ -5,6 +5,7 @@
 #include<sstream>
 
 #include"Game.h"
+#include"Shop.h"
 
 /// <summary>
 /// Engine for Menu
@@ -40,6 +41,9 @@ private:
 	//Game
 	Game* game;
 
+	//Shop
+	Shop* shop;
+
 	//Private functions
 		//Menu_Navigation
 	void navigateUP();
@@ -51,6 +55,7 @@ private:
 	void initFonts();
 	void initText();
 	void initGame();
+	void initShop();
 	void initHighScoreText();
 public:
 	//Constructor / Destructor

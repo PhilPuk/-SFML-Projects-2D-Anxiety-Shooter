@@ -43,7 +43,13 @@ private:
 	//HP
 	float EnemyHPMax;
 	float EnemyHP;
+	//Used for updating hp bar
+	float SavedHP;
 	
+	//HP bar
+	//0 is background 1 is foregroumd
+	sf::RectangleShape HPBar[2];
+
 //Phases
 	//Phase 0
 	float y;
@@ -63,11 +69,12 @@ private:
 
 	std::vector<Enemy*> enemies;
 
-	void initVariables(float& pos_X, float& pos_Y);
+	void initVariables(float& pos_X, float& pos_Y, float hp);
 	void initSprite(sf::Texture& texture);
+	void initHPBar();
 public:
 	sf::Sprite sprite_enemy;
-	Enemy(float& pos_X, float& pos_Y, sf::Texture& texture);
+	Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp);
 	virtual ~Enemy();
 
 	//Accessors
@@ -91,10 +98,14 @@ public:
 	void MovementCalculationPhase1();
 	void Phase2();
 
+	//Moves the sprite of the enemy and the hp bar of it
+	void updateBodyAndHPBarMovement(float moveX, float moveY);
+	void updateHPBar();
 	void updatePhases();
 	void updateMovement();
 	void update();
 
+	void renderHPBar(sf::RenderTarget& target);
 	void render(sf::RenderTarget& target);
 };
 

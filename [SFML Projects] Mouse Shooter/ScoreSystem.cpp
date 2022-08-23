@@ -22,6 +22,8 @@ void ScoreSystem::initVariables()
 	this->Time = 0;
 	this->Timer = 0.f;
 
+	this->Money = 0.f;
+
 	this->getHighScoreFromTxt();
 }
 
@@ -74,6 +76,11 @@ const int& ScoreSystem::getTimer() const
 {
 	//Returns time in frames, 60 = 1 sek.
 	return this->Timer;
+}
+
+float* ScoreSystem::getMoney()
+{
+	return &this->Money;
 }
 
 int& ScoreSystem::getTime()

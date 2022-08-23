@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 //Initialization
-void Enemy::initVariables(float& pos_X, float& pos_Y)
+void Enemy::initVariables(float& pos_X, float& pos_Y, float hp)
 {
 	this->moveX = 5.f;
 	this->moveY = static_cast<float>(rand() % 10 + 5);
@@ -17,8 +17,9 @@ void Enemy::initVariables(float& pos_X, float& pos_Y)
 	this->SpawnTimer = 0.f;
 
 	//HP
-	this->EnemyHPMax = 1.f;
+	this->EnemyHPMax = hp;
 	this->EnemyHP = this->EnemyHPMax;
+	this->SavedHP = -1.f;
 	
 	//Phases
 	this->index_Phase = 0;
@@ -59,10 +60,26 @@ void Enemy::initSprite(sf::Texture& texture)
 	this->sprite_enemy.setPosition(this->posX, this->posY);
 }
 
-Enemy::Enemy(float& pos_X, float& pos_Y, sf::Texture& texture)
+void Enemy::initHPBar()
 {
-	this->initVariables(pos_X, pos_Y);
+	float offsetY = this->sprite_enemy.getGlobalBounds().height / 5;
+
+	//Grey background
+	this->HPBar[0].setFillColor(sf::Color(200, 200, 200, 110));
+	this->HPBar[0].setPosition(posX, posY - offsetY);
+	this->HPBar[0].setSize(sf::Vector2f(this->sprite_enemy.getGlobalBounds().width, 10.f));
+	
+	//Red foreground
+	this->HPBar[1].setFillColor(sf::Color(255, 0, 0, 110));
+	this->HPBar[1].setPosition(posX, posY - offsetY);
+	this->HPBar[1].setSize(sf::Vector2f(this->sprite_enemy.getGlobalBounds().width, 10.f));
+}
+
+Enemy::Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp)
+{
+	this->initVariables(pos_X, pos_Y, hp);
 	this->initSprite(texture);
+	this->initHPBar();
 }
 
 Enemy::~Enemy()
@@ -110,7 +127,7 @@ void Enemy::ModifyEnemySpeed(float mulX, float mulY)
 ///Substracts enemy hp by the given value
 void Enemy::takeDamage(float damage)
 {
-	this->EnemyHP -= damage
+	this->EnemyHP -= damage;
 }
 
 ///Enemy behaviour
@@ -137,7 +154,8 @@ void Enemy::MovementCalculationPhase0()
 	this->x = x + add;
 	y = -3 * pow(this->x, 4) + 1.5f * pow(this->x, 3) + 2 * pow(this->x, 2) + 2 * this->x;
 
-	this->sprite_enemy.move(this->moveX * y * this->MulitplyMoveX, this->moveY * y * this->MultiplyMoveY);
+	this->updateBodyAndHPBarMovement(this->moveX * y * this->MulitplyMoveX, this->moveY * y * this->MultiplyMoveY);
+	//this->sprite_enemy.move(this->moveX * y * this->MulitplyMoveX, this->moveY * y * this->MultiplyMoveY);
 }
 
 void Enemy::Phase1()
@@ -148,7 +166,9 @@ void Enemy::Phase1()
 		this->counterPhase1 += 1.f;
 		//Movement for phase 1
 		this->MovementCalculationPhase1();
-		this->sprite_enemy.move(this->moveX, this->moveY);
+
+		this->updateBodyAndHPBarMovement(this->moveX, this->moveY);
+		//this->sprite_enemy.move(this->moveX, this->moveY);
 	}
 	else
 	{
@@ -200,7 +220,8 @@ void Enemy::Phase2()
 		//Move to new pos
 		if (this->counterPhase2 <= 0.f)
 		{
-			this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
+			this->updateBodyAndHPBarMovement(this->movexPhase2, this->moveyPhase2);
+			//this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
 		}
 
 		if (this->counterPhase2 < this->counterPhase2Max / 2.f)
@@ -239,7 +260,9 @@ void Enemy::Phase2()
 		if (this->counterPhase2 < this->counterPhase2Max)
 		{
 			this->counterPhase2 += 1.f;
-			this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
+
+			this->updateBodyAndHPBarMovement(this->movexPhase2, this->moveyPhase2);
+			//this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
 		}
 		else
 		{
@@ -264,9 +287,30 @@ void Enemy::Phase2()
 	}
 }
 
+void Enemy::updateBodyAndHPBarMovement(float moveX, float moveY)
+{
+	this->sprite_enemy.move(moveX, moveY);
+	this->HPBar[0].move(moveX, moveY);
+	this->HPBar[1].move(moveX, moveY);
+}
+
+void Enemy::updateHPBar()
+{
+	if (this->SavedHP != this->EnemyHP)
+	{
+		this->SavedHP = this->EnemyHP;
+		this->HPBar[1].setSize(sf::Vector2f(this->sprite_enemy.getGlobalBounds().width * (this->EnemyHP / this->EnemyHPMax), 10.f));
+	}
+	else
+		return;
+}
+
 void Enemy::updatePhases()
 {
 	/// <summary>
+	/// TO DO:
+	/// -OLD NEED TO UPDATE
+	/// 
 	/// Movement system for enemy.
 	/// Phase 0:
 	///		- Slow start to fast speed to strong break.
@@ -285,12 +329,14 @@ void Enemy::updatePhases()
 	{
 		this->Phase1();
 	}
+	//Old remove soon
 	else if (this->Phase[2])
 	{
 		//this->Phase2();
 		this->Phase[2] = false;
 		this->Phase[0] = true;
 	}
+	//OLD remove soon
 	else if (this->Phase[3])
 	{
 		//Go back to phase 0
@@ -306,11 +352,20 @@ void Enemy::updateMovement()
 
 void Enemy::update()
 {
+	this->updateHPBar();
 	this->updatePhases();
 	//this->updateMovement();
+}
+
+void Enemy::renderHPBar(sf::RenderTarget& target)
+{
+	target.draw(this->HPBar[0]);
+	target.draw(this->HPBar[1]);
 }
 
 void Enemy::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite_enemy);
+
+	this->renderHPBar(target);
 }

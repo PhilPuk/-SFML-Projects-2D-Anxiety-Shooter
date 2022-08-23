@@ -141,11 +141,35 @@ void Game::updateBulletHittingTarget()
             if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
             {     
                 //Enemy taking dmg
-                this->enemyManager.enemies[n].takeDamage(this->weapon->getBulletDamage());
+                this->enemyManager.enemies[n]->takeDamage(this->weapon->getBulletDamage());
                 
                 //Deleting if hp is 0
-                if(this->enemyManager.enemies[n].getHP() <= 0)
-                this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
+                //RNG Upgrades aswell
+                //Adding score
+                if (this->enemyManager.enemies[n]->getHP() <= 0)
+                {
+
+                    //RNG Upgrades from killing enemies
+                      //Max ammo amount
+                    if (this->upgrades.RNGAddedAmmo())
+                        this->weapon->MaxAmmo += 1;
+
+                    //HP
+                    if (this->upgrades.RNGAddMaxHP())
+                        this->player->addMaxHP(1.f);
+                    else if (this->upgrades.RNGAddHP())
+                    {
+                        if (this->player->getHP() < this->player->getHPMax())
+                            this->player->addHP(1.f);
+                    }
+
+                    //Adding score 
+                    this->currScore += 1.f;
+
+                    this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
+                    this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
+                    break;
+                }
                 //std::cout << "Enemies: " << this->enemyManager.enemies.size() << "\n";
 
                 //Bullet deleting
@@ -156,24 +180,6 @@ void Game::updateBulletHittingTarget()
                 add function for rng upgrades inside upgrades class
                 values that should be changed are given as * parameters!
                 */
-                
-                //RNG Upgrades from killing enemies
-                //Max ammo amount
-                if (this->upgrades.RNGAddedAmmo())
-                    this->weapon->MaxAmmo += 1;
-
-                //HP
-                if (this->upgrades.RNGAddMaxHP())
-                    this->player->addMaxHP(1.f);
-                else if (this->upgrades.RNGAddHP())
-                {
-                    if (this->player->getHP() < this->player->getHPMax())
-                        this->player->addHP(1.f);
-                }
-
-                //Adding score 
-                this->currScore += 1.f;
-                break;
             }
 
         }

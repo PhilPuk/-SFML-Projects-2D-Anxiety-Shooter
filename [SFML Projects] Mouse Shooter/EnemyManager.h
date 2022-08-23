@@ -22,6 +22,9 @@ private:
 	const int MaxSpawnedEnemy = 8;
 	bool CheckMaxEnemy;
 
+	//used for enemy constructor
+	float enemyHPMax;
+
 	void initVariables();
 	void initTextures();
 public:
@@ -33,6 +36,7 @@ public:
 	//Accessors
 	const int& getEnemiesVectorSize() const;
 
+	void updateIncreasingMaxHP(float score, int time);
 	void updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSize, float& score, int& time);
 	void updateMovement(int i, sf::Vector2f playerCenter, sf::Vector2u& winSize);
 	void updateForLoop(sf::Vector2f playerCenter, sf::Vector2u& winSize);

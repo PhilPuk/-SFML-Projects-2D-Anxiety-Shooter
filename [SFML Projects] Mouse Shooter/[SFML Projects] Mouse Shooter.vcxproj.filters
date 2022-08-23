@@ -57,6 +57,12 @@
     <ClCompile Include="Upgrades.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Money.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -96,6 +102,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Upgrades.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Money.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

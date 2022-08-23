@@ -32,7 +32,6 @@ void EnemyManager::initTextures()
 		{
 			std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: enemy2.png!\n";
 		}
-
 }
 
 EnemyManager::EnemyManager()
@@ -55,6 +54,29 @@ EnemyManager::~EnemyManager()
 const int& EnemyManager::getEnemiesVectorSize() const
 {
 	return this->enemies.size();
+}
+
+void EnemyManager::updateIncreasingMaxHP(float score, int time)
+{
+	int dice = rand() % 100;
+	if (time > 15)
+	{
+		if (dice > 30)
+		{
+			this->enemyHPMax = 1.f + score / 30.f + static_cast<float>(time) / 100;
+		}
+		else
+		{
+			this->enemyHPMax = 1.f + score / 100.f;
+		}
+	}
+	else
+	{
+		if (dice < 50)
+			this->enemyHPMax = 2.f;
+		else
+			this->enemyHPMax = 1.f;
+	}
 }
 
 void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSize, float& score, int& time)
@@ -104,8 +126,11 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 					else
 						x = -200.f;
 			}
+
+			//HP generation
+			this->updateIncreasingMaxHP(score, time);
 			//Spawn enemy
-			this->enemies.push_back(new Enemy(x, y, this->Textures_Enemy[picktexture]));
+			this->enemies.push_back(new Enemy(x, y, this->Textures_Enemy[picktexture], this->enemyHPMax));
 
 			//Modify speed by score and time once score of 10 is reached
 			if (score >= 10)

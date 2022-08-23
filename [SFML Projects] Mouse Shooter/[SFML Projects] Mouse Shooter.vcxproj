@@ -142,8 +142,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Money.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="Shop.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileManager.cpp" />
     <ClCompile Include="Upgrades.cpp" />
@@ -157,8 +159,10 @@
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Money.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ScoreSystem.h" />
+    <ClInclude Include="Shop.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileManager.h" />
     <ClInclude Include="Upgrades.h" />
