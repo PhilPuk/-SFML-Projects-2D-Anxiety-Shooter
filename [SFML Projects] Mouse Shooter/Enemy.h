@@ -40,6 +40,11 @@ private:
 	float TimerMoveMax;
 	float TimerMove;
 
+	//HP
+	float EnemyHPMax;
+	float EnemyHP;
+	
+//Phases
 	//Phase 0
 	float y;
 	float xMax;
@@ -76,6 +81,7 @@ public:
 		//Modify max speed of enemy, by multiplying the given value to the current movespeed.
 		//Given values should be > 1.
 	void ModifyEnemySpeed(float mulX, float mulY);
+	void takeDamage(float damage);
 
 	//Enemy behaviour
 	void Phase0();
