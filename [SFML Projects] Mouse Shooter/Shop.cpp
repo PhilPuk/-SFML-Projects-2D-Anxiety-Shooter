@@ -65,6 +65,14 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 	this->Texts.push_back(new sf::Text(base));
 
 
+	//Text without buttons are last in the array index
+	base.setString("Shop");
+	base.setCharacterSize(44);
+	base.setFillColor(sf::Color::White);
+	base.setPosition(static_cast<float>(window->getSize().x) / 2 - base.getGlobalBounds().width,
+		0.f);
+		this->Texts.push_back(new sf::Text(base));
+
 }
 
 Shop::Shop(sf::RenderWindow* window, sf::Font& font)
@@ -92,6 +100,7 @@ void Shop::runShop(float* bank, sf::RenderWindow* window)
 
 		this->render(window);
 	}
+	this->endShop = false;
 }
 
 void Shop::pollEvents(sf::RenderWindow* window)
@@ -112,6 +121,12 @@ void Shop::pollEvents(sf::RenderWindow* window)
 				this->endShop = true;
 			}
 			break;
+		case sf::Event::MouseButtonPressed:
+			//Left
+			if (ev.key.code == sf::Mouse::Left)
+			{
+				this->updateMouseOnButtons();
+			}
 		}
 	}
 }
@@ -126,11 +141,40 @@ void Shop::updateButtons()
 
 }
 
+void Shop::updateMouseVector(sf::RenderWindow* window)
+{
+	this->mousePosWindow = sf::Vector2f(sf::Mouse::getPosition(*window));
+}
+
+void Shop::updateMouseOnButtons()
+{
+	/*
+	* TO-DO:
+	* Add function for player and weapon upgrades
+	*/
+	for (int i = 0; i < 3; i++)
+	{
+		if (this->Buttons_Navigation[i].getGlobalBounds().contains(this->mousePosWindow))
+		{
+			//Go back
+			if (i == 0)
+				this->endShop = true;
+			//Player section
+			else if (i == 1)
+				return;
+			//Weapon section
+			else if (i == 2)
+				return;
+		}
+	}
+}
+
 void Shop::update(float* bank, sf::RenderWindow* window)
 {
 	this->pollEvents(window);
 	this->updateTexts();
 	this->updateButtons();
+	this->updateMouseVector(window);
 }
 
 void Shop::renderButtons(sf::RenderTarget& target)

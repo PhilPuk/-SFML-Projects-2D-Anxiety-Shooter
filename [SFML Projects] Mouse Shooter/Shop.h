@@ -17,6 +17,9 @@ private:
 	bool endShop;
 	bool endApplication;
 
+	//Mouse
+	sf::Vector2f mousePosWindow;
+
 	//Money
 	float Bank;
 	float IncomeOfRound;
@@ -59,6 +62,8 @@ public:
 	void pollEvents(sf::RenderWindow* window);
 	void updateTexts();
 	void updateButtons();
+	void updateMouseVector(sf::RenderWindow* window);
+	void updateMouseOnButtons();
 	void update(float* bank, sf::RenderWindow* window);
 
 	void renderButtons(sf::RenderTarget& target);
