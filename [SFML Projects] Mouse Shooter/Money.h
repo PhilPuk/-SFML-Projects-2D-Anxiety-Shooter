@@ -18,6 +18,7 @@ private:
   //Adds to bank once game is over
   float IncomePerGame;
   
+  void initVariables();
 public:
   Money();
   virtual ~Money();
