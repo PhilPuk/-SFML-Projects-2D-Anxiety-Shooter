@@ -137,18 +137,12 @@ void Game::updateBulletHittingTarget()
     {
         for (size_t n = 0; n < this->enemyManager.enemies.size(); n++)
         {
+            //Bullet hits enemy
             if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
-            {
-                
-                /*               /*
-                TO DO:
-                Add weapon dmg and get the dmg the weapon deals instead of 1.f!
-                */
-                
+            {     
                 //Enemy taking dmg
-                this->enemyManager.enemies[n].takeDamage(1.f);
+                this->enemyManager.enemies[n].takeDamage(this->weapon->getBulletDamage());
                 
-               
                 //Deleting if hp is 0
                 if(this->enemyManager.enemies[n].getHP() <= 0)
                 this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
@@ -157,6 +151,12 @@ void Game::updateBulletHittingTarget()
                 //Bullet deleting
                 this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
 
+                /*
+                TO-DO
+                add function for rng upgrades inside upgrades class
+                values that should be changed are given as * parameters!
+                */
+                
                 //RNG Upgrades from killing enemies
                 //Max ammo amount
                 if (this->upgrades.RNGAddedAmmo())
