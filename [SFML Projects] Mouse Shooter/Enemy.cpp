@@ -88,6 +88,13 @@ const sf::Vector2f Enemy::getMovement() const
 	return tmp;
 }
 
+	const float& Enemy::getHPMax() const{
+	return this->EnemyHPMax;
+	}
+	const float& Enemy::getHP() const{
+	return this->EnemyHP;
+	}
+
 void Enemy::ModifyMovement(float move_X, float move_Y)
 {
 	this->moveX = move_X;
