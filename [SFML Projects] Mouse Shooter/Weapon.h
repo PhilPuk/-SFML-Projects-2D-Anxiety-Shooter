@@ -35,6 +35,9 @@ public:
 	//Cooldowns
 	float ShootCDMAX;
 	float ShootCD;
+	
+	//Damage
+	float damageBullet;
 
 	//Initialization
 	virtual void initVariables();
@@ -54,11 +57,13 @@ public:
 	void ReloadWeapon();
 
 	//Accessors
-
+	const float& getBulletDamage() const;
+	
 	//Modifiers
 	void ModifyMaxAmmo(int MaxAmmo);
 	void ModifyReloadTimerMax(float ReloadTimerMax);
 	void ModifyBulletSpeed(float BulletSpeed);
+	void ModifyBulletDamage(float BulletDamage);
 
 	void updateAmmoTextContent();
 	void updateAmmoText();
