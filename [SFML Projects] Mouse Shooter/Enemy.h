@@ -74,7 +74,8 @@ public:
 	const sf::FloatRect& getBounds() const;
 	const bool& getPhase0() const;
 	const sf::Vector2f getMovement() const;
-
+	const float& getHPMax() const;
+	const float& getHP() const;
 	//Modifiers
 		//Modifies enemy movement, used for phase system.
 	void ModifyMovement(float move_X, float move_Y);
