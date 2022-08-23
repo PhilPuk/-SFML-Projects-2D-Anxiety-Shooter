@@ -139,7 +139,18 @@ void Game::updateBulletHittingTarget()
         {
             if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
             {
-                //Enemy deleting
+                
+                /*               /*
+                TO DO:
+                Add weapon dmg and get the dmg the weapon deals instead of 1.f!
+                */
+                
+                //Enemy taking dmg
+                this->enemyManager.enemies[n].takeDamage(1.f);
+                
+               
+                //Deleting if hp is 0
+                if(this->enemyManager.enemies[n].getHP() <= 0)
                 this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
                 //std::cout << "Enemies: " << this->enemyManager.enemies.size() << "\n";
 
