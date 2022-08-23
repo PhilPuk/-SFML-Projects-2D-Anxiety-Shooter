@@ -16,6 +16,11 @@ void Enemy::initVariables(float& pos_X, float& pos_Y)
 	this->SpawnTimerMax = 300.f;
 	this->SpawnTimer = 0.f;
 
+	//HP
+	this->EnemyHPMax = 1.f;
+	this->EnemyHP = this->EnemyHPMax;
+	
+	//Phases
 	this->index_Phase = 0;
 	this->max_index_Phase = 4;
 	for (int i = 0; i < this->max_index_Phase; i++)
@@ -95,7 +100,13 @@ void Enemy::ModifyEnemySpeed(float mulX, float mulY)
 	this->MultiplyMoveY = mulY;
 }
 
-//Enemy behaviour
+///Substracts enemy hp by the given value
+void Enemy::takeDamage(float damage)
+{
+	this->EnemyHP -= damage
+}
+
+///Enemy behaviour
 void Enemy::Phase0()
 {
 	//Movement for Phase 0
