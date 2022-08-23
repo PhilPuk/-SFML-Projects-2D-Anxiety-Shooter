@@ -16,6 +16,9 @@ void Weapon::initVariables()
 	//Cooldown between each bullet
 	this->ShootCDMAX = 2.f;
 	this->ShootCD = this->ShootCDMAX;
+	
+	//damage bullets
+	this->damageBullet = 1.f;
 }
 
 void Weapon::initTexture()
@@ -103,7 +106,7 @@ void Weapon::shootBullet(sf::Vector2f& AimDiretionNormal)
 	//std::cout << "Bullets Vector size: " << this->bullets.size() << "\n";
 }
 
-//Reloads weapon untiö the weapon is fully loaded
+//Reloads weapon untiÃ¶ the weapon is fully loaded
 void Weapon::ReloadWeapon()
 {
 	if (this->ReloadTimer < this->ReloadTimerMax && this->CurrAmmo < this->MaxAmmo)
@@ -121,6 +124,11 @@ void Weapon::ReloadWeapon()
 	}
 }
 
+//Accessors
+const float& Weapon::getBulletDamage() const{
+return this->damageBullet;
+}
+
 //Modifiers
 void Weapon::ModifyMaxAmmo(int MaxAmmo)
 {
@@ -135,6 +143,10 @@ void Weapon::ModifyReloadTimerMax(float ReloadTimerMax)
 void Weapon::ModifyBulletSpeed(float BulletSpeed)
 {
 	this->BulletSpeed = BulletSpeed;
+}
+
+void Weapon::ModifyBulletDamage(float BulletDamage){
+this->damageBullet = BulletDamage;
 }
 
 void Weapon::updateAmmoTextContent()
