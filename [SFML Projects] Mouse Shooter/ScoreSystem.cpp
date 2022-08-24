@@ -22,7 +22,7 @@ void ScoreSystem::initVariables()
 	this->Time = 0;
 	this->Timer = 0.f;
 
-	this->Money = 0.f;
+	this->Money = 1000.f;
 
 	this->getHighScoreFromTxt();
 }

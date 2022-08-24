@@ -6,8 +6,8 @@ void Menu::initVariables()
 {
 	//Window
 		//Screen size
-	this->videoMode.width = 1920;
-	this->videoMode.height = 1080;
+	this->videoMode.width = 1600;
+	this->videoMode.height = 900;
 
 	this->Framerate = 60;
 
@@ -181,6 +181,10 @@ void Menu::pollEvents()
 				{
 					//Shop button action
 					this->shop->runShop(this->game->ScoreSys->getMoney(), this->window);
+
+					this->applyShopUpgrades();
+
+					this->shop->resetUpgradeCounter();
 				}
 				else if (this->Menu_Navigation_Index == 2)
 				{
@@ -204,6 +208,30 @@ void Menu::SetTextToNewHighscore()
 	std::stringstream ssHighScore;
 	ssHighScore << "Highscore: " << this->game->getHighScore();
 	this->Text_Highscore.setString(ssHighScore.str());
+}
+
+void Menu::applyShopUpgrades()
+{
+	bool newUpgrade = false;
+
+		///TO-DO:
+		///Add modify player movement speed function
+		///Add mofify bullet speed
+		/// 
+		 
+		//Player
+		this->game->player->addMaxHP(this->shop->getPlayer_UpgradeCounters(1));
+		
+		//Weapon
+		this->game->weapon->addBulletSpeed(this->shop->getWeapon_UpgradeCounters(0));
+		this->game->weapon->addMaxAmmo(this->shop->getWeapon_UpgradeCounters(1));
+		this->game->weapon->substractReloadTimerMax(this->shop->getWeapon_UpgradeCounters(2));
+		this->game->weapon->addBulletDamage(this->shop->getWeapon_UpgradeCounters(3));
+
+		std::cout << "Weapon 0: " << this->shop->getWeapon_UpgradeCounters(0) << "\n";
+		std::cout << "Weapon 1: " << this->shop->getWeapon_UpgradeCounters(1) << "\n";
+		std::cout << "Weapon 2: " << this->shop->getWeapon_UpgradeCounters(2) << "\n";
+		std::cout << "Weapon 3: " << this->shop->getWeapon_UpgradeCounters(3) << "\n";
 }
 
 //update

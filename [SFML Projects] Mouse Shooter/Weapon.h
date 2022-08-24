@@ -64,6 +64,10 @@ public:
 	void ModifyReloadTimerMax(float ReloadTimerMax);
 	void ModifyBulletSpeed(float BulletSpeed);
 	void ModifyBulletDamage(float BulletDamage);
+	void addMaxAmmo(int add);
+	void substractReloadTimerMax(float substract);
+	void addBulletSpeed(float add);
+	void addBulletDamage(float add);
 
 	void updateAmmoTextContent();
 	void updateAmmoText();

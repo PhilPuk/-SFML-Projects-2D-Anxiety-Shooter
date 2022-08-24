@@ -24,16 +24,12 @@ private:
 	//Mouse
 	sf::Vector2f mousePosWindow;
 
-	//Player
-	Player* player;
-
 	//Enemies
 	EnemyManager enemyManager;
 
 	//Tile system
 	TileManager* tileManager;
 
-	BeginnerWeapon* weapon;
 
 	//Upgrades
 	Upgrades upgrades;
@@ -51,6 +47,12 @@ private:
 public:
 	Game(sf::RenderWindow* window, sf::Font& font);
 	virtual ~Game();
+
+	//Player
+	Player* player;
+
+	//Weapon
+	BeginnerWeapon* weapon;
 
 	//Score Sys
 	ScoreSystem* ScoreSys;

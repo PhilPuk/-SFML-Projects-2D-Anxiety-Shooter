@@ -66,6 +66,7 @@ public:
 	void run();
 	void pollEvents();
 	void SetTextToNewHighscore();
+	void applyShopUpgrades();
 		//update
 	void updateText();
 	void udpate();

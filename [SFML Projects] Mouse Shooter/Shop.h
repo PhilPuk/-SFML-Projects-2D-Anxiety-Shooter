@@ -17,6 +17,12 @@ private:
 	bool endShop;
 	bool endApplication;
 
+	bool PlayerUpgrades;
+	bool WeaponUpgrades;
+
+	int RangeStartPlayerUpgrades;
+	int RangeEndPlayerUpgrades;
+
 	//Mouse
 	sf::Vector2f mousePosWindow;
 
@@ -24,8 +30,19 @@ private:
 	float Bank;
 	float IncomeOfRound;
 
+	//Price upgrades
+	float Price_PlayerUpgrades[4];
+	float Price_WeaponUpgrades[4];
+
+	//Upgrade counting
+	int CounterUpgrade_Player[4];
+	int CounterUpgrade_Weapon[4];
+
 	//Upgrades
 	int Amount_Upgrades;
+
+	int indexOfChoosenUpgrade;
+	int indexOfChoosenUpgradeSave;
 
 	//Spacings
 	float spacing_SectionChooser;
@@ -53,19 +70,43 @@ public:
 	Shop(sf::RenderWindow* window, sf::Font& font);
 	virtual ~Shop();
 
+	void resetUpgradeCounter();
+
 	//Accessors
 	const bool& getEndApplication() const;
+		//UPGRADES
+
+		/// Get player upgrades.
+		/// Index list:
+		/// 0 = Move Speed.
+		/// 1 = Max HP.
+		/// 2 = COOMING SOON.
+		/// 3 = COOMING SOON.
+	const int getPlayer_UpgradeCounters(int index);
+
+		/// Get weapon upgrades.
+		/// Index list:
+		/// 0 = Bullet Speed.
+		/// 1 = Max Ammo.
+		/// 2 = Reload Speed.
+		/// 3 = Bullet damage
+	const int getWeapon_UpgradeCounters(int index);
+
+
 
 	//Main loop
 	void runShop(float* bank, sf::RenderWindow* window);
+
+	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
 	void pollEvents(sf::RenderWindow* window);
 	void updateTexts();
 	void updateToPlayerUpgrades();
 	void updateToWeaponUpgrades();
-	void updateButtons();
 	void updateMouseVector(sf::RenderWindow* window);
 	void updateMouseOnButtons();
+	void updateUpgradingAbilities();
+	void updateupgradeMain(float* bank);
 	void update(float* bank, sf::RenderWindow* window);
 
 	void renderButtons(sf::RenderTarget& target);

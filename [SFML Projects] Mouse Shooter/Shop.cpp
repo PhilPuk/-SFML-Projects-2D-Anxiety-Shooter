@@ -6,12 +6,28 @@ void Shop::initVariables(sf::RenderWindow* window)
 	this->endShop = false;
 	this->endApplication = false;
 
+	this->PlayerUpgrades = true;
+	this->WeaponUpgrades = false;
+
 	//Money
 	this->Bank = 0.f;
 	this->IncomeOfRound = 0.f;
 
+	//Price upgrades
+	for (int i = 0; i < 4; i++)
+	{
+		this->Price_PlayerUpgrades[i] = 10.f;
+		this->Price_WeaponUpgrades[i] = 10.f;
+
+		this->CounterUpgrade_Player[i] = 0;
+		this->CounterUpgrade_Weapon[i] = 0;
+	}
+
 	//Upgrades
 	this->Amount_Upgrades = 4;
+
+	this->indexOfChoosenUpgrade = -1.f;
+	this->indexOfChoosenUpgradeSave = -1.f;
 
 	//Spacing
 	this->spacing_SectionChooser = 20.f;
@@ -68,6 +84,8 @@ void Shop::initShapes(sf::RenderWindow* window)
 
 void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 {
+	std::stringstream price;
+
 	sf::Text base;
 	base.setFont(font);
 	base.setFillColor(sf::Color::Black);
@@ -98,6 +116,52 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 		0.f);
 	this->Texts.push_back(new sf::Text(base));
 
+	
+	//Player upgrades
+	base.setCharacterSize(24.f);
+	base.setFillColor(sf::Color::Black);
+		//Movement speed
+
+	this->RangeStartPlayerUpgrades = this->Texts.size() - 1;
+
+	for (int i = 0; i < 4; i++)
+	{
+		price <<"\n"<< this->Price_PlayerUpgrades[i] << "$";
+		if(i == 0)
+			base.setString("Move\nspeed"+ price.str());
+		else if(i == 1)
+			base.setString("Max\nHP" + price.str());
+		else if(i == 2)
+			base.setString("COOMING\nSOON!" + price.str());
+		else if(i == 3)
+			base.setString("COOMING\nSOON!" + price.str());
+
+		base.setPosition(this->Buttons_Upgrades[i].getPosition().x,
+			this->Buttons_Upgrades[i].getPosition().y);
+		this->Texts.push_back(new sf::Text(base));
+		price.str("");
+	}
+	this->RangeEndPlayerUpgrades = this->RangeStartPlayerUpgrades + 4;
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		price << "\n" << this->Price_WeaponUpgrades[i] << "$";
+		if (i == 0)
+			base.setString("Bullet\nspeed" + price.str());
+		else if (i == 1)
+			base.setString("Max\nAmmo" + price.str());
+		else if (i == 2)
+			base.setString("Reload\nSpeed!" + price.str());
+		else if (i == 3)
+			base.setString("Bullet\ndamage!" + price.str());
+
+		base.setPosition(this->Buttons_Upgrades[i].getPosition().x,
+			this->Buttons_Upgrades[i].getPosition().y);
+		this->Texts.push_back(new sf::Text(base));
+		price.str("");
+	}
+
 }
 
 Shop::Shop(sf::RenderWindow* window, sf::Font& font)
@@ -112,13 +176,34 @@ Shop::~Shop()
 
 }
 
+void Shop::resetUpgradeCounter()
+{
+	//Price upgrades
+	for (int i = 0; i < 4; i++)
+	{
+		this->CounterUpgrade_Player[i] = 0;
+		this->CounterUpgrade_Weapon[i] = 0;
+	}
+}
+
 const bool& Shop::getEndApplication() const
 {
 	return this->endApplication;
 }
 
+const int Shop::getWeapon_UpgradeCounters(int index)
+{
+	return CounterUpgrade_Weapon[index];
+}
+
+const int Shop::getPlayer_UpgradeCounters(int index)
+{
+	return CounterUpgrade_Player[index];
+}
+
 void Shop::runShop(float* bank, sf::RenderWindow* window)
 {
+	std::cout << "Money: " << *bank<<"\n";
 	while (!endShop && !endApplication)
 	{
 		this->update(bank, window);
@@ -126,6 +211,15 @@ void Shop::runShop(float* bank, sf::RenderWindow* window)
 		this->render(window);
 	}
 	this->endShop = false;
+
+}
+
+bool Shop::checkUpgradeAvailable(float* bank, float upgrade_price)
+{
+	if (*bank >= upgrade_price)
+		return true;
+	else
+		return false;
 }
 
 void Shop::pollEvents(sf::RenderWindow* window)
@@ -161,9 +255,16 @@ void Shop::updateTexts()
 
 }
 
-void Shop::updateButtons()
+void Shop::updateToPlayerUpgrades()
 {
+	this->PlayerUpgrades = true;
+	this->WeaponUpgrades = false;
+}
 
+void Shop::updateToWeaponUpgrades()
+{
+	this->PlayerUpgrades = false;
+	this->WeaponUpgrades = true;
 }
 
 void Shop::updateMouseVector(sf::RenderWindow* window)
@@ -171,21 +272,12 @@ void Shop::updateMouseVector(sf::RenderWindow* window)
 	this->mousePosWindow = sf::Vector2f(sf::Mouse::getPosition(*window));
 }
 
-void updateToPlayerUpgrades(){
-	
-}
-
-void updateToWeaponUpgrades(){
-
-}
-
+//CALLED IN POLL EVENTS
+//IF LEFT MOUSE BUTTON PRESSED CHECK IF A BUTTON IS HIT
+//IF YES DO THE BUTTON FUNCTIONS
 void Shop::updateMouseOnButtons()
-{
-	/*
-	* TO-DO:
-	* Add function for player and weapon upgrades
-	*/
-	
+{	
+
 	//Section choosing buttons
 	for (int i = 0; i < 3; i++)
 	{
@@ -202,22 +294,52 @@ void Shop::updateMouseOnButtons()
 				this->updateToWeaponUpgrades();
 		}
 	}
-	/*
-	TO DO
+	
+
 	//Upgrade buttons	
 	for (int i = 0; i < 4; i++)
 	{
-				
+		if (this->Buttons_Upgrades[i].getGlobalBounds().contains(this->mousePosWindow))
+		{
+			this->indexOfChoosenUpgrade = i;
+			
+		}
+		//debugging
+		//std::cout << this->indexOfChoosenUpgrade;
 	}
-	*/
+	
+}
+
+void Shop::updateUpgradingAbilities()
+{
+
+	if (this->indexOfChoosenUpgrade != this->indexOfChoosenUpgradeSave)
+	{
+		if (this->PlayerUpgrades)
+		{
+			this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
+		}
+		else if (this->WeaponUpgrades)
+		{
+			this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+			std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
+		}
+
+		this->indexOfChoosenUpgrade = this->indexOfChoosenUpgradeSave;
+	}
+}
+
+void Shop::updateupgradeMain(float* bank)
+{
+	this->updateUpgradingAbilities();
 }
 
 void Shop::update(float* bank, sf::RenderWindow* window)
 {
 	this->pollEvents(window);
 	this->updateTexts();
-	this->updateButtons();
 	this->updateMouseVector(window);
+	this->updateupgradeMain(bank);
 }
 
 void Shop::renderButtons(sf::RenderTarget& target)
@@ -231,14 +353,25 @@ void Shop::renderButtons(sf::RenderTarget& target)
 	//Upgrade buttons
 	for(int i = 0; i < 4; i++)
 	{
-		target.draw(this->Buttons_Upgrades[i];
+		target.draw(this->Buttons_Upgrades[i]);
 	}
 }
 
 void Shop::renderTexts(sf::RenderTarget& target)
 {
-	for (int i = 0; i < this->Texts.size(); i++)
+	int decrease = 0;
+	//player or weapon
+	if (this->PlayerUpgrades)
+		decrease = sizeof(this->Price_PlayerUpgrades) / sqrt(sizeof(this->Price_PlayerUpgrades));
+
+	for (int i = 0; i < this->Texts.size() - decrease; i++)
 	{
+		if (this->WeaponUpgrades)
+		{
+			if(i < this->RangeStartPlayerUpgrades + 1 || i > this->RangeEndPlayerUpgrades )
+				target.draw(*this->Texts[i]);
+		}
+		else
 		target.draw(*this->Texts[i]);
 	}
 }
@@ -252,53 +385,3 @@ void Shop::render(sf::RenderWindow* window)
 
 	window->display();
 }
-
-			    /*
-			    #include<stdio.h>
-#include<stdlib.h>
-//#include<windows.h>
-
-
-
-int init(int blinkAnzahl, int intervalGesamt)
-{
-	printf("Seezeichenprogramm Fl(%i)%is !\n\n", blinkAnzahl, intervalGesamt);
-	return 0;
-}
-
-int ledTurn()
-{
-		printf("\rLED 1");
-		sleep(1);
-		printf("\rLED 0");
-		sleep(1);
-		return 0;
-}
-
-int loop(int blinkAnzahl, int intervalGesamt)
-{
-	int x = 0;
-	while(x < blinkAnzahl)
-	{
-		ledTurn();
-		x++;
-	}
-	
-	sleep(intervalGesamt - blinkAnzahl * 2);
-	return 0;
-}
-
-int main()
-{
-	int BlinkAnzahl = 3;
-	int IntervalGesamt = 15;
-	
-	init(BlinkAnzahl, IntervalGesamt);
-
-	while(1)
-	{
-		loop(BlinkAnzahl, IntervalGesamt);
-	}
-	
-}
-			    */

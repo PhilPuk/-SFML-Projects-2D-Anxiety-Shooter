@@ -91,7 +91,12 @@ const float& Game::getHighScore() const
 void Game::run()
 {
     //Main loop of the game
+    std::cout << "Max hp: " << this->player->getHPMax() << "\n";
 
+    std::cout << "Bullet speed: " << this->weapon->BulletSpeed << "\n";
+    std::cout << "Max Ammo: " << this->weapon->MaxAmmo << "\n";
+    std::cout << "Reload speed max: " << this->weapon->ReloadTimerMax<< "\n";
+    std::cout << "Bullet damage: " << this->weapon->damageBullet << "\n";
     while (!endGame)
     {
         this->update();

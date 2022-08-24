@@ -149,6 +149,26 @@ void Weapon::ModifyBulletDamage(float BulletDamage){
 this->damageBullet = BulletDamage;
 }
 
+void Weapon::addMaxAmmo(int add)
+{
+	this->MaxAmmo += add;
+}
+
+void Weapon::substractReloadTimerMax(float substract)
+{
+	this->ReloadTimerMax -= substract;
+}
+
+void Weapon::addBulletSpeed(float add)
+{
+	this->BulletSpeed += add;
+}
+
+void Weapon::addBulletDamage(float add)
+{
+	this->damageBullet += add;
+}
+
 void Weapon::updateAmmoTextContent()
 {
 	//Ammo
