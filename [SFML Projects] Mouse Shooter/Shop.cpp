@@ -39,6 +39,31 @@ void Shop::initShapes(sf::RenderWindow* window)
 	this->Buttons_Navigation[2].setPosition(
 		this->Buttons_Navigation[1].getPosition().x + this->Buttons_Navigation[1].getGlobalBounds().width + this->spacing_SectionChooser,
 		this->Buttons_Navigation[1].getPosition().y);
+	
+	//Upgrade buttons spawns
+	this->Buttons_Upgrades[0].setSize(sf::Vector2f(static_cast<float>(window->getSize().x) / 10.f, window->getSize().y / 10.f));
+	this->Buttons_Upgrades[0].setFillColor(sf::Color(255,255,255, 255));
+	this->Buttons_Upgrades[0].setOutlineColor(sf::Color(200, 200, 200, 255));
+	this->Buttons_Upgrades[0].setOutlineThickness(5.f);
+	this->Buttons_Upgrades[0].setPosition(
+		this->Buttons_Navigation[1].getPosition().x,
+		this->Buttons_Navigation[1].getPosition().y + this->spacing_Upgrades);
+	
+	this->Buttons_Upgrades[1] = this->Buttons_Upgrades[0];
+	this->Buttons_Upgrades[2] = this->Buttons_Upgrades[0];
+	this->Buttons_Upgrades[3] = this->Buttons_Upgrades[0];
+	
+	this->Buttons_Upgrades[1].setPosition(
+		this->Buttons_Upgrades[0].getPosition().x + this->Buttons_Upgrades[0].getGlobalBounds().width + this->spacing_Upgrades,
+		this->Buttons_Upgrades[0].getPosition().y);
+	
+	this->Buttons_Upgrades[2].setPosition(
+		this->Buttons_Upgrades[1].getPosition().x + this->Buttons_Upgrades[1].getGlobalBounds().width + this->spacing_Upgrades,
+		this->Buttons_Upgrades[1].getPosition().y);
+	
+	this->Buttons_Upgrades[3].setPosition(
+		this->Buttons_Upgrades[2].getPosition().x + this->Buttons_Upgrades[2].getGlobalBounds().width + this->spacing_Upgrades,
+		this->Buttons_Upgrades[2].getPosition().y);
 }
 
 void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
@@ -71,7 +96,7 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 	base.setFillColor(sf::Color::White);
 	base.setPosition(static_cast<float>(window->getSize().x) / 2 - base.getGlobalBounds().width,
 		0.f);
-		this->Texts.push_back(new sf::Text(base));
+	this->Texts.push_back(new sf::Text(base));
 
 }
 
@@ -146,12 +171,22 @@ void Shop::updateMouseVector(sf::RenderWindow* window)
 	this->mousePosWindow = sf::Vector2f(sf::Mouse::getPosition(*window));
 }
 
+void updateToPlayerUpgrades(){
+	
+}
+
+void updateToWeaponUpgrades(){
+
+}
+
 void Shop::updateMouseOnButtons()
 {
 	/*
 	* TO-DO:
 	* Add function for player and weapon upgrades
 	*/
+	
+	//Section choosing buttons
 	for (int i = 0; i < 3; i++)
 	{
 		if (this->Buttons_Navigation[i].getGlobalBounds().contains(this->mousePosWindow))
@@ -161,12 +196,20 @@ void Shop::updateMouseOnButtons()
 				this->endShop = true;
 			//Player section
 			else if (i == 1)
-				return;
+				this->updateToPlayerUpgrades();
 			//Weapon section
 			else if (i == 2)
-				return;
+				this->updateToWeaponUpgrades();
 		}
 	}
+	/*
+	TO DO
+	//Upgrade buttons	
+	for (int i = 0; i < 4; i++)
+	{
+				
+	}
+	*/
 }
 
 void Shop::update(float* bank, sf::RenderWindow* window)
@@ -179,10 +222,16 @@ void Shop::update(float* bank, sf::RenderWindow* window)
 
 void Shop::renderButtons(sf::RenderTarget& target)
 {
-	//Section choosing
+	//Section choosing buttons
 	for (int i = 0; i < 3; i++)
 	{
 		target.draw(this->Buttons_Navigation[i]);
+	}
+	
+	//Upgrade buttons
+	for(int i = 0; i < 4; i++)
+	{
+		target.draw(this->Buttons_Upgrades[i];
 	}
 }
 
@@ -203,3 +252,53 @@ void Shop::render(sf::RenderWindow* window)
 
 	window->display();
 }
+
+			    /*
+			    #include<stdio.h>
+#include<stdlib.h>
+//#include<windows.h>
+
+
+
+int init(int blinkAnzahl, int intervalGesamt)
+{
+	printf("Seezeichenprogramm Fl(%i)%is !\n\n", blinkAnzahl, intervalGesamt);
+	return 0;
+}
+
+int ledTurn()
+{
+		printf("\rLED 1");
+		sleep(1);
+		printf("\rLED 0");
+		sleep(1);
+		return 0;
+}
+
+int loop(int blinkAnzahl, int intervalGesamt)
+{
+	int x = 0;
+	while(x < blinkAnzahl)
+	{
+		ledTurn();
+		x++;
+	}
+	
+	sleep(intervalGesamt - blinkAnzahl * 2);
+	return 0;
+}
+
+int main()
+{
+	int BlinkAnzahl = 3;
+	int IntervalGesamt = 15;
+	
+	init(BlinkAnzahl, IntervalGesamt);
+
+	while(1)
+	{
+		loop(BlinkAnzahl, IntervalGesamt);
+	}
+	
+}
+			    */
