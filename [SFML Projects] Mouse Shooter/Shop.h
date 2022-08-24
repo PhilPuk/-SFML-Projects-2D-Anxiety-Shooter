@@ -61,6 +61,8 @@ public:
 
 	void pollEvents(sf::RenderWindow* window);
 	void updateTexts();
+	void updateToPlayerUpgrades();
+	void updateToWeaponUpgrades();
 	void updateButtons();
 	void updateMouseVector(sf::RenderWindow* window);
 	void updateMouseOnButtons();
