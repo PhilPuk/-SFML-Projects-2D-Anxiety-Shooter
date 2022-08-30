@@ -28,6 +28,7 @@ private:
 
 	//Money
 	float Bank;
+	float lastBank;
 	float IncomeOfRound;
 
 	//Price upgrades
