@@ -39,6 +39,7 @@ public:
 
 	//Modifiers
 	void ModifyHighscore(float newHighScores);
+	void addMoneybyAddition(float add);
 
 	//Saving
 	void saveHighScoreinTxt();
