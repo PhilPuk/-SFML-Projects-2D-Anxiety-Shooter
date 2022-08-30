@@ -153,7 +153,9 @@ void Game::updateBulletHittingTarget()
                 //Adding score
                 if (this->enemyManager.enemies[n]->getHP() <= 0)
                 {
-
+                    //Add money to bank
+                    this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n].getMoney());
+                    
                     //RNG Upgrades from killing enemies
                       //Max ammo amount
                     if (this->upgrades.RNGAddedAmmo())
