@@ -49,6 +49,9 @@ private:
 	//HP bar
 	//0 is background 1 is foregroumd
 	sf::RectangleShape HPBar[2];
+	
+	//earning from enemy
+	float money;
 
 //Phases
 	//Phase 0
@@ -83,6 +86,7 @@ public:
 	const sf::Vector2f getMovement() const;
 	const float& getHPMax() const;
 	const float& getHP() const;
+	const float& getMoney() const;
 	//Modifiers
 		//Modifies enemy movement, used for phase system.
 	void ModifyMovement(float move_X, float move_Y);
