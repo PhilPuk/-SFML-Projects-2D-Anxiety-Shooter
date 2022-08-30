@@ -95,6 +95,10 @@ void ScoreSystem::ModifyHighscore(float newHighScores)
 	this->HighScore = newHighScores;
 }
 
+void ScoreSystem::addMoneybyAddition(float add) {
+this->Money += add;	
+}
+
 //Saving
 void ScoreSystem::saveHighScoreinTxt()
 {
