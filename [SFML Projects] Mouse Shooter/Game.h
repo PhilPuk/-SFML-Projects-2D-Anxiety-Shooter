@@ -59,7 +59,7 @@ public:
 
 	//reseter
 	void resetVariables();
-
+	
 	//Accessors
 	const bool& getEndGame() const;
 	const bool& getEndApplication() const;
@@ -68,6 +68,11 @@ public:
 	//Main loop
 	void run();
 
+	//Functions
+	
+	//Rolls dices for each rng upgrade 
+	void rolltheUpgrades();
+	
 	//Update
 	void pollEvents();
 	void updateMousePosVectors();
