@@ -45,13 +45,13 @@ void Enemy::initVariables(float& pos_X, float& pos_Y, float hp)
 	this->counterPhase2Max = static_cast<float>(rand() % 60 + 50);
 	this->counterPhase2 = 0.f;
 	this->movexPhase2 = 0.f, moveyPhase2 = 0.f;
-
-
 }
 
 void Enemy::initSprite(sf::Texture& texture)
 {
 	float difficulty = static_cast<float>(rand() % 3);
+	//earnings
+	this->money = difficulty;
 	difficulty /= 5.f;
 	//float pos_X = rand() % 700;
 	//float pos_Y = rand() % 500;
@@ -112,6 +112,10 @@ const sf::Vector2f Enemy::getMovement() const
 	return this->EnemyHP;
 	}
 
+	const float& Enemy::getMoney() const{
+	return this->money;
+	}
+
 void Enemy::ModifyMovement(float move_X, float move_Y)
 {
 	this->moveX = move_X;
@@ -129,6 +133,8 @@ void Enemy::takeDamage(float damage)
 {
 	this->EnemyHP -= damage;
 }
+
+
 
 ///Enemy behaviour
 void Enemy::Phase0()
