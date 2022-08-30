@@ -22,6 +22,7 @@ private:
 	sf::Font font;
 	sf::Text Text_Score;
 	sf::Text Text_Time;
+	sf::Text Text_Money;
 
 	void getHighScoreFromTxt();
 	void initVariables();
