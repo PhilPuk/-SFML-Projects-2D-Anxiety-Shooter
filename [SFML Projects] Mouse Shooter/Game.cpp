@@ -173,11 +173,13 @@ void Game::updateBulletHittingTarget()
                 if (this->enemyManager.enemies[n]->getHP() <= 0)
                 {
                     //Add money to bank
-                    this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n].getMoney());
-                    
-                    
-              
+                    this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n]->getMoney());
 
+                    //For debugging
+                    //std::cout << "Money: " << *this->ScoreSys->getMoney()<<"\n";
+                    
+                    this->rolltheUpgrades();
+              
                     //Adding score 
                     this->currScore += 1.f;
 

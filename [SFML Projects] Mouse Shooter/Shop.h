@@ -101,12 +101,12 @@ public:
 	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
 	void pollEvents(sf::RenderWindow* window);
-	void updateTexts();
+	void updateTexts(float* bank);
 	void updateToPlayerUpgrades();
 	void updateToWeaponUpgrades();
 	void updateMouseVector(sf::RenderWindow* window);
 	void updateMouseOnButtons();
-	void updateUpgradingAbilities();
+	void updateUpgradingAbilities(float* bank);
 	void updateupgradeMain(float* bank);
 	void update(float* bank, sf::RenderWindow* window);
 

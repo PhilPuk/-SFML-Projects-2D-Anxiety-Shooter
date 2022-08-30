@@ -22,7 +22,7 @@ void ScoreSystem::initVariables()
 	this->Time = 0;
 	this->Timer = 0.f;
 
-	this->Money = 1000.f;
+	this->Money = 500.f;
 
 	this->getHighScoreFromTxt();
 }
@@ -55,7 +55,7 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	this->Text_Time.setPosition(winSize.x - this->Text_Time.getGlobalBounds().width - 35.f, spacingy / 3.f);
 	
 	this->Text_Money = this->Text_Time;
-	this->Text_Moey.setString("Money: 0);
+	this->Text_Money.setString("Money: 0");
 				  
 }
 

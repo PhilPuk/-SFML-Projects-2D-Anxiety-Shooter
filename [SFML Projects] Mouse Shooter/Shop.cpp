@@ -117,6 +117,14 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 		0.f);
 	this->Texts.push_back(new sf::Text(base));
 
+	//Money text
+	base.setString("Money");
+	base.setPosition(
+		window->getSize().x - base.getGlobalBounds().width * 2.f,
+		this->Buttons_Navigation[0].getPosition().y);
+
+	this->Texts.push_back(new sf::Text(base));
+
 	
 	//Player upgrades
 	base.setCharacterSize(24.f);
@@ -159,13 +167,6 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 		price.str("");
 	}
 	
-	//Money text
-	base.setString("Money");
-	base.setPosition(
-		window->getSize().x - base.getGlobalBounds().width * 2.f,
-		this->Buttons_Navigation[0].getPosition().y);
-	
-	this->Texts.push_back(new sf::Text(base));
 }
 
 Shop::Shop(sf::RenderWindow* window, sf::Font& font)
@@ -254,18 +255,18 @@ void Shop::pollEvents(sf::RenderWindow* window)
 	}
 }
 
-void Shop::updateTexts()
+void Shop::updateTexts(float* bank)
 {
 	//Money
-	if(this->lastBank != this->Bank)
+	if(this->lastBank != *bank)
 	{
 		//Save last bank
-		this->lastBank = this->Bank;
+		this->lastBank = *bank;
 		
 		//Update money text
 		std::stringstream ssBank;
-		ssBank<<"Money: "<<this->Bank;
-		this->Texts[texts.end()]->setString(ssBank.str());	
+		ssBank<<"Money: "<<*bank;
+		this->Texts[4]->setString(ssBank.str());
 	}
 }
 
@@ -324,53 +325,53 @@ void Shop::updateMouseOnButtons()
 	
 }
 
-void Shop::updateUpgradingAbilities()
+void Shop::updateUpgradingAbilities(float* bank)
 {
 
-	if (this->indexOfChoosenUpgrade != this->indexOfChoosenUpgradeSave)
-	{
-		if (this->PlayerUpgrades)
+		if (this->indexOfChoosenUpgrade != this->indexOfChoosenUpgradeSave)
 		{
-			if(this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade] < this->Bank)
+			if (this->PlayerUpgrades)
 			{
-			this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
-			this->Bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+				if (this->checkUpgradeAvailable(bank , this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade]))
+				{
+					this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
+					*bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+				}
+				else
+				{
+					//TODO
+					//Add event for not enough money to buy upgrade
+				}
 			}
-			else
+			else if (this->WeaponUpgrades)
 			{
-				//TODO
-				//Add event for not enough money to buy upgrade
+				if (this->checkUpgradeAvailable(bank, this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade]))
+				{
+					this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+					*bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+					//For debugging
+					//std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
+				}
+				else
+				{
+					//TODO
+					//Add event for not enough money to buy upgrade
+				}
 			}
-		}
-		else if (this->WeaponUpgrades)
-		{
-			if(this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade] < this->Bank)
-			{
-			this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
-			this->Bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
-			//For debugging
-			//std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
-			}
-			else
-			{
-				//TODO
-				//Add event for not enough money to buy upgrade
-			}		
-		}
 
-		this->indexOfChoosenUpgrade = this->indexOfChoosenUpgradeSave;
-	}
+			this->indexOfChoosenUpgrade = this->indexOfChoosenUpgradeSave;
+		}
 }
 
 void Shop::updateupgradeMain(float* bank)
 {
-	this->updateUpgradingAbilities();
+	this->updateUpgradingAbilities(bank);
 }
 
 void Shop::update(float* bank, sf::RenderWindow* window)
 {
 	this->pollEvents(window);
-	this->updateTexts();
+	this->updateTexts(bank);
 	this->updateMouseVector(window);
 	this->updateupgradeMain(bank);
 }
