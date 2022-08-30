@@ -107,6 +107,25 @@ void Game::run()
 
 }
 
+	//Functions
+	
+	//Rolls dices for each rng upgrade 
+	void Game::rolltheUpgrades(){
+    //RNG Upgrades from killing enemies
+                      //Max ammo amount
+                    if (this->upgrades.RNGAddedAmmo())
+                        this->weapon->MaxAmmo += 1;
+
+                    //HP
+                    if (this->upgrades.RNGAddMaxHP())
+                        this->player->addMaxHP(1.f);
+                    else if (this->upgrades.RNGAddHP())
+                    {
+                        if (this->player->getHP() < this->player->getHPMax())
+                            this->player->addHP(1.f);
+                    }
+    }
+
 void Game::pollEvents()
 {
     sf::Event ev;
@@ -156,19 +175,8 @@ void Game::updateBulletHittingTarget()
                     //Add money to bank
                     this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n].getMoney());
                     
-                    //RNG Upgrades from killing enemies
-                      //Max ammo amount
-                    if (this->upgrades.RNGAddedAmmo())
-                        this->weapon->MaxAmmo += 1;
-
-                    //HP
-                    if (this->upgrades.RNGAddMaxHP())
-                        this->player->addMaxHP(1.f);
-                    else if (this->upgrades.RNGAddHP())
-                    {
-                        if (this->player->getHP() < this->player->getHPMax())
-                            this->player->addHP(1.f);
-                    }
+                    
+              
 
                     //Adding score 
                     this->currScore += 1.f;
