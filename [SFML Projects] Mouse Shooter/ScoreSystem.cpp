@@ -53,6 +53,10 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	this->Text_Time = this->Text_Score;
 	this->Text_Time.setString("Time: 0");
 	this->Text_Time.setPosition(winSize.x - this->Text_Time.getGlobalBounds().width - 35.f, spacingy / 3.f);
+	
+	this->Text_Money = this->Text_Time;
+	this->Text_Moey.setString("Money: 0);
+				  
 }
 
 ScoreSystem::ScoreSystem(sf::Vector2u winSize, sf::Font& font)
