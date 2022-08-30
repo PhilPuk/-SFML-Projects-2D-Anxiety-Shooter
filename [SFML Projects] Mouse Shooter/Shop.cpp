@@ -11,6 +11,7 @@ void Shop::initVariables(sf::RenderWindow* window)
 
 	//Money
 	this->Bank = 0.f;
+	this->lastBank = -1.f;
 	this->IncomeOfRound = 0.f;
 
 	//Price upgrades
@@ -120,10 +121,7 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 	//Player upgrades
 	base.setCharacterSize(24.f);
 	base.setFillColor(sf::Color::Black);
-		//Movement speed
-
 	this->RangeStartPlayerUpgrades = this->Texts.size() - 1;
-
 	for (int i = 0; i < 4; i++)
 	{
 		price <<"\n"<< this->Price_PlayerUpgrades[i] << "$";
@@ -141,9 +139,8 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 		this->Texts.push_back(new sf::Text(base));
 		price.str("");
 	}
+	//Weapon upgrades
 	this->RangeEndPlayerUpgrades = this->RangeStartPlayerUpgrades + 4;
-
-
 	for (int i = 0; i < 4; i++)
 	{
 		price << "\n" << this->Price_WeaponUpgrades[i] << "$";
@@ -161,7 +158,14 @@ void Shop::initTexts(sf::RenderWindow* window, sf::Font& font)
 		this->Texts.push_back(new sf::Text(base));
 		price.str("");
 	}
-
+	
+	//Money text
+	base.setString("Money");
+	base.setPosition(
+		window->getSize().x - base.getGlobalBounds().width * 2.f,
+		this->Buttons_Navigation[0].getPosition().y);
+	
+	this->Texts.push_back(new sf::Text(base));
 }
 
 Shop::Shop(sf::RenderWindow* window, sf::Font& font)
@@ -252,7 +256,17 @@ void Shop::pollEvents(sf::RenderWindow* window)
 
 void Shop::updateTexts()
 {
-
+	//Money
+	if(this->lastBank != this->Bank)
+	{
+		//Save last bank
+		this->lastBank = this->Bank;
+		
+		//Update money text
+		std::stringstream ssBank;
+		ssBank<<"Money: "<<this->Bank;
+		this->Texts[texts.end()]->setString(ssBank.str());	
+	}
 }
 
 void Shop::updateToPlayerUpgrades()
