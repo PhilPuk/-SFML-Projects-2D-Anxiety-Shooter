@@ -331,12 +331,31 @@ void Shop::updateUpgradingAbilities()
 	{
 		if (this->PlayerUpgrades)
 		{
+			if(this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade] < this->Bank)
+			{
 			this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
+			this->Bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+			}
+			else
+			{
+				//TODO
+				//Add event for not enough money to buy upgrade
+			}
 		}
 		else if (this->WeaponUpgrades)
 		{
+			if(this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade] < this->Bank)
+			{
 			this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
-			std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
+			this->Bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+			//For debugging
+			//std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
+			}
+			else
+			{
+				//TODO
+				//Add event for not enough money to buy upgrade
+			}		
 		}
 
 		this->indexOfChoosenUpgrade = this->indexOfChoosenUpgradeSave;
