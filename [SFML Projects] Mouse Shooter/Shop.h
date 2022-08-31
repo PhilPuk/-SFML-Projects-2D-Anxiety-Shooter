@@ -3,6 +3,7 @@
 #include<iostream>
 #include<sstream>
 #include<vector>
+#include"TileManager.h"
 
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
@@ -13,6 +14,8 @@
 class Shop
 {
 private:
+	sf::RenderWindow* window;
+
 	//Logic
 	bool endShop;
 	bool endApplication;
@@ -26,6 +29,9 @@ private:
 	//Mouse
 	sf::Vector2f mousePosWindow;
 
+	//UI opacity
+	int UIOpacity;
+
 	//Money
 	float Bank;
 	float lastBank;
@@ -35,10 +41,12 @@ private:
 	float Price_PlayerUpgrades[4];
 	float Price_WeaponUpgrades[4];
 
+
 	//Upgrade counting
 	int CounterUpgrade_Player[4];
+	float CurrCounterUpgrade_Player[4];
 	int CounterUpgrade_Weapon[4];
-
+	float CurrCounterUpgrade_Weapon[4];
 	//Upgrades
 	int Amount_Upgrades;
 
@@ -64,11 +72,12 @@ private:
 	//NEXT ROW and the same...
 	std::vector<sf::Text*> Texts;
 
-	void initVariables(sf::RenderWindow* window);
-	void initShapes(sf::RenderWindow* window);
-	void initTexts(sf::RenderWindow* window, sf::Font& font);
+	void initWindow(sf::RenderWindow* window);
+	void initVariables(sf::Vector2u& winSize);
+	void initShapes(sf::Vector2u& winSize);
+	void initTexts(sf::Vector2u& winSize, sf::Font& font);
 public:
-	Shop(sf::RenderWindow* window, sf::Font& font);
+	Shop(sf::RenderWindow* window, sf::Vector2u& winSize, sf::Font& font);
 	virtual ~Shop();
 
 	void resetUpgradeCounter();
@@ -96,22 +105,21 @@ public:
 
 
 	//Main loop
-	void runShop(float* bank, sf::RenderWindow* window);
+	void runShop(float* bank, TileManager& tileManager);
 
 	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
-	void pollEvents(sf::RenderWindow* window);
+	void pollEvents();
 	void updateTexts(float* bank);
 	void updateToPlayerUpgrades();
 	void updateToWeaponUpgrades();
-	void updateMouseVector(sf::RenderWindow* window);
+	void updateMouseVector();
 	void updateMouseOnButtons();
 	void updateUpgradingAbilities(float* bank);
 	void updateupgradeMain(float* bank);
-	void update(float* bank, sf::RenderWindow* window);
+	void update(float* bank, TileManager& tileManager);
 
-	void renderButtons(sf::RenderTarget& target);
-	void renderTexts(sf::RenderTarget& target);
-	void render(sf::RenderWindow* window);
+	void renderButtons();
+	void renderTexts();
+	void render(TileManager& tileManager);
 };
-

@@ -27,10 +27,6 @@ private:
 	//Enemies
 	EnemyManager enemyManager;
 
-	//Tile system
-	TileManager* tileManager;
-
-
 	//Upgrades
 	Upgrades upgrades;
 
@@ -50,6 +46,9 @@ private:
 public:
 	Game(sf::RenderWindow* window, sf::Font& font);
 	virtual ~Game();
+
+	//Tile system
+	TileManager* tileManager;
 
 	//Player
 	Player* player;

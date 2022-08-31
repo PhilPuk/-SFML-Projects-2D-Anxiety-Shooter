@@ -22,7 +22,7 @@ void ScoreSystem::initVariables()
 	this->Time = 0;
 	this->Timer = 0.f;
 
-	this->Money = 0.f;
+	this->Money = 00.f;
 	this->moneySaved = -1.f;
 		
 	this->getHighScoreFromTxt();
@@ -53,13 +53,13 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	//Time
 	this->Text_Time = this->Text_Score;
 	this->Text_Time.setString("Time: 0");
-	this->Text_Time.setPosition(winSize.x - this->Text_Time.getGlobalBounds().width - 35.f, spacingy / 3.f);
+	this->Text_Time.setPosition(winSize.x - this->Text_Time.getGlobalBounds().width * 1.8f, spacingy / 3.f);
 	
 	//Earning
 	this->Text_Money = this->Text_Time;
-	this->Text_Money.setString("Money: 000");
+	this->Text_Money.setString("Money: 000$");
 	this->Text_Money.setPosition(
-	winSize.x - this->Text_Money.getGlobalBounds().width,
+		this->Text_Time.getPosition().x,
 	this->Text_Time.getPosition().y + this->Text_Money.getGlobalBounds().height
 	);
 				  
@@ -175,7 +175,7 @@ void ScoreSystem::updateTime()
 void ScoreSystem::updateEarningsText()
 {
 		std::stringstream ssEarning;
-		ssEarning<<"Money: "<<this->Money;
+		ssEarning<<"Money: "<<this->Money<<"$";
 		this->Text_Money.setString(ssEarning.str());
 }
 

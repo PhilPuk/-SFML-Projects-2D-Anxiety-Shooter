@@ -19,6 +19,10 @@ void Player::initVariables()
     this->PlayerHPMax = 10.f;
     this->PlayerHP = this->PlayerHPMax;
 
+
+    //player move variables
+    this->playerMoveSpeed = 10.f;
+
     //HP Bar
     this->HPBarx = 200.f;
     this->HPUpdate = -1.f;
@@ -134,6 +138,11 @@ const float& Player::getRotationAngle() const
     return this->PlayerAngle;
 }
 
+const float& Player::getPlayerMoveSpeed() const
+{
+    return this->playerMoveSpeed;
+}
+
 void Player::TakeDamage(float dmg)
 {
     this->PlayerHP -= dmg;
@@ -158,6 +167,16 @@ void Player::changeHP(float change)
     this->PlayerHP = change;
 }
 
+void Player::addPlayerMoveSpeed(float add)
+{
+    this->playerMoveSpeed += add;
+}
+
+void Player::changePlayerMoveSpeed(float change)
+{
+    this->playerMoveSpeed = change;
+}
+
 //Update
 void Player::updateAimSystem(sf::Vector2f& MousePos)
 {
@@ -178,10 +197,10 @@ void Player::updatePlayerMovement()
     //LEFT
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        this->sprite.move(-10.f, 0.f);
+        this->sprite.move(-this->playerMoveSpeed, 0.f);
 
         //Hitbox
-        this->shape_hitbox.move(-10.f, 0.f);
+        this->shape_hitbox.move(-this->playerMoveSpeed, 0.f);
 
         //Tile movement
         this->tileMove.x = 1.f;
@@ -189,9 +208,9 @@ void Player::updatePlayerMovement()
     //RIGHT
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        this->sprite.move(10.f, 0.f);
+        this->sprite.move(this->playerMoveSpeed, 0.f);
 
-        this->shape_hitbox.move(10.f, 0.f);
+        this->shape_hitbox.move(this->playerMoveSpeed, 0.f);
 
         //Tile movement
         this->tileMove.x = -1.f;
@@ -204,9 +223,9 @@ void Player::updatePlayerMovement()
     //UP
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
-        this->sprite.move(0.f, -10.f);
+        this->sprite.move(0.f, -this->playerMoveSpeed);
 
-        this->shape_hitbox.move(0.f, -10.f);
+        this->shape_hitbox.move(0.f, -this->playerMoveSpeed);
 
         //Tile movement
         this->tileMove.y = 1.f;
@@ -214,9 +233,9 @@ void Player::updatePlayerMovement()
     //DOWN
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        this->sprite.move(0.f, 10.f);
+        this->sprite.move(0.f, this->playerMoveSpeed);
 
-        this->shape_hitbox.move(0.f, 10.f);
+        this->shape_hitbox.move(0.f, this->playerMoveSpeed);
 
         //Tile movement
         this->tileMove.y = -1.f;

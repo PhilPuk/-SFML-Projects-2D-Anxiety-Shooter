@@ -83,7 +83,8 @@ void Menu::initGame()
 
 void Menu::initShop()
 {
-	this->shop = new Shop(this->window, this->font);
+	sf::Vector2u winSize = this->window->getSize();
+	this->shop = new Shop(this->window, winSize, this->font);
 }
 
 void Menu::initHighScoreText()
@@ -180,7 +181,7 @@ void Menu::pollEvents()
 				else if (this->Menu_Navigation_Index == 1)
 				{
 					//Shop button action
-					this->shop->runShop(this->game->ScoreSys->getMoney(), this->window);
+					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager);
 
 					this->applyShopUpgrades();
 
@@ -215,23 +216,28 @@ void Menu::applyShopUpgrades()
 	bool newUpgrade = false;
 
 		///TO-DO:
-		///Add modify player movement speed function
-		///Add mofify bullet speed
-		/// 
+		/// add last player upgrades
 		 
 		//Player
+		this->game->player->addPlayerMoveSpeed(this->shop->getPlayer_UpgradeCounters(0));
+		std::cout << "Player move speed upgrade : " << this->shop->getPlayer_UpgradeCounters(0);
 		this->game->player->addMaxHP(this->shop->getPlayer_UpgradeCounters(1));
-		
+
 		//Weapon
 		this->game->weapon->addBulletSpeed(this->shop->getWeapon_UpgradeCounters(0));
 		this->game->weapon->addMaxAmmo(this->shop->getWeapon_UpgradeCounters(1));
 		this->game->weapon->substractReloadTimerMax(this->shop->getWeapon_UpgradeCounters(2));
 		this->game->weapon->addBulletDamage(this->shop->getWeapon_UpgradeCounters(3));
 
+
+
+		//Debugging upgrade counters
+		/*
 		std::cout << "Weapon 0: " << this->shop->getWeapon_UpgradeCounters(0) << "\n";
 		std::cout << "Weapon 1: " << this->shop->getWeapon_UpgradeCounters(1) << "\n";
 		std::cout << "Weapon 2: " << this->shop->getWeapon_UpgradeCounters(2) << "\n";
 		std::cout << "Weapon 3: " << this->shop->getWeapon_UpgradeCounters(3) << "\n";
+		*/
 }
 
 //update
@@ -261,6 +267,8 @@ void Menu::udpate()
 
 	//Text updating
 	this->updateText();
+	
+	this->game->tileManager->update(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f,0.f));
 }
 
 //render
@@ -284,7 +292,8 @@ void Menu::render()
 	//Clears window
 	this->window->clear();
 
-	//Stuff to render
+	this->game->tileManager->render(*this->window);
+	
 	this->renderText();
 	//Displays on window
 	this->window->display();

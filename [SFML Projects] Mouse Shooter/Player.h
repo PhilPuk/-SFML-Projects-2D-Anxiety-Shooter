@@ -30,6 +30,9 @@ private:
 	float HPMaxUpdate;
 	float HPUpdate;
 
+	//player move variables
+	float playerMoveSpeed;
+
 	//HP Bar
 	sf::RectangleShape redHPBar;
 	sf::RectangleShape backgroundHPBar;
@@ -63,12 +66,15 @@ public:
 	const float& getHP() const;
 	const sf::Vector2f& getTileMove() const;
 	const float& getRotationAngle() const;
+	const float& getPlayerMoveSpeed() const;
 
 	//Modifiers
 	void TakeDamage(float dmg);
 	void addMaxHP(float add);
 	void addHP(float add);
 	void changeHP(float change);
+	void addPlayerMoveSpeed(float add);
+	void changePlayerMoveSpeed(float change);
 
 	//Update
 	void updateAimSystem(sf::Vector2f& MousePos);
