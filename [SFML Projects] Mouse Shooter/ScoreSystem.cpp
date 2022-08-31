@@ -23,7 +23,9 @@ void ScoreSystem::initVariables()
 	this->Timer = 0.f;
 
 	this->Money = 500.f;
-
+	this->Earning = 0.f;
+	this->earningsaved = -1.f;
+		
 	this->getHighScoreFromTxt();
 }
 
@@ -54,8 +56,13 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	this->Text_Time.setString("Time: 0");
 	this->Text_Time.setPosition(winSize.x - this->Text_Time.getGlobalBounds().width - 35.f, spacingy / 3.f);
 	
+	//Earning
 	this->Text_Money = this->Text_Time;
-	this->Text_Money.setString("Money: 0");
+	this->Text_Money.setString("Earning: 0");
+	this->Text_Money.setPosition(
+	this->Text_Time.getPosition().x,
+	this->Text_Time.getPosition().y - this->Text_Money.getGlobalBounds().height
+	);
 				  
 }
 
@@ -166,10 +173,31 @@ void ScoreSystem::updateTime()
 	}
 }
 
+void updateEarningsText(){
+	if(this->Earning != this->earningsaved)
+	{
+		this->earningsaved = this->Earning;
+		std::stringstream ssEarning;
+		ssEarning<<"Earning: "<<this->Earning;
+		this->Text_Money.setString(ssEarning.str());
+	}
+	else
+		return;
+}
+
+void updateEarnings(float earning){
+	
+	this->Earning = earning;
+	
+	this->updateEarningsText();
+}
+
+
 void ScoreSystem::update(float score)
 {
 	this->updateScore(score);
 	this->updateTime();
+	this->updateEarnings();
 }
 
 void ScoreSystem::renderText(sf::RenderTarget& target)
@@ -179,6 +207,8 @@ void ScoreSystem::renderText(sf::RenderTarget& target)
 
 	//Time
 	target.draw(this->Text_Time);
+	
+	target.draw(this->Text_Money);
 }
 
 void ScoreSystem::render(sf::RenderTarget& target)
