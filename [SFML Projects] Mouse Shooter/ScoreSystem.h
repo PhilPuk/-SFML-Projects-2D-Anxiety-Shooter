@@ -17,11 +17,15 @@ private:
 	float Score;
 	float HighScore;
 	float Money;
+	float Earning;
+	float earningsaved;
 	int Timer; // Counts time in frames 60 = 1sek
 	int Time; // Counts in sek add after Timer reached 60
 	sf::Font font;
 	sf::Text Text_Score;
 	sf::Text Text_Time;
+	
+	//To do rename to earnings
 	sf::Text Text_Money;
 
 	void getHighScoreFromTxt();
@@ -49,6 +53,8 @@ public:
 	void updateScore(float score);
 	void updateTimeText();
 	void updateTime();
+	void updateEarningsText();
+	void updateEarnings(float earning);
 	void update(float score);
 
 	void renderText(sf::RenderTarget& target);
