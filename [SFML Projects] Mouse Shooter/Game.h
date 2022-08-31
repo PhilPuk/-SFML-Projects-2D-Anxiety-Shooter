@@ -37,6 +37,9 @@ private:
 	//Score
 	float currScore;
 
+	//Income / Earnings
+	float CurrIncome;
+
 	void initWindow(sf::RenderWindow* window);
 	void initVariables(sf::RenderWindow* window);
 	void initFont(sf::Font& font);

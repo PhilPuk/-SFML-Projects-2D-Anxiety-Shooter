@@ -16,6 +16,9 @@ void Game::initVariables(sf::RenderWindow* window)
 
     //Score
     this->currScore = 0.f;
+
+    //Income / earnings
+    this->CurrIncome = 0.f;
 }
 
 void Game::initFont(sf::Font& font)
@@ -56,9 +59,9 @@ Game::Game(sf::RenderWindow* window, sf::Font& font)
 
 Game::~Game()
 {
-    delete this->player;
-
     delete this->tileManager;
+
+    delete this->player;
 
     delete this->weapon;
 
@@ -67,7 +70,9 @@ Game::~Game()
 
 void Game::resetVariables()
 {
-    this->initVariables(this->window);
+   //this->initVariables(this->window);
+    this->endGame = false;
+    this->endApplication = false;
 }
 
 const bool& Game::getEndGame() const
@@ -87,43 +92,48 @@ const float& Game::getHighScore() const
     return this->ScoreSys->getHighscore();
 }
 
-
+//Main loop of the game
 void Game::run()
 {
-    //Main loop of the game
+
+    /*
+    * DEBUGGING UPGRADE COUNTERS
     std::cout << "Max hp: " << this->player->getHPMax() << "\n";
 
     std::cout << "Bullet speed: " << this->weapon->BulletSpeed << "\n";
     std::cout << "Max Ammo: " << this->weapon->MaxAmmo << "\n";
     std::cout << "Reload speed max: " << this->weapon->ReloadTimerMax<< "\n";
     std::cout << "Bullet damage: " << this->weapon->damageBullet << "\n";
+    */
+
     while (!endGame)
     {
         this->update();
 
         this->render();
     }
-    this->ScoreSys->saveHighScoreinTxt();
 
+    this->ScoreSys->saveHighScoreinTxt();
 }
 
 	//Functions
 	
 	//Rolls dices for each rng upgrade 
-	void Game::rolltheUpgrades(){
+void Game::rolltheUpgrades()
+{
     //RNG Upgrades from killing enemies
-                      //Max ammo amount
-                    if (this->upgrades.RNGAddedAmmo())
-                        this->weapon->MaxAmmo += 1;
+    //Max ammo amount
+    if (this->upgrades.RNGAddedAmmo())
+        this->weapon->MaxAmmo += 1;
 
-                    //HP
-                    if (this->upgrades.RNGAddMaxHP())
-                        this->player->addMaxHP(1.f);
-                    else if (this->upgrades.RNGAddHP())
-                    {
-                        if (this->player->getHP() < this->player->getHPMax())
-                            this->player->addHP(1.f);
-                    }
+    //HP
+    if (this->upgrades.RNGAddMaxHP())
+        this->player->addMaxHP(1.f);
+    else if (this->upgrades.RNGAddHP())
+    {
+        if (this->player->getHP() < this->player->getHPMax())
+            this->player->addHP(1.f);
+    }
     }
 
 void Game::pollEvents()
@@ -155,21 +165,19 @@ void Game::updateMousePosVectors()
 
 void Game::updateBulletHittingTarget()
 {
-    //Checking for contact of bullet and enemy
-    // If intersects then delete enemy and bullet
+    //Loop through bullets
     for (size_t i = 0; i < this->weapon->bullets.size(); i++)
     {
+        //Loop through enemies
         for (size_t n = 0; n < this->enemyManager.enemies.size(); n++)
         {
-            //Bullet hits enemy
+            //Bullet hits enemy check
             if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
             {     
                 //Enemy taking dmg
                 this->enemyManager.enemies[n]->takeDamage(this->weapon->getBulletDamage());
                 
                 //Deleting if hp is 0
-                //RNG Upgrades aswell
-                //Adding score
                 if (this->enemyManager.enemies[n]->getHP() <= 0)
                 {
                     //Add money to bank
@@ -183,20 +191,15 @@ void Game::updateBulletHittingTarget()
                     //Adding score 
                     this->currScore += 1.f;
 
-                    this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
                     this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
-                    break;
+
                 }
+                //For Debugging
                 //std::cout << "Enemies: " << this->enemyManager.enemies.size() << "\n";
 
                 //Bullet deleting
                 this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
-
-                /*
-                TO-DO
-                add function for rng upgrades inside upgrades class
-                values that should be changed are given as * parameters!
-                */
+                break;
             }
 
         }
