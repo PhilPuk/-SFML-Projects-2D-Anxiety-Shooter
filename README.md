@@ -8,7 +8,7 @@ Currently learned from this projects:
   Easier to synchronize and to update + less complexity.
   
 
-2.Write own class for big stuff
+2.Write own class for big stuff.
   Having a shop system where money is used and money for ingame but both is the same.
   Write an class for the money, instead making money for each class itself.
 
@@ -16,7 +16,7 @@ Currently learned from this projects:
   Will keep the code cleaner, more readable, and makes it easier to refactor it.
   Use a clean method of writing comments and stay loyal to the way you do it, if you want to change it, changed it everywhere.
 
-4. Simplify the problems 
+4. Simplify the problems.
 
 5. Use the advances techniques only if needed!
 
