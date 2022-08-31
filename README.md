@@ -1,4 +1,4 @@
-# -SFML-Projects-2D-Astronaut-shooter
+ -SFML-Projects-2D-Astronaut-shooter
 
 Currently learned from this projects:
 
