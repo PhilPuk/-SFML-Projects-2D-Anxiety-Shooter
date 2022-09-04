@@ -110,7 +110,7 @@ public:
 	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
 	void pollEvents();
-	void updateTexts(float* bank);
+	void updateTexts(float* bank, float* ReloadTimerMax, int* MaxAmmo);
 	void updateToPlayerUpgrades();
 	void updateToWeaponUpgrades();
 	void updateMouseVector();

@@ -273,7 +273,7 @@ void Shop::pollEvents()
 	}
 }
 
-void Shop::updateTexts(float* bank)
+void Shop::updateTexts(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 {
 	//Money
 	if (this->lastBank != *bank)
@@ -349,13 +349,13 @@ void Shop::updateTexts(float* bank)
 				upg[n].str("");
 				n++;
 			}
-			if (this->CounterUpgrade_Weapon[2] == 60)
+			if (this->CounterUpgrade_Weapon[2] == 60 || *ReloadTimerMax == 60.f)
 			{
 				upg[2] << "Reload\nSpeed!\nMAX";
 				this->Texts[this->RangeStartPlayerUpgrades + 7]->setString(upg[2].str());
 				upg[2].str("");
 			}
-			if (this->CounterUpgrade_Weapon[1] == 50)
+			if (this->CounterUpgrade_Weapon[1] == 50 || *MaxAmmo == 60)
 			{
 				upg[1] << "Max\nAmmo!\nMAX";
 				this->Texts[this->RangeStartPlayerUpgrades + 6]->setString(upg[1].str());
@@ -491,7 +491,7 @@ void Shop::updateupgradeMain(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 void Shop::update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo)
 {
 	this->pollEvents();
-	this->updateTexts(bank);
+	this->updateTexts(bank, ReloadTimerMax, MaxAmmo);
 	this->updateMouseVector();
 	this->updateupgradeMain(bank, ReloadTimerMax, MaxAmmo);
 	tileManager.update(sf::Vector2f(0.f , 0.f), sf::Vector2f(0.f , 0.f));
