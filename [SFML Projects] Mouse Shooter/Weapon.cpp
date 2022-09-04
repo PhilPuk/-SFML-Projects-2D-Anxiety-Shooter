@@ -106,7 +106,7 @@ void Weapon::shootBullet(sf::Vector2f& AimDiretionNormal)
 	//std::cout << "Bullets Vector size: " << this->bullets.size() << "\n";
 }
 
-//Reloads weapon untiö the weapon is fully loaded
+//Reloads weapon until the weapon is fully loaded
 void Weapon::ReloadWeapon()
 {
 	if (this->ReloadTimer < this->ReloadTimerMax && this->CurrAmmo < this->MaxAmmo)

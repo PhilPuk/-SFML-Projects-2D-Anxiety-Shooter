@@ -105,7 +105,7 @@ public:
 
 
 	//Main loop
-	void runShop(float* bank, TileManager& tileManager);
+	void runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo);
 
 	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
@@ -115,9 +115,9 @@ public:
 	void updateToWeaponUpgrades();
 	void updateMouseVector();
 	void updateMouseOnButtons();
-	void updateUpgradingAbilities(float* bank);
-	void updateupgradeMain(float* bank);
-	void update(float* bank, TileManager& tileManager);
+	void updateUpgradingAbilities(float* bank, float* ReloadTimerMax, int* MaxAmmo);
+	void updateupgradeMain(float* bank, float* ReloadTimerMax, int* MaxAmmo);
+	void update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo);
 
 	void renderButtons();
 	void renderTexts();

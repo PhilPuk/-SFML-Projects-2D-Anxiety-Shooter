@@ -46,6 +46,11 @@ void Game::initScoreSystem()
     this->ScoreSys = new ScoreSystem(this->window->getSize(), this->font);
 }
 
+void Game::initGameOver()
+{
+    this->gameOver = new GameOver(this->font, this->windowSize, true, false, 0.f);
+}
+
 Game::Game(sf::RenderWindow* window, sf::Font& font)
 {
     this->initWindow(window);
@@ -55,6 +60,7 @@ Game::Game(sf::RenderWindow* window, sf::Font& font)
     this->initTiles();
     this->initWeapons();
     this->initScoreSystem();
+    this->initGameOver();
 }
 
 Game::~Game()
@@ -66,6 +72,8 @@ Game::~Game()
     delete this->weapon;
 
     delete this->ScoreSys;
+
+    delete this->gameOver;
 }
 
 void Game::resetVariables()
@@ -99,7 +107,6 @@ void Game::run()
     /*
     * DEBUGGING UPGRADE COUNTERS
     std::cout << "Max hp: " << this->player->getHPMax() << "\n";
-
     std::cout << "Bullet speed: " << this->weapon->BulletSpeed << "\n";
     std::cout << "Max Ammo: " << this->weapon->MaxAmmo << "\n";
     std::cout << "Reload speed max: " << this->weapon->ReloadTimerMax<< "\n";
@@ -113,26 +120,60 @@ void Game::run()
         this->render();
     }
 
+    //If gameover was activated reset everything except the shop
+    if (this->gameOver->getActivation())
+    {
+        this->gameOver->resetENDGAMEOVER();
+        this->player->changeHP(this->player->getHPMax());
+        this->enemyManager.enemies.clear();
+        this->currScore = 0.f;
+        this->ScoreSys->setTime(0.f);
+        this->ScoreSys->updateTime();
+        this->ScoreSys->update(this->currScore);
+    }
+
     this->ScoreSys->saveHighScoreinTxt();
 }
 
 	//Functions
 	
-	//Rolls dices for each rng upgrade 
-void Game::rolltheUpgrades()
+void Game::checkGameOver()
+{
+    if (this->player->getHP() <= 0)
+    {
+        this->gameOver->activateGameOver();
+    }
+}
+
+//Rolls dices for each rng upgrade 
+void Game::rolltheUpgrades(int n)
 {
     //RNG Upgrades from killing enemies
     //Max ammo amount
-    if (this->upgrades.RNGAddedAmmo())
-        this->weapon->MaxAmmo += 1;
+    sf::Vector2f  pos = this->enemyManager.enemies[n]->sprite_enemy.getPosition();
+
+    if (this->weapon->MaxAmmo < 60)
+    {
+        if (this->upgrades.RNGAddedAmmo())
+        {
+            this->upgrades.createNewAmmoAnimation(pos);
+            this->weapon->MaxAmmo += 1;
+        }
+    }
 
     //HP
     if (this->upgrades.RNGAddMaxHP())
+    {
+        this->upgrades.createNewMaxHPAnimation(pos);
         this->player->addMaxHP(1.f);
+    }
     else if (this->upgrades.RNGAddHP())
     {
         if (this->player->getHP() < this->player->getHPMax())
+        {
+            this->upgrades.createNewHPAnimation(pos);
             this->player->addHP(1.f);
+        }
     }
     }
 
@@ -186,7 +227,7 @@ void Game::updateBulletHittingTarget()
                     //For debugging
                     //std::cout << "Money: " << *this->ScoreSys->getMoney()<<"\n";
                     
-                    this->rolltheUpgrades();
+                    this->rolltheUpgrades(n);
               
                     //Adding score 
                     this->currScore += 1.f;
@@ -223,33 +264,45 @@ void Game::updatePlayerHittingEnemy()
 
 void Game::update()
 {
-    //Updates everything for the game
+    if (!this->gameOver->getActivation())
+    {
+        this->checkGameOver();
 
-    this->pollEvents();
+        //Updates everything for the game
+        this->pollEvents();
 
-    //Mouse
-    this->updateMousePosVectors();
+        //Mouse
+        this->updateMousePosVectors();
 
-    //Player
-    this->player->update(this->mousePosWindow, this->windowSize, this->weapon->getBulletSpawn());
+        //Player
+        this->player->update(this->mousePosWindow, this->windowSize, this->weapon->getBulletSpawn());
 
-    //Weapon
-    this->weapon->update(this->windowSize, this->player->getRotationAngle(), this->player->getPos(), this->player->aimSys.getAimDirNorm());
+        //Weapon
+        this->weapon->update(this->windowSize, this->player->getRotationAngle(), this->player->getPos(), this->player->aimSys.getAimDirNorm());
 
-    //Tiles
-    this->tileManager->update(this->player->getTileMove(), this->player->getPos());
+        //Tiles
+        this->tileManager->update(this->player->getTileMove(), this->player->getPos());
 
-    //Enemies
-    this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());
+        //Enemies
+        this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());
 
-    //Bullet enemy collision
-    this->updateBulletHittingTarget();
+        //Bullet enemy collision
+        this->updateBulletHittingTarget();
 
-    //Player enemy collision
-    this->updatePlayerHittingEnemy();
+        //Player enemy collision
+        this->updatePlayerHittingEnemy();
 
-    //ScoreSystem
-    this->ScoreSys->update(this->currScore);
+        //ScoreSystem
+        this->ScoreSys->update(this->currScore);
+
+        //Upgrades
+        this->upgrades.updateAnimations();
+    }
+    else
+    {
+        this->gameOver->update(&this->endGame, true, this->currScore);
+        this->tileManager->update(sf::Vector2f(0.f, 0.f), this->player->getPos());
+    }
 }
 
 
@@ -258,21 +311,32 @@ void Game::render()
 {
     this->window->clear();
 
-    //Renders everything for the game
+    if (!this->gameOver->getActivation())
+    {
+        //Renders everything for the game
 
-    this->tileManager->render(*this->window);
+        this->tileManager->render(*this->window);
 
-    //Enemies
-    this->enemyManager.render(*this->window);
+        //Enemies
+        this->enemyManager.render(*this->window);
 
-    //Player
-    this->player->render(*this->window);
+        //Player
+        this->player->render(*this->window);
 
-    //Weapon
-    this->weapon->render(*this->window);
+        //Weapon
+        this->weapon->render(*this->window);
 
-    //ScoreSystem
-    this->ScoreSys->render(*this->window);
+        //ScoreSystem
+        this->ScoreSys->render(*this->window);
+
+        //Upgrades
+        this->upgrades.render(*this->window);
+    }
+    else
+    {
+        this->tileManager->render(*this->window);
+        this->gameOver->render(*this->window);
+    }
 
     this->window->display();
 }

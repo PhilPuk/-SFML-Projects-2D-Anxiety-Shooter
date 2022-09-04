@@ -225,11 +225,11 @@ const int Shop::getPlayer_UpgradeCounters(int index)
 	return CurrCounterUpgrade_Player[index];
 }
 
-void Shop::runShop(float* bank, TileManager& tileManager)
+void Shop::runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo)
 {
 	while (!endShop && !endApplication)
 	{
-		this->update(bank, tileManager);
+		this->update(bank, tileManager, ReloadTimerMax, MaxAmmo);
 
 		this->render(tileManager);
 	}
@@ -349,6 +349,18 @@ void Shop::updateTexts(float* bank)
 				upg[n].str("");
 				n++;
 			}
+			if (this->CounterUpgrade_Weapon[2] == 60)
+			{
+				upg[2] << "Reload\nSpeed!\nMAX";
+				this->Texts[this->RangeStartPlayerUpgrades + 7]->setString(upg[2].str());
+				upg[2].str("");
+			}
+			if (this->CounterUpgrade_Weapon[1] == 50)
+			{
+				upg[1] << "Max\nAmmo!\nMAX";
+				this->Texts[this->RangeStartPlayerUpgrades + 6]->setString(upg[1].str());
+				upg[1].str("");
+			}
 		}
 	}
 }
@@ -408,7 +420,7 @@ void Shop::updateMouseOnButtons()
 	
 }
 
-void Shop::updateUpgradingAbilities(float* bank)
+void Shop::updateUpgradingAbilities(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 {
 
 		if (this->indexOfChoosenUpgrade != this->indexOfChoosenUpgradeSave)
@@ -431,9 +443,32 @@ void Shop::updateUpgradingAbilities(float* bank)
 			{
 				if (this->checkUpgradeAvailable(bank, this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade]))
 				{
-					this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
-					this->CurrCounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
-					*bank -= this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade];
+					if (this->indexOfChoosenUpgrade == 2)
+					{
+						if (*ReloadTimerMax > 60)
+						{
+							this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+							this->CurrCounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+							*bank -= this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade];
+							*ReloadTimerMax -= 1.f;
+						}
+					}
+					else if (this->indexOfChoosenUpgrade == 1)
+					{
+						if (*MaxAmmo < 60)
+						{
+							this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+							this->CurrCounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+							*bank -= this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade];
+							*MaxAmmo += 1;
+						}
+					}
+					else
+					{
+						this->CounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+						this->CurrCounterUpgrade_Weapon[this->indexOfChoosenUpgrade]++;
+						*bank -= this->Price_WeaponUpgrades[this->indexOfChoosenUpgrade];
+					}
 					//For debugging
 					//std::cout << "Weapon " << this->indexOfChoosenUpgrade << ": " << this->CounterUpgrade_Player[this->indexOfChoosenUpgrade] << "\n";
 				}
@@ -448,17 +483,17 @@ void Shop::updateUpgradingAbilities(float* bank)
 		}
 }
 
-void Shop::updateupgradeMain(float* bank)
+void Shop::updateupgradeMain(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 {
-	this->updateUpgradingAbilities(bank);
+	this->updateUpgradingAbilities(bank, ReloadTimerMax, MaxAmmo);
 }
 
-void Shop::update(float* bank, TileManager& tileManager)
+void Shop::update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo)
 {
 	this->pollEvents();
 	this->updateTexts(bank);
 	this->updateMouseVector();
-	this->updateupgradeMain(bank);
+	this->updateupgradeMain(bank, ReloadTimerMax, MaxAmmo);
 	tileManager.update(sf::Vector2f(0.f , 0.f), sf::Vector2f(0.f , 0.f));
 	tileManager.update(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
 }

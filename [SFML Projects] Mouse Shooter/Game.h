@@ -6,6 +6,7 @@
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
 #include"Upgrades.h"
+#include"GameOver.h"
 
 class Game
 {
@@ -43,6 +44,7 @@ private:
 	void initTiles();
 	void initWeapons();
 	void initScoreSystem();
+	void initGameOver();
 public:
 	Game(sf::RenderWindow* window, sf::Font& font);
 	virtual ~Game();
@@ -59,6 +61,9 @@ public:
 	//Score Sys
 	ScoreSystem* ScoreSys;
 
+	//Game over
+	GameOver* gameOver;
+
 	//reseter
 	void resetVariables();
 	
@@ -72,8 +77,9 @@ public:
 
 	//Functions
 	
+	void checkGameOver();
 	//Rolls dices for each rng upgrade 
-	void rolltheUpgrades();
+	void rolltheUpgrades(int n);
 	
 	//Update
 	void pollEvents();

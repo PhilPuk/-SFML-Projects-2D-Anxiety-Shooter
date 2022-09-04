@@ -44,6 +44,7 @@ public:
 	//Modifiers
 	void ModifyHighscore(float newHighScores);
 	void addMoneybyAddition(float add);
+	void setTime(float time);
 
 	//Saving
 	void saveHighScoreinTxt();

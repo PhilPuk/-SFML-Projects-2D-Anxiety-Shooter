@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<time.h>
+#include<math.h>
 
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
@@ -13,13 +14,29 @@
 class Upgrades
 {
 private:
-
 	//Ammo
 	float CurrentAddedAmmo;
 	float CurrentAddedMaxHP;
 	float CurrentAddedHP;
 
+	/// <summary>
+	/// 0 = Max Ammo
+	/// 1 = Max Hp
+	/// 2 = HP
+	/// </summary>
+	sf::Texture Texture_Upgrades[3];
+	sf::Sprite Sprite_Upgrades[3];
+
+	std::vector<sf::Sprite*> animations;
+
+	float animationTimerMax;
+	float animationTimer;
+
+	int animationCounter;
+
 	void initVariables();
+	void initTextures();
+	void initSprites();
 public:
 	Upgrades();
 	virtual ~Upgrades();
@@ -40,5 +57,15 @@ public:
 	bool RNGAddMaxHP();
 	//Adds more Ammo with a chance of 3%
 	bool RNGAddHP();
+
+	void createNewAnimation(sf::Vector2f&pos, int i);
+	void createNewAmmoAnimation(sf::Vector2f& pos);
+	void createNewMaxHPAnimation(sf::Vector2f& pos);
+	void createNewHPAnimation(sf::Vector2f& pos);
+
+	void updateAnimations();
+
+	void renderAnimation(sf::RenderTarget& target);
+	void render(sf::RenderTarget& target);
 };
 

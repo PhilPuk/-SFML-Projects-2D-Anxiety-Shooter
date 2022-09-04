@@ -22,7 +22,7 @@ void ScoreSystem::initVariables()
 	this->Time = 0;
 	this->Timer = 0.f;
 
-	this->Money = 00.f;
+	this->Money = 0.f;
 	this->moneySaved = -1.f;
 		
 	this->getHighScoreFromTxt();
@@ -109,6 +109,11 @@ void ScoreSystem::addMoneybyAddition(float add) {
 this->Money += add;	
 }
 
+void ScoreSystem::setTime(float time)
+{
+	this->Time = time;
+}
+
 //Saving
 void ScoreSystem::saveHighScoreinTxt()
 {
@@ -140,7 +145,7 @@ void ScoreSystem::updateScoreText()
 //If score in game is bigger then here then change it here
 void ScoreSystem::updateScore(float score)
 {
-	if (this->Score < score)
+	if (this->Score != score)
 	{
 		this->Score = score;
 

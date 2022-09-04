@@ -88,7 +88,7 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 	/// <param name="playerCenter"></param>
 
 	//Reduce spawn timing by the score
-	float TimerReduce = score / 9.f + static_cast<float>(time) / 50.f;
+	float TimerReduce = score / 7.5f + static_cast<float>(time) / 20.f;
 
 	if (!this->CheckMaxEnemy)
 	{

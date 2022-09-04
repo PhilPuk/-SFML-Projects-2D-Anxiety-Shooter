@@ -163,8 +163,8 @@ void Menu::pollEvents()
 			break;
 		case sf::Event::KeyPressed:
 				//Esc to close
-			if (ev.key.code == sf::Keyboard::Escape)
-				this->window->close();
+			//if (ev.key.code == sf::Keyboard::Escape)
+				//this->window->close();
 			
 			if (ev.key.code == sf::Keyboard::Enter)
 			{
@@ -174,14 +174,13 @@ void Menu::pollEvents()
 					//Start button action
 					this->game->run();
 					this->game->resetVariables();
-					
 					//Gets newest highscore
 					this->SetTextToNewHighscore();
 				}
 				else if (this->Menu_Navigation_Index == 1)
 				{
 					//Shop button action
-					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager);
+					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager, &this->game->weapon->ReloadTimerMax, &this->game->weapon->MaxAmmo);
 
 					this->applyShopUpgrades();
 
@@ -225,8 +224,8 @@ void Menu::applyShopUpgrades()
 
 		//Weapon
 		this->game->weapon->addBulletSpeed(this->shop->getWeapon_UpgradeCounters(0));
-		this->game->weapon->addMaxAmmo(this->shop->getWeapon_UpgradeCounters(1));
-		this->game->weapon->substractReloadTimerMax(this->shop->getWeapon_UpgradeCounters(2));
+		//this->game->weapon->addMaxAmmo(this->shop->getWeapon_UpgradeCounters(1));
+		//this->game->weapon->substractReloadTimerMax(this->shop->getWeapon_UpgradeCounters(2));
 		this->game->weapon->addBulletDamage(this->shop->getWeapon_UpgradeCounters(3));
 
 
