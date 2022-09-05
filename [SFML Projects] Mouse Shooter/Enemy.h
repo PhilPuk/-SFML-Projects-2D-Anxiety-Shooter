@@ -100,7 +100,6 @@ public:
 	void MovementCalculationPhase0();
 	void Phase1();
 	void MovementCalculationPhase1();
-	void Phase2();
 
 	//Moves the sprite of the enemy and the hp bar of it
 	void updateBodyAndHPBarMovement(float moveX, float moveY);

@@ -136,6 +136,8 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 			if (score >= 10)
 			{
 				float multiplier = 1.f + score / 2000.f + time / 5500.f;
+				if (multiplier > 1.35f)
+					multiplier = 1.35f;
 				for (int i = 0; i < this->enemies.size(); i++)
 				{
 					this->enemies[i]->ModifyEnemySpeed(multiplier, multiplier);

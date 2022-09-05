@@ -24,8 +24,8 @@ private:
 	/// 1 = Max Hp
 	/// 2 = HP
 	/// </summary>
-	sf::Texture Texture_Upgrades[3];
-	sf::Sprite Sprite_Upgrades[3];
+	sf::Texture Texture_Upgrades[4];
+	sf::Sprite Sprite_Upgrades[4];
 
 	std::vector<sf::Sprite*> animations;
 
@@ -62,6 +62,7 @@ public:
 	void createNewAmmoAnimation(sf::Vector2f& pos);
 	void createNewMaxHPAnimation(sf::Vector2f& pos);
 	void createNewHPAnimation(sf::Vector2f& pos);
+	void createNewMoneyAnimation(sf::Vector2f& pos);
 
 	void updateAnimations();
 

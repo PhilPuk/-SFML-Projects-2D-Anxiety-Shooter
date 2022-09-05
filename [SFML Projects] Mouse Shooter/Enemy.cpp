@@ -202,97 +202,6 @@ void Enemy::MovementCalculationPhase1()
 	}
 }
 
-void Enemy::Phase2()
-{
-	if (this->subPhaseIndex == 0)
-	{
-		//Create move floats for new pos
-		int coinflip = rand() % 2;
-
-		this->movexPhase2 = static_cast<float>(rand() % 5 + 10);
-		this->moveyPhase2 = static_cast<float>(rand() % 5 + 10);
-
-		if (coinflip == 1)
-		{
-			this->movexPhase2 *= -1.f;
-			this->moveyPhase2 *= -1.f;
-		}
-		
-		//Shift to next subPhase
-		this->subPhaseIndex++;
-	}
-	else if (this->subPhaseIndex == 1)
-	{
-		//Move to new pos
-		if (this->counterPhase2 <= 0.f)
-		{
-			this->updateBodyAndHPBarMovement(this->movexPhase2, this->moveyPhase2);
-			//this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
-		}
-
-		if (this->counterPhase2 < this->counterPhase2Max / 2.f)
-		{
-			this->counterPhase2 += 1.f;
-		}
-		else
-		{
-			//Reset timer
-			this->counterPhase2 = 0.f;
-			
-			//Shift to next subPhase
-			this->subPhaseIndex++;
-		}
-	}
-	else if (this->subPhaseIndex == 2)
-	{
-		//Create slow move floats
-		int coinflip = rand() % 2;
-
-		this->movexPhase2 = static_cast<float>(rand() % 2 + 1);
-		this->moveyPhase2 = static_cast<float>(rand() % 2 + 1);
-
-		if (coinflip == 1)
-		{
-			this->movexPhase2 *= -1.f;
-			this->moveyPhase2 *= -1.f;
-		}
-
-		//Shift to next subPhase
-		this->subPhaseIndex++;
-	}
-	else if (this->subPhaseIndex == 3)
-	{
-		//move slow
-		if (this->counterPhase2 < this->counterPhase2Max)
-		{
-			this->counterPhase2 += 1.f;
-
-			this->updateBodyAndHPBarMovement(this->movexPhase2, this->moveyPhase2);
-			//this->sprite_enemy.move(this->movexPhase2, this->moveyPhase2);
-		}
-		else
-		{
-			//Reset timer
-			this->counterPhase2 = 0.f;
-
-			//Shift to next subPhase
-			this->subPhaseIndex++;
-		}
-	}
-	else if (this->subPhaseIndex == 4)
-	{
-
-		//Create new max timer
-		this->counterPhase2Max = static_cast<float>(rand() % 10 + 30);
-		//Next phase
-		this->Phase[2] = false;
-		this->Phase[0] = true;
-
-		//Reset variables
-		this->subPhaseIndex = 0;
-	}
-}
-
 void Enemy::updateBodyAndHPBarMovement(float moveX, float moveY)
 {
 	this->sprite_enemy.move(moveX, moveY);
@@ -323,8 +232,6 @@ void Enemy::updatePhases()
 	/// Phase 1:
 	///		- chill for 1 - 3 sec with super slow movement.
 	/// Phase 2:
-	///		- move to new pos quickly, thats not far away from current one.
-	/// Phase 3:
 	///		- jump back to phase 0
 	/// </summary>
 	if (this->Phase[0])

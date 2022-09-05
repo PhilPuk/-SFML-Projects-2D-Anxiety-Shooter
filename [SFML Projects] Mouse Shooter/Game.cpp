@@ -223,6 +223,11 @@ void Game::updateBulletHittingTarget()
                 {
                     //Add money to bank
                     this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n]->getMoney());
+                    if (this->enemyManager.enemies[n]->getMoney() > 0)
+                    {
+                        sf::Vector2f pos = this->enemyManager.enemies[n]->sprite_enemy.getPosition();
+                        this->upgrades.createNewMoneyAnimation(pos);
+                    }
 
                     //For debugging
                     //std::cout << "Money: " << *this->ScoreSys->getMoney()<<"\n";

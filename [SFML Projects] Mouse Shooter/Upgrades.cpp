@@ -28,12 +28,18 @@ void Upgrades::initTextures()
 	{
 		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: HP.png!\n";
 	}
+
+
+	if (!this->Texture_Upgrades[3].loadFromFile("Textures/Upgrades/Money.png"))
+	{
+		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: Money.png!\n";
+	}
 	std::cout << "Upgrades loaded!\n";
 }
 
 void Upgrades::initSprites()
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		this->Sprite_Upgrades[i].setTexture(this->Texture_Upgrades[i]);
 		//this->Sprite_Upgrades->setColor(sf::Color(0, 0, 0, 0));
@@ -113,6 +119,11 @@ void Upgrades::createNewHPAnimation(sf::Vector2f& pos)
 	this->createNewAnimation(pos, 2);
 }
 
+void Upgrades::createNewMoneyAnimation(sf::Vector2f& pos)
+{
+	this->createNewAnimation(pos, 3);
+}
+
 void Upgrades::updateAnimations()
 {
 	if (this->animationTimer < this->animationTimerMax)
@@ -130,7 +141,7 @@ void Upgrades::updateAnimations()
 			{
 				this->animations.erase(this->animations.begin() + i);
 				this->animationCounter--;
-				std::cout << "Total animations: "<<this->animations.size() << "\n";
+				//std::cout << "Total animations: "<<this->animations.size() << "\n";
 			}
 		}
 	}
