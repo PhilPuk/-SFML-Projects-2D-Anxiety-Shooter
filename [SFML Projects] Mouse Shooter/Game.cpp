@@ -259,7 +259,12 @@ void Game::updatePlayerHittingEnemy()
     {
         if (this->player->getBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
         {
-            this->player->TakeDamage(1.f);
+		//Taking damage
+            	this->player->TakeDamage(1.f);
+		
+		//Animation damage taken
+		sf::Vector2f playerpos = this->player->getPosition();
+		this->upgrades.createNewDamageTakenAnimation(playerpos);
 
             //Enemy deleting
             this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
