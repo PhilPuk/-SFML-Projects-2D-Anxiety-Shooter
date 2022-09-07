@@ -23,9 +23,11 @@ private:
 	/// 0 = Max Ammo
 	/// 1 = Max Hp
 	/// 2 = HP
+	/// 3 = Money
+	/// 4 = Player takes Damage
 	/// </summary>
-	sf::Texture Texture_Upgrades[4];
-	sf::Sprite Sprite_Upgrades[4];
+	sf::Texture Texture_Upgrades[5];
+	sf::Sprite Sprite_Upgrades[5];
 
 	std::vector<sf::Sprite*> animations;
 
@@ -63,6 +65,7 @@ public:
 	void createNewMaxHPAnimation(sf::Vector2f& pos);
 	void createNewHPAnimation(sf::Vector2f& pos);
 	void createNewMoneyAnimation(sf::Vector2f& pos);
+	void createNewDamageTakenAnimation(sf::Vector2f& pos);
 
 	void updateAnimations();
 
