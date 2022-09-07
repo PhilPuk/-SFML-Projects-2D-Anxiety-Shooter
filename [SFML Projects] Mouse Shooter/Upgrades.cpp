@@ -34,7 +34,11 @@ void Upgrades::initTextures()
 	{
 		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: Money.png!\n";
 	}
-	std::cout << "Upgrades loaded!\n";
+	
+		if (!this->Texture_Upgrades[3].loadFromFile("Textures/Upgrades/PlayerTakesDamage.png"))
+	{
+		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: PlayerTakesDamage.png!\n";
+	}
 }
 
 void Upgrades::initSprites()
@@ -122,6 +126,11 @@ void Upgrades::createNewHPAnimation(sf::Vector2f& pos)
 void Upgrades::createNewMoneyAnimation(sf::Vector2f& pos)
 {
 	this->createNewAnimation(pos, 3);
+}
+
+void Upgrades::createNewDamageTakenAnimation(sf::Vector2f& pos)
+{
+	this->createNewAnimation(pos, 4);
 }
 
 void Upgrades::updateAnimations()
