@@ -35,7 +35,7 @@ void Upgrades::initTextures()
 		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: Money.png!\n";
 	}
 	
-		if (!this->Texture_Upgrades[3].loadFromFile("Textures/Upgrades/PlayerTakesDamage.png"))
+	if (!this->Texture_Upgrades[4].loadFromFile("Textures/Upgrades/PlayerTakesDamage.png"))
 	{
 		std::cout << " - ERROR::UPGRADES::INITTEXTURES::Couldn't load texture: PlayerTakesDamage.png!\n";
 	}
@@ -128,9 +128,11 @@ void Upgrades::createNewMoneyAnimation(sf::Vector2f& pos)
 	this->createNewAnimation(pos, 3);
 }
 
-void Upgrades::createNewDamageTakenAnimation(sf::Vector2f& pos)
+void Upgrades::createNewDamageTakenAnimation(sf::Vector2f& pos, float& angle)
 {
 	this->createNewAnimation(pos, 4);
+	this->animations[this->animationCounter - 1]->scale(1.f, 1.f);
+	this->animations[this->animationCounter - 1]->rotate(angle);
 }
 
 void Upgrades::updateAnimations()

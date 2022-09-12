@@ -31,6 +31,15 @@ void TileManager::initVariables()
 		this->Camera[i] = 0.f;
 	}
 
+	//animations
+	this->ScreenShake = false;
+	this->leftScreenShake = true;
+	this->rightScreenShake = false;
+	this->Time_ScreenShake = 0.f;
+	this->MaxTime_ScreenShake = 40.f;
+	this->ScreenShakeStrength = 7.f;
+
+
 	this->BorderTiles[0] = 1;
 	this->BorderTiles[1] = 77;
 	this->BorderTiles[2] = 15;
@@ -140,6 +149,16 @@ TileManager::~TileManager()
 	}
 }
 
+void TileManager::addTimetoShakeScreen(float add)
+{
+	this->Time_ScreenShake += add;
+}
+
+void TileManager::ActivateShakeScreen()
+{
+	this->ScreenShake = true;
+}
+
 float TileManager::TileMovingFormula(float x)
 {
 	float y;
@@ -223,14 +242,62 @@ void TileManager::updateTileNewPositiong(int i, sf::Vector2f playerPos)
 	}
 }
 
+void TileManager::updateScreenShakeChecker()
+{
+	if (this->Time_ScreenShake > 0.f)
+	{
+		this->ScreenShake = true;
+		this->Time_ScreenShake = this->Time_ScreenShake - 1.f;
+		//std::cout << "Time: " << this->Time_ScreenShake << "\nScreenShake bool: " << this->ScreenShake << "\n";
+	}
+	else
+	{
+		this->ScreenShake = false;
+		this->Time_ScreenShake = 0.f;
+	}
+}
+
+void TileManager::updateScreenShake(int i)
+{
+	if (this->ScreenShake)
+	{
+		if (this->leftScreenShake)
+		{
+			this->tiles[i]->sprite_tile.move(-this->ScreenShakeStrength, this->ScreenShakeStrength);
+		}
+		else
+		{
+			this->tiles[i]->sprite_tile.move(this->ScreenShakeStrength, -this->ScreenShakeStrength);
+		}
+	}
+	else
+		return;
+}
+
 void TileManager::update(sf::Vector2f moveTile, sf::Vector2f playerPos)
 {
-	for (size_t i = 0; i < this->tiles.size(); i++)
+	this->updateScreenShakeChecker();
+	if (!this->ScreenShake)
 	{
-		this->updateTileMovingMath(moveTile);
-		this->updateTileMoving(moveTile, i);
-		this->updateTileNewPositiong(i, playerPos);
-		this->tiles[i]->update();
+		for (size_t i = 0; i < this->tiles.size(); i++)
+		{
+			this->updateTileMovingMath(moveTile);
+			this->updateTileMoving(moveTile, i);
+			this->updateTileNewPositiong(i, playerPos);
+			this->tiles[i]->update();
+		}
+	}
+	else
+	{
+		this->leftScreenShake = !this->leftScreenShake;
+		for (size_t i = 0; i < this->tiles.size(); i++)
+		{
+			this->updateTileMovingMath(moveTile);
+			this->updateTileMoving(moveTile, i);
+			this->updateTileNewPositiong(i, playerPos);
+			this->updateScreenShake(i);
+			this->tiles[i]->update();
+		}
 	}
 }
 

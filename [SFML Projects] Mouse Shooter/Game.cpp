@@ -263,8 +263,9 @@ void Game::updatePlayerHittingEnemy()
             	this->player->TakeDamage(1.f);
 		
 		//Animation damage taken
-		sf::Vector2f playerpos = this->player->getPosition();
-		this->upgrades.createNewDamageTakenAnimation(playerpos);
+        sf::Vector2f playerpos = this->player->getPos();
+        float playerangle = this->player->getRotationAngle();
+		this->upgrades.createNewDamageTakenAnimation(playerpos, playerangle);
 
             //Enemy deleting
             this->enemyManager.enemies.erase(this->enemyManager.enemies.begin() + n);
@@ -292,6 +293,12 @@ void Game::update()
 
         //Tiles
         this->tileManager->update(this->player->getTileMove(), this->player->getPos());
+
+        if (this->weapon->getBulletShot())
+        {
+            this->tileManager->addTimetoShakeScreen(8.f);
+            this->weapon->resetBulletShoot();
+        }
 
         //Enemies
         this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());

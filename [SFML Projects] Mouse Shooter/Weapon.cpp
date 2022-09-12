@@ -10,6 +10,7 @@ void Weapon::initVariables()
 	this->ReloadTimerMax = 120.f;
 	this->ReloadTimer = 0.f;
 
+	this->bulletShot = false;
 	this->ShootingPressed = false;
 	this->BulletSpeed = 25.f;
 
@@ -95,11 +96,16 @@ void Weapon::shootBullet(sf::Vector2f& AimDiretionNormal)
 {
 	if (this->ShootingPressed)
 	{
+		this->bulletShot = true;
+
+		//Bullet direction plus speed calculation
 		sf::Vector2f currVelocity = AimDiretionNormal * this->BulletSpeed;
 
+		//Spawning bullet
 		sf::Vector2f spawn = this->sprite_weapon.getPosition();
 		this->bullets.push_back(new Bullet(this->Texture_bullets, spawn, currVelocity));
 
+		//Removes 1 ammo
 		this->CurrAmmo--;
 	}
 	//For debugging
@@ -127,6 +133,11 @@ void Weapon::ReloadWeapon()
 //Accessors
 const float& Weapon::getBulletDamage() const{
 return this->damageBullet;
+}
+
+const bool& Weapon::getBulletShot() const
+{
+	return this->bulletShot;
 }
 
 //Modifiers
@@ -167,6 +178,11 @@ void Weapon::addBulletSpeed(float add)
 void Weapon::addBulletDamage(float add)
 {
 	this->damageBullet += add;
+}
+
+void Weapon::resetBulletShoot()
+{
+	this->bulletShot = false;
 }
 
 void Weapon::updateAmmoTextContent()

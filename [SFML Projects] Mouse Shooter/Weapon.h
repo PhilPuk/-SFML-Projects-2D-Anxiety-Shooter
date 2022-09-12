@@ -29,6 +29,8 @@ public:
 	float ReloadTimerMax;
 	float ReloadTimer;
 
+	//Used to get in game 
+	bool bulletShot;
 	bool ShootingPressed;
 	float BulletSpeed;
 
@@ -58,6 +60,7 @@ public:
 
 	//Accessors
 	const float& getBulletDamage() const;
+	const bool& getBulletShot() const;
 	
 	//Modifiers
 	void ModifyMaxAmmo(int MaxAmmo);
@@ -68,6 +71,7 @@ public:
 	void substractReloadTimerMax(float substract);
 	void addBulletSpeed(float add);
 	void addBulletDamage(float add);
+	void resetBulletShoot();
 
 	void updateAmmoTextContent();
 	void updateAmmoText();

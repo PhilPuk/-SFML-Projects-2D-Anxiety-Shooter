@@ -65,7 +65,7 @@ public:
 	void createNewMaxHPAnimation(sf::Vector2f& pos);
 	void createNewHPAnimation(sf::Vector2f& pos);
 	void createNewMoneyAnimation(sf::Vector2f& pos);
-	void createNewDamageTakenAnimation(sf::Vector2f& pos);
+	void createNewDamageTakenAnimation(sf::Vector2f& pos, float& angle);
 
 	void updateAnimations();
 
