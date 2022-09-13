@@ -298,6 +298,8 @@ void Game::update()
         {
             this->tileManager->addTimetoShakeScreen(8.f);
             this->weapon->resetBulletShoot();
+	    //Bloom effect
+	    this->bloom.createNewBloom(this->player->sprite_player.getPosition(), sf::Color(200,200,200,110), 10.f);
         }
 
         //Enemies
