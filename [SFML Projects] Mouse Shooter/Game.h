@@ -6,6 +6,7 @@
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
 #include"Upgrades.h"
+#include"bloom.h"
 #include"GameOver.h"
 
 class Game
@@ -33,6 +34,9 @@ private:
 
 	//Score
 	float currScore;
+	
+	//Bloom
+	Bloom bloom;
 
 	//Income / Earnings
 	float CurrIncome;
