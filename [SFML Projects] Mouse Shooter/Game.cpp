@@ -299,11 +299,23 @@ void Game::update()
             this->tileManager->addTimetoShakeScreen(8.f);
             this->weapon->resetBulletShoot();
 	    //Bloom effect
-	    this->bloom.createNewBloom(this->player->sprite_player.getPosition(), sf::Color(200,200,200,110), 10.f);
+            sf::Vector2f playerpos = this->player->getPos();
+	    this->bloom.createNewBloom(playerpos, sf::Color(200, 200, 200, 110), 10.f);
         }
 
         //Enemies
         this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());
+
+        //Bloom
+        sf::Vector2f bulletsPos[60];
+        for (size_t i = 0; i < this->weapon->bullets.size(); i++)
+        {
+            bulletsPos[0] = this->weapon->bullets[i]->getCurrVelocity();
+            if (i >= 60)
+                break;
+        }
+
+        this->bloom.update(bulletsPos);
 
         //Bullet enemy collision
         this->updateBulletHittingTarget();
@@ -350,6 +362,9 @@ void Game::render()
 
         //Upgrades
         this->upgrades.render(*this->window);
+
+        //Blooms
+        this->bloom.render(*this->window);
     }
     else
     {

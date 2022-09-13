@@ -22,6 +22,9 @@ public:
 	sf::Vector2f currVelocity;
 	float maxSpeed;
 
+	//Accessors
+	const sf::Vector2f& getCurrVelocity() const;
+
 	Bullet(sf::Texture& texture, sf::Vector2f& spawnPos, sf::Vector2f& Velocity);
 	virtual ~Bullet();
 

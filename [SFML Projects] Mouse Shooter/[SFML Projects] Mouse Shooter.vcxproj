@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="Aiming.cpp" />
     <ClCompile Include="BeginnerWeapon.cpp" />
+    <ClCompile Include="bloom.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="Aiming.h" />
     <ClInclude Include="BeginnerWeapon.h" />
+    <ClInclude Include="bloom.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />

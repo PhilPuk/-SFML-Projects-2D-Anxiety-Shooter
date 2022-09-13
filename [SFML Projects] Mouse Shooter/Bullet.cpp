@@ -25,6 +25,11 @@ void Bullet::initSprite()
 	this->sprite_bullet.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 }
 
+const sf::Vector2f& Bullet::getCurrVelocity() const
+{
+	return this->currVelocity;
+}
+
 Bullet::Bullet(sf::Texture& texture, sf::Vector2f& spawnPos, sf::Vector2f& Velocity)
 {
 	this->initVariables(spawnPos, Velocity);

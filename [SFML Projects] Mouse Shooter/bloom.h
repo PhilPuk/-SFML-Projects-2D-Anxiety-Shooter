@@ -35,8 +35,8 @@ public:
   void deleteSpecificBloom(int index);
   
   void updateBloomScaleAnimation(int i);
-  void updateBloomMovement(sf::Vector2f& movement[], int i);
-  void updateForLoop(sf::Vector2f& movement[]);
+  void updateBloomMovement(sf::Vector2f movement[], int i);
+  void updateForLoop(sf::Vector2f movement[]);
   
   /*Movement Array Order
   0. Player Bloom
@@ -46,7 +46,7 @@ public:
   3. Enemies
   ...
   */
-  void update(sf::Vector2f& movement[]);
+  void update(sf::Vector2f movement[]);
   
   void renderBlooms(sf::RenderTarget& target);
   void render(sf::RenderTarget& target);
