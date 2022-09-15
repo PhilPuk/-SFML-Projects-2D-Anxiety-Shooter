@@ -1,5 +1,7 @@
 #pragma once
 
+#include<math.h>
+
 #include"Player.h"
 #include"EnemyManager.h"
 #include"TileManager.h"
@@ -90,6 +92,7 @@ public:
 	void updateMousePosVectors();
 	void updateBulletHittingTarget();
 	void updatePlayerHittingEnemy();
+	void updateNewBlooms();
 	void update();
 
 	//Render

@@ -13,6 +13,7 @@ class Bloom
 {
 private:
   sf::CircleShape baseBloom;
+  std::vector<sf::Vector2f*> bloomVelocity;
   std::vector<sf::CircleShape*> blooms;
   
   //Animations
@@ -32,11 +33,13 @@ public:
   
   //Functions
   void createNewBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
+  void createNewBloomVelocity(sf::Vector2f* velocity);
   void deleteSpecificBloom(int index);
   
+  void updateBloomOutOfScreen(int i, sf::Vector2u& winSize);
   void updateBloomScaleAnimation(int i);
-  void updateBloomMovement(sf::Vector2f movement[], int i);
-  void updateForLoop(sf::Vector2f movement[]);
+  void updateBloomMovement(int i);
+  void updateForLoop(sf::Vector2u& winSize);
   
   /*Movement Array Order
   0. Player Bloom
@@ -46,7 +49,7 @@ public:
   3. Enemies
   ...
   */
-  void update(sf::Vector2f movement[]);
+  void update(sf::Vector2u& winSize);
   
   void renderBlooms(sf::RenderTarget& target);
   void render(sf::RenderTarget& target);

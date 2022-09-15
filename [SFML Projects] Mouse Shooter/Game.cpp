@@ -273,6 +273,23 @@ void Game::updatePlayerHittingEnemy()
     }
 }
 
+void Game::updateNewBlooms()
+{
+    if (this->weapon->getBulletShot())
+    {
+        this->tileManager->addTimetoShakeScreen(8.f);
+        this->weapon->resetBulletShoot();
+        //Bloom effect
+        sf::Vector2f playerpos = this->player->getPos();
+        playerpos.x -= 5.f;
+        playerpos.y -= 5.f;
+        this->bloom.createNewBloom(playerpos, sf::Color(249, 255, 64, 110), 10.f);
+        auto size = this->weapon->bullets.size() - 1;
+        sf::Vector2f velocity = this->weapon->bullets[size]->getCurrVelocity();
+        this->bloom.createNewBloomVelocity(new sf::Vector2f(velocity));
+    }
+}
+
 void Game::update()
 {
     if (!this->gameOver->getActivation())
@@ -294,28 +311,12 @@ void Game::update()
         //Tiles
         this->tileManager->update(this->player->getTileMove(), this->player->getPos());
 
-        if (this->weapon->getBulletShot())
-        {
-            this->tileManager->addTimetoShakeScreen(8.f);
-            this->weapon->resetBulletShoot();
-	    //Bloom effect
-            sf::Vector2f playerpos = this->player->getPos();
-	    this->bloom.createNewBloom(playerpos, sf::Color(200, 200, 200, 110), 10.f);
-        }
-
         //Enemies
         this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());
 
         //Bloom
-        sf::Vector2f bulletsPos[60];
-        for (size_t i = 0; i < this->weapon->bullets.size(); i++)
-        {
-            bulletsPos[0] = this->weapon->bullets[i]->getCurrVelocity();
-            if (i >= 60)
-                break;
-        }
-
-        this->bloom.update(bulletsPos);
+        this->updateNewBlooms();
+        this->bloom.update(this->windowSize);
 
         //Bullet enemy collision
         this->updateBulletHittingTarget();
