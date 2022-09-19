@@ -215,6 +215,8 @@ void Game::updateBulletHittingTarget()
             //Bullet hits enemy check
             if (this->weapon->bullets[i]->sprite_bullet.getGlobalBounds().intersects(this->enemyManager.enemies[n]->sprite_enemy.getGlobalBounds()))
             {     
+                this->weapon->setLastDeletedBulletIndex(static_cast<short>(i));
+
                 //Enemy taking dmg
                 this->enemyManager.enemies[n]->takeDamage(this->weapon->getBulletDamage());
                 
@@ -277,15 +279,12 @@ void Game::updateNewBlooms()
 {
     if (this->weapon->getBulletShot())
     {
-        this->tileManager->addTimetoShakeScreen(8.f);
+        this->tileManager->addTimetoShakeScreen(4.f);
         this->weapon->resetBulletShoot();
         //Bloom effect
-        sf::Vector2f playerpos = this->player->getPos();
-        playerpos.x -= 5.f;
-        playerpos.y -= 5.f;
-        this->bloom.createNewBloom(playerpos, sf::Color(249, 255, 64, 110), 10.f);
-        auto size = this->weapon->bullets.size() - 1;
-        sf::Vector2f velocity = this->weapon->bullets[size]->getCurrVelocity();
+        sf::Vector2f spawnpos = this->weapon->sprite_weapon.getPosition();
+        this->bloom.createNewBloom(spawnpos, sf::Color(255, 255, 255, 110), 30.f);
+        sf::Vector2f velocity = this->weapon->bullets[this->weapon->bullets.size() - 1]->getCurrVelocity();
         this->bloom.createNewBloomVelocity(new sf::Vector2f(velocity));
     }
 }
@@ -308,15 +307,17 @@ void Game::update()
         //Weapon
         this->weapon->update(this->windowSize, this->player->getRotationAngle(), this->player->getPos(), this->player->aimSys.getAimDirNorm());
 
+        //Bloom
+        bool bulletdeleted = this->weapon->getBulledDeleted();
+        this->updateNewBlooms();
+        this->bloom.update(this->windowSize, bulletdeleted, this->weapon->getLastDeletedBulledIndex());
+        this->weapon->resetBulletDeleted();
+
         //Tiles
         this->tileManager->update(this->player->getTileMove(), this->player->getPos());
 
         //Enemies
         this->enemyManager.update(this->player->getCenterOfPlayer(), this->windowSize, this->currScore, this->ScoreSys->getTime());
-
-        //Bloom
-        this->updateNewBlooms();
-        this->bloom.update(this->windowSize);
 
         //Bullet enemy collision
         this->updateBulletHittingTarget();

@@ -33,6 +33,8 @@ public:
 	bool bulletShot;
 	bool ShootingPressed;
 	float BulletSpeed;
+	bool bulletdeleted;
+	short lastdeletedBulletIndex;
 
 	//Cooldowns
 	float ShootCDMAX;
@@ -61,6 +63,8 @@ public:
 	//Accessors
 	const float& getBulletDamage() const;
 	const bool& getBulletShot() const;
+	const bool& getBulledDeleted() const;
+	const short& getLastDeletedBulledIndex() const;
 	
 	//Modifiers
 	void ModifyMaxAmmo(int MaxAmmo);
@@ -72,6 +76,8 @@ public:
 	void addBulletSpeed(float add);
 	void addBulletDamage(float add);
 	void resetBulletShoot();
+	void resetBulletDeleted();
+	void setLastDeletedBulletIndex(short i);
 
 	void updateAmmoTextContent();
 	void updateAmmoText();

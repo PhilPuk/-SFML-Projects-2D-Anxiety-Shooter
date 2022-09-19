@@ -13,6 +13,8 @@ void Weapon::initVariables()
 	this->bulletShot = false;
 	this->ShootingPressed = false;
 	this->BulletSpeed = 25.f;
+	this->bulletdeleted = false;
+	this->lastdeletedBulletIndex = 0;
 
 	//Cooldown between each bullet
 	this->ShootCDMAX = 2.f;
@@ -140,6 +142,16 @@ const bool& Weapon::getBulletShot() const
 	return this->bulletShot;
 }
 
+const bool& Weapon::getBulledDeleted() const
+{
+	return this->bulletdeleted;
+}
+
+const short& Weapon::getLastDeletedBulledIndex() const
+{
+	return this->lastdeletedBulletIndex;
+}
+
 //Modifiers
 void Weapon::ModifyMaxAmmo(int MaxAmmo)
 {
@@ -185,6 +197,17 @@ void Weapon::resetBulletShoot()
 	this->bulletShot = false;
 }
 
+void Weapon::resetBulletDeleted()
+{
+	this->bulletdeleted = false;
+}
+
+void Weapon::setLastDeletedBulletIndex(short i)
+{
+	this->lastdeletedBulletIndex = i;
+	this->bulletdeleted = true;
+}
+
 void Weapon::updateAmmoTextContent()
 {
 	//Ammo
@@ -222,7 +245,10 @@ void Weapon::updateBulletOutOfScreen(sf::Vector2u& winSize, size_t& i)
 		bullets[i]->sprite_bullet.getPosition().x > winSize.x ||
 		bullets[i]->sprite_bullet.getPosition().y < 0 ||
 		bullets[i]->sprite_bullet.getPosition().y > winSize.y)
+	{
+		this->lastdeletedBulletIndex = static_cast<short>(i);
 		this->bullets.erase(this->bullets.begin() + i);
+	}
 }
 
 void Weapon::updateBulletMoving(sf::Vector2u& winSize)

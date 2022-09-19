@@ -12,45 +12,40 @@
 class Bloom
 {
 private:
-  sf::CircleShape baseBloom;
-  std::vector<sf::Vector2f*> bloomVelocity;
-  std::vector<sf::CircleShape*> blooms;
+    sf::Texture texture_bloom;
+    sf::CircleShape baseBloom;
+    std::vector<sf::Vector2f*> bloomVelocity;
+    std::vector<sf::CircleShape*> blooms;
   
-  //Animations
+    //Animations
     //Scale animation
     bool scalebigger;
+    float maxScale;
     float ScaleAnimationAmount;
   
-  void initVariables();
-  void initBaseBloom();
+    void initTextures();
+    void initVariables();
+    void initBaseBloom();
 public:
-  Bloom();
-  virtual ~Bloom();
+    Bloom();
+    virtual ~Bloom();
   
-  //Accessors
+    //Accessors
   
-  //Modifiers
+    //Modifiers
   
-  //Functions
-  void createNewBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
-  void createNewBloomVelocity(sf::Vector2f* velocity);
-  void deleteSpecificBloom(int index);
+    //Functions
+    void createNewBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
+    void createNewBloomVelocity(sf::Vector2f* velocity);
+    void deleteSpecificBloom(int index);
   
-  void updateBloomOutOfScreen(int i, sf::Vector2u& winSize);
-  void updateBloomScaleAnimation(int i);
-  void updateBloomMovement(int i);
-  void updateForLoop(sf::Vector2u& winSize);
+    void updateBloomOutOfScreen(int i, sf::Vector2u& winSize);
+    void updateBloomScaleAnimation(int& i);
+    void updateBloomMovement(int i);
+    void updateDeletedBullets(bool& deletedbullet, short index);
+    void updateForLoop(sf::Vector2u& winSize);
+    void update(sf::Vector2u& winSize, bool& deletedbullet, short index);
   
-  /*Movement Array Order
-  0. Player Bloom
-  1. HP Bar bloom
-  2. Bullets
-  ...
-  3. Enemies
-  ...
-  */
-  void update(sf::Vector2u& winSize);
-  
-  void renderBlooms(sf::RenderTarget& target);
-  void render(sf::RenderTarget& target);
+    void renderBlooms(sf::RenderTarget& target);
+    void render(sf::RenderTarget& target);
 };
