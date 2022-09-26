@@ -20,7 +20,7 @@ void ScoreSystem::initVariables()
 {
 	this->Score = 0.f;
 	this->Time = 0;
-	this->Timer = 0.f;
+	this->Timer = 0;
 
 	this->Money = 0.f;
 	this->moneySaved = -1.f;
@@ -111,7 +111,7 @@ this->Money += add;
 
 void ScoreSystem::setTime(float time)
 {
-	this->Time = time;
+	this->Time = static_cast<int>(time);
 }
 
 //Saving

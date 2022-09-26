@@ -12,10 +12,10 @@
 class Bloom
 {
 private:
-    sf::Texture texture_bloom;
-    sf::CircleShape baseBloom;
+    sf::Texture texture_bulletbloom;
+    sf::CircleShape baseBulletBloom;
     std::vector<sf::Vector2f*> bloomVelocity;
-    std::vector<sf::CircleShape*> blooms;
+    std::vector<sf::CircleShape*> bulletblooms;
   
     //Animations
     //Scale animation
@@ -26,19 +26,25 @@ private:
     void initTextures();
     void initVariables();
     void initBaseBloom();
+    void initEnemyBlooms();
 public:
     Bloom();
     virtual ~Bloom();
   
+    sf::Texture texture_enemybloom;
+    std::vector<sf::CircleShape*> enemyblooms;
+
     //Accessors
   
     //Modifiers
   
     //Functions
-    void createNewBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
+    void createNewBulletBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
     void createNewBloomVelocity(sf::Vector2f* velocity);
-    void deleteSpecificBloom(int index);
+    void deleteSpecificBulletBloom(int index);
   
+    void setNewEnemyBloomPosition(sf::Vector2f& enemyPos, int index);
+
     void updateBloomOutOfScreen(int i, sf::Vector2u& winSize);
     void updateBloomScaleAnimation(int& i);
     void updateBloomMovement(int i);

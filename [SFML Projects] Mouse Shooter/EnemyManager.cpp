@@ -13,6 +13,7 @@ void EnemyManager::initVariables()
 	this->SpawnTimerMax = 90.f;
 	this->SpawnTimer = 0.f;
 	this->CheckMaxEnemy = false;
+	this->enemySpawned = false;
 }
 
 void EnemyManager::initTextures()
@@ -53,7 +54,12 @@ EnemyManager::~EnemyManager()
 
 const int& EnemyManager::getEnemiesVectorSize() const
 {
-	return this->enemies.size();
+	return static_cast<int>(this->enemies.size());
+}
+
+const bool& EnemyManager::getNewEnemySpawned() const
+{
+	return this->enemySpawned;
 }
 
 void EnemyManager::updateIncreasingMaxHP(float score, int time)
@@ -95,6 +101,7 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 		if (this->SpawnTimer < this->SpawnTimerMax - TimerReduce )
 		{
 			this->SpawnTimer += 1.f;
+			this->enemySpawned = false;
 		}
 		else
 		{
@@ -131,6 +138,9 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 			this->updateIncreasingMaxHP(score, time);
 			//Spawn enemy
 			this->enemies.push_back(new Enemy(x, y, this->Textures_Enemy[picktexture], this->enemyHPMax));
+			this->enemySpawned = true;
+			//sf::Vector2f pos = sf::Vector2f(x, y);
+			//this->blooms.setNewEnemyBloomPosition(pos, static_cast<int>(this->enemies.size()));
 
 			//Modify speed by score and time once score of 10 is reached
 			if (score >= 10)
@@ -182,7 +192,7 @@ void EnemyManager::updateMovement(int i, sf::Vector2f playerCenter, sf::Vector2u
 
 void EnemyManager::updateForLoop(sf::Vector2f playerCenter, sf::Vector2u& winSize)
 {
-	for (size_t i = 0; i < this->enemies.size(); i++)
+	for (int i = 0; i < this->enemies.size(); i++)
 	{
 		//Enemies updating
 		this->updateMovement(i, playerCenter, winSize);

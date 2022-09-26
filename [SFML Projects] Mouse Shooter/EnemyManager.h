@@ -1,6 +1,7 @@
 #pragma once
 
 #include"Enemy.h"
+#include"bloom.h"
 
 class EnemyManager
 {
@@ -21,9 +22,13 @@ private:
 
 	const int MaxSpawnedEnemy = 8;
 	bool CheckMaxEnemy;
+	bool enemySpawned;
 
 	//used for enemy constructor
 	float enemyHPMax;
+
+	//Bloom
+	Bloom blooms;
 
 	void initVariables();
 	void initTextures();
@@ -35,6 +40,7 @@ public:
 
 	//Accessors
 	const int& getEnemiesVectorSize() const;
+	const bool& getNewEnemySpawned() const;
 
 	void updateIncreasingMaxHP(float score, int time);
 	void updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSize, float& score, int& time);

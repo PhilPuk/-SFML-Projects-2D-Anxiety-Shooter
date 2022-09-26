@@ -8,7 +8,7 @@
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
 #include"Upgrades.h"
-#include"bloom.h"
+#include"BloomManager.h"
 #include"GameOver.h"
 
 class Game
@@ -37,8 +37,8 @@ private:
 	//Score
 	float currScore;
 	
-	//Bloom
-	Bloom bloom;
+	//Bloom manager
+	BloomManager bloom_Manager;
 
 	//Income / Earnings
 	float CurrIncome;
@@ -85,7 +85,7 @@ public:
 	
 	void checkGameOver();
 	//Rolls dices for each rng upgrade 
-	void rolltheUpgrades(int n);
+	void rolltheUpgrades(size_t& n);
 	
 	//Update
 	void pollEvents();

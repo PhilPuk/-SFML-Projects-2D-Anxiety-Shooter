@@ -146,7 +146,7 @@ void Game::checkGameOver()
 }
 
 //Rolls dices for each rng upgrade 
-void Game::rolltheUpgrades(int n)
+void Game::rolltheUpgrades(size_t& n)
 {
     //RNG Upgrades from killing enemies
     //Max ammo amount
@@ -283,9 +283,14 @@ void Game::updateNewBlooms()
         this->weapon->resetBulletShoot();
         //Bloom effect
         sf::Vector2f spawnpos = this->weapon->sprite_weapon.getPosition();
-        this->bloom.createNewBloom(spawnpos, sf::Color(255, 255, 255, 110), 30.f);
         sf::Vector2f velocity = this->weapon->bullets[this->weapon->bullets.size() - 1]->getCurrVelocity();
-        this->bloom.createNewBloomVelocity(new sf::Vector2f(velocity));
+        this->bloom_Manager.createNewBloom(
+            3,
+            spawnpos,
+            &velocity,
+            sf::Color(255, 255, 255, 110),
+            30.f
+        );
     }
 }
 
@@ -310,7 +315,7 @@ void Game::update()
         //Bloom
         bool bulletdeleted = this->weapon->getBulledDeleted();
         this->updateNewBlooms();
-        this->bloom.update(this->windowSize, bulletdeleted, this->weapon->getLastDeletedBulledIndex());
+        this->bloom_Manager.update(this->windowSize);
         this->weapon->resetBulletDeleted();
 
         //Tiles
@@ -366,7 +371,7 @@ void Game::render()
         this->upgrades.render(*this->window);
 
         //Blooms
-        this->bloom.render(*this->window);
+        this->bloom_Manager.render(*this->window);
     }
     else
     {

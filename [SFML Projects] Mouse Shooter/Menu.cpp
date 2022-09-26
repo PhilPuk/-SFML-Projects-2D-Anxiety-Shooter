@@ -218,8 +218,8 @@ void Menu::applyShopUpgrades()
 		/// add last player upgrades
 		 
 		//Player
-		this->game->player->addPlayerMoveSpeed(this->shop->getPlayer_UpgradeCounters(0));
-		std::cout << "Player move speed upgrade : " << this->shop->getPlayer_UpgradeCounters(0);
+		this->game->player->addPlayerMoveSpeed(static_cast<float>(this->shop->getPlayer_UpgradeCounters(0)));
+		//std::cout << "Player move speed upgrade : " << this->shop->getPlayer_UpgradeCounters(0);
 		this->game->player->addMaxHP(this->shop->getPlayer_UpgradeCounters(1));
 
 		//Weapon
