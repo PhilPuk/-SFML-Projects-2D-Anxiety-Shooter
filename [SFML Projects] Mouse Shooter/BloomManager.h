@@ -13,17 +13,15 @@ class BloomManager
 {
 private:
 	sf::Texture t_Bloom;
+	sf::Texture t_EnemiesBloom;
+	sf::Texture t_PlayerBloom;
+	sf::Texture t_HPBarBloom;
+
 	sf::CircleShape Circle_Bloom;
-	/*
-	* Adjust for the used project
-	Category Indexes:
-		0 = Player
-		1 = HP BAR
-		2 = Enemies
-		3 = Bullets
-	*/
-	std::vector<std::vector<sf::Vector2f*>> bloomVelocity;
-	std::vector<std::vector<sf::CircleShape*>> blooms;
+	sf::Sprite Player_Bloom;
+
+	std::vector<sf::Vector2f*> bloomVelocity;
+	std::vector<sf::CircleShape*> blooms;
 	//Scaling Animation stuff
 	bool scalebigger;
 	float maxScale;
@@ -32,41 +30,30 @@ private:
 	void initTextures();
 	void initVariables();
 	void initBaseBloom();
-	void initCategoryVectors();
+	void initPlayerBloom();
 public:
 	BloomManager();
 	virtual ~BloomManager();
 
 	//Delete blooms
-	/*
-	Category Indexes:
-		0 = Player
-		1 = HP BAR
-		2 = Enemies
-		3 = Bullets
-	*/
-	void deleteSpecificBloom(int CategoryIndex, int index);
+	void deleteSpecificBloom(int index);
 
 	//Create blooms
-	/*
-	Category Indexes:
-		0 = Player
-		1 = HP BAR
-		2 = Enemies
-		3 = Bullets
-	*/
-	void createNewBloom(int CategoryIndex, sf::Vector2f& bloomPos, sf::Vector2f* bloomVelocity, sf::Color color, float radius);
+	void createNewBloom(sf::Vector2f& bloomPos, sf::Vector2f* bloomVelocity, sf::Color color, float radius);
 
 	//Updating
-	void updateScalingAnimation(int CategroyIndex, int index);
-	void updateBloomMovement(int CategroyIndex, int index);
-	void updateBloomOutOfScreen(int CategroyIndex, int index, sf::Vector2u& winSize);
+	void updateScalingAnimation(int index);
+	void updatePlayerBloomMovement(sf::Vector2f& PlayerMovement);
+	void updatePlayerBloomRotation(float angle);
+	void updateBloomMovement(int index);
+	void updateBloomOutOfScreen(int index, sf::Vector2u& winSize);
 		//Calls all for loops update functions
-	void update2dVectorLoop(sf::Vector2u& winSize);
-	void update(sf::Vector2u& winSize);
+	void updateVectorLoop(sf::Vector2u& winSize);
+	void update(sf::Vector2u& winSize, sf::Vector2f& PlayerMovement, float rotationangle);
 
 	//Rendering
-	void renderBlooms(sf::RenderTarget& target);
+	void renderBulletBlooms(sf::RenderTarget& target);
+	void renderPlayerBloom(sf::RenderTarget& target);
 	void render(sf::RenderTarget& target);
 };
 

@@ -52,6 +52,6 @@ public:
     void updateForLoop(sf::Vector2u& winSize);
     void update(sf::Vector2u& winSize, bool& deletedbullet, short index);
   
-    void renderBlooms(sf::RenderTarget& target);
+    void renderBulletBlooms(sf::RenderTarget& target);
     void render(sf::RenderTarget& target);
 };

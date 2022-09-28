@@ -152,6 +152,11 @@ const short& Weapon::getLastDeletedBulledIndex() const
 	return this->lastdeletedBulletIndex;
 }
 
+const short& Weapon::getSizeOfBulletArray() const
+{
+	return static_cast<short>(this->bullets.size());
+}
+
 //Modifiers
 void Weapon::ModifyMaxAmmo(int MaxAmmo)
 {

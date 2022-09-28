@@ -247,6 +247,7 @@ void Game::updateBulletHittingTarget()
 
                 //Bullet deleting
                 this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
+                this->bloom_Manager.deleteSpecificBloom(i);
                 break;
             }
 
@@ -285,7 +286,6 @@ void Game::updateNewBlooms()
         sf::Vector2f spawnpos = this->weapon->sprite_weapon.getPosition();
         sf::Vector2f velocity = this->weapon->bullets[this->weapon->bullets.size() - 1]->getCurrVelocity();
         this->bloom_Manager.createNewBloom(
-            3,
             spawnpos,
             &velocity,
             sf::Color(255, 255, 255, 110),
@@ -314,8 +314,9 @@ void Game::update()
 
         //Bloom
         bool bulletdeleted = this->weapon->getBulledDeleted();
+        sf::Vector2f playerpos = this->player->getPlayerMovement();
         this->updateNewBlooms();
-        this->bloom_Manager.update(this->windowSize);
+        this->bloom_Manager.update(this->windowSize, playerpos, this->player->getRotationAngle());
         this->weapon->resetBulletDeleted();
 
         //Tiles

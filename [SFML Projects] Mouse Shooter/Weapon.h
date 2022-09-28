@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include<sstream>
+#include<vector>
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
 #include<SFML/Window.hpp>
@@ -43,6 +44,8 @@ public:
 	//Damage
 	float damageBullet;
 
+	std::vector<int> deletedIndexes;
+
 	//Initialization
 	virtual void initVariables();
 	virtual void initTexture();
@@ -65,6 +68,7 @@ public:
 	const bool& getBulletShot() const;
 	const bool& getBulledDeleted() const;
 	const short& getLastDeletedBulledIndex() const;
+	const short& getSizeOfBulletArray() const;
 	
 	//Modifiers
 	void ModifyMaxAmmo(int MaxAmmo);

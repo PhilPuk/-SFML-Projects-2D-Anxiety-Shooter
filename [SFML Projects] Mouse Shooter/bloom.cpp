@@ -158,7 +158,7 @@ void Bloom::update(sf::Vector2u& winSize, bool& deletedbullet, short index)
     this->updateDeletedBullets(deletedbullet, index);
 }
 
-void Bloom::renderBlooms(sf::RenderTarget& target)
+void Bloom::renderBulletBlooms(sf::RenderTarget& target)
 {
     for(int i = 0; i < this->bulletblooms.size(); i++)
     {
@@ -168,5 +168,5 @@ void Bloom::renderBlooms(sf::RenderTarget& target)
 
 void Bloom::render(sf::RenderTarget& target)
 {
-    this->renderBlooms(target);
+    this->renderBulletBlooms(target);
 }

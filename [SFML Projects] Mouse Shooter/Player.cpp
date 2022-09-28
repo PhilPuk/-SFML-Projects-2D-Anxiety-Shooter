@@ -11,14 +11,9 @@ void Player::initVariables()
 
     this->sprite.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 
-    //Shooting  OLD Bullet sys
-    //this->ShootCDMAX = 2.f;
-    //this->ShootCD = this->ShootCDMAX;
-
     //Game logic
     this->PlayerHPMax = 10.f;
     this->PlayerHP = this->PlayerHPMax;
-
 
     //player move variables
     this->playerMoveSpeed = 10.f;
@@ -28,9 +23,12 @@ void Player::initVariables()
     this->HPUpdate = -1.f;
     this->HPMaxUpdate = -1.f;
 
-    //For tiles movement
+    //Movement stuff
     this->tileMove.x = 0.f;
     this->tileMove.y = 0.f;
+
+    this->playerMove.x = 0.f;
+    this->playerMove.y = 0.f;
 }
 
 void Player::initTextures()
@@ -94,13 +92,7 @@ Player::Player(sf::Font& font)
 
 Player::~Player()
 {
-    /* OLD Bullet sys
-    for (size_t i = 0; i < this->bullets.size(); i++)
-    {
-        this->bullets.erase(this->bullets.begin(), this->bullets.end());
-    }
-    // std::cout << "Bullets: " << this->bullets.size() << "\n";
-    */
+
 }
 
 const sf::Vector2f& Player::getCenterOfPlayer() const
@@ -131,6 +123,11 @@ const float& Player::getHP() const
 const sf::Vector2f& Player::getTileMove() const
 {
     return this->tileMove;
+}
+
+const sf::Vector2f& Player::getPlayerMovement() const
+{
+    return this->playerMove;
 }
 
 const float& Player::getRotationAngle() const
@@ -204,6 +201,7 @@ void Player::updatePlayerMovement()
 
         //Tile movement
         this->tileMove.x = 1.f;
+        this->playerMove.x = -this->playerMoveSpeed;
     }
     //RIGHT
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -214,10 +212,12 @@ void Player::updatePlayerMovement()
 
         //Tile movement
         this->tileMove.x = -1.f;
+        this->playerMove.x = this->playerMoveSpeed;
     }
     else
     {
         this->tileMove.x = 0.f;
+        this->playerMove.x = 0.f;
     }
 
     //UP
@@ -229,6 +229,7 @@ void Player::updatePlayerMovement()
 
         //Tile movement
         this->tileMove.y = 1.f;
+        this->playerMove.y = -this->playerMoveSpeed;
     }
     //DOWN
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -239,10 +240,12 @@ void Player::updatePlayerMovement()
 
         //Tile movement
         this->tileMove.y = -1.f;
+        this->playerMove.y = this->playerMoveSpeed;
     }
     else
     {
         this->tileMove.y = 0.f;
+        this->playerMove.y = 0.f;
     }
 
     this->sprite.setRotation(this->PlayerAngle);
@@ -300,41 +303,6 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
     }
 }
 
-/* OLD Bullet sys
-void Player::updateShooting(const sf::Vector2u& winSize, sf::Vector2f BulletSpawn)
-{
-    if (this->ShootCD < this->ShootCDMAX)
-    {
-        this->ShootCD += 1.f;
-    }
-    else
-    {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        {
-            this->ShootCD = 0.f;
-            sf::Vector2f currVelocity = this->aimSys.getAimDirNorm() * 25.f;
-            
-            //Temporary solution for weapon system
-            //Hides bullet behind beginner weapn
-            sf::Vector2f spawn = sf::Vector2f(BulletSpawn.x, BulletSpawn.y);
-            this->bullets.push_back(new Bullet(this->Texture_bullets, spawn, currVelocity));
-        }
-        //For debugging bullets vector
-        //std::cout << "Bullets Vector size: " << this->bullets.size() << "\n";
-    }
-
-    for (size_t i = 0; i < this->bullets.size(); i++)
-    {
-        this->bullets[i]->sprite_bullet.move(this->bullets[i]->currVelocity);
-        if (bullets[i]->sprite_bullet.getPosition().x < 0 ||
-            bullets[i]->sprite_bullet.getPosition().x > winSize.x ||
-            bullets[i]->sprite_bullet.getPosition().y < 0 ||
-            bullets[i]->sprite_bullet.getPosition().y > winSize.y)
-            this->bullets.erase(this->bullets.begin() + i);
-    }
-}
-*/
-
 void Player::updateHPBar()
 {
     float tmpX;
@@ -366,22 +334,10 @@ void Player::update(sf::Vector2f& MousePos, const sf::Vector2u& winSize, sf::Vec
 
     this->updateWindowBoundCollision(winSize);
 
-    //this->updateShooting(winSize, BulletSpawn);
-
     this->updateHPBar();
 
     this->updateText();
 }
-
-/* OLD BULLET SYS
-void Player::renderBullets(sf::RenderTarget& target)
-{
-    for (size_t i = 0; i < this->bullets.size(); i++)
-    {
-        target.draw(this->bullets[i]->sprite_bullet);
-    }
-}
-*/
 
 void Player::renderHitbox(sf::RenderTarget& target)
 {
@@ -406,11 +362,6 @@ void Player::renderText(sf::RenderTarget& target)
 
 void Player::render(sf::RenderTarget& target)
 {
-    //OLD BULLET SYS
-    //this->renderBullets(target);
-
-    //this->renderHitbox(target);
-
     this->renderPlayer(target);
 
     this->renderHPBar(target);

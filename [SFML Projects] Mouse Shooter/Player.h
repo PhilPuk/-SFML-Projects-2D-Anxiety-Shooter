@@ -39,8 +39,9 @@ private:
 	float HPBarx;
 	sf::Text Text_HP;
 
-	//For tiles movement
+	//Movement stuff
 	sf::Vector2f tileMove;
+	sf::Vector2f playerMove;
 
 	//Initialization
 	void initVariables();
@@ -65,6 +66,7 @@ public:
 	const float& getHPMax() const;
 	const float& getHP() const;
 	const sf::Vector2f& getTileMove() const;
+	const sf::Vector2f& getPlayerMovement() const;
 	const float& getRotationAngle() const;
 	const float& getPlayerMoveSpeed() const;
 
