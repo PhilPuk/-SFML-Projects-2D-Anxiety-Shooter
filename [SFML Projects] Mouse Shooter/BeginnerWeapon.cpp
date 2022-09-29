@@ -30,8 +30,10 @@ BeginnerWeapon::BeginnerWeapon(sf::Vector2f spawnPos, sf::Vector2u& winSize, sf:
 	this->initVariables();
 	this->initTexture();
 	this->initSprite(spawnPos);
+	this->initBloomTexture();
 	this->initBulletTexture();
 	this->initTexts(winSize, font);
+	this->initBloom();
 }
 
 sf::Vector2f& BeginnerWeapon::getBulletSpawn()

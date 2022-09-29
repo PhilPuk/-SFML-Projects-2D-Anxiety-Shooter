@@ -8,7 +8,7 @@
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
 #include"Upgrades.h"
-#include"BloomManager.h"
+//#include"BloomManager.h"
 #include"GameOver.h"
 
 class Game
@@ -38,7 +38,7 @@ private:
 	float currScore;
 	
 	//Bloom manager
-	BloomManager bloom_Manager;
+	//BloomManager bloom_Manager;
 
 	//Income / Earnings
 	float CurrIncome;
@@ -92,7 +92,7 @@ public:
 	void updateMousePosVectors();
 	void updateBulletHittingTarget();
 	void updatePlayerHittingEnemy();
-	void updateNewBlooms();
+	void updateScreenShake();
 	void update();
 
 	//Render

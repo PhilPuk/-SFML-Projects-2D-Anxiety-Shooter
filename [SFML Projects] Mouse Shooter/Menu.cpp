@@ -6,8 +6,8 @@ void Menu::initVariables()
 {
 	//Window
 		//Screen size
-	this->videoMode.width = 1600;
-	this->videoMode.height = 900;
+	this->videoMode.width = 1920;
+	this->videoMode.height = 1080;
 
 	this->Framerate = 60;
 

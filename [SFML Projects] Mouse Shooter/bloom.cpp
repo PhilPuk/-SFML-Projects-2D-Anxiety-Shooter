@@ -1,140 +1,157 @@
 #include"bloom.h"
 
-void Bloom::initTextures()
+void Bloom::initTextures(sf::Texture texture)
 {
-    //Base bloom texture
-    if(!this->texture_bulletbloom.loadFromFile("Textures/Blooms/base.png"))
-    std::cout<<" - ERROR::BLOOM::INITTEXTURES::Couldn't load texture: base.png";
-
-    if (!this->texture_enemybloom.loadFromFile("Textures/blooms/enemey.png"))
-        std::cout << " - ERROR::BLOOM::INITTEXTURES::Couldn't load texture: enemey.png";
+    this->t_Bloom = texture;
 }
 
 void Bloom::initVariables()
 {
     //Animations
     //Scale animation
-    this->scalebigger = false;
-    this->ScaleAnimationAmount = 0.1f;
-    this->maxScale = 1.f + 0.3f;
+    this->s_AnimationCircles.scalebigger = false;
+    this->s_AnimationCircles.ScaleAnimationAmount = 0.1f;
+    this->s_AnimationCircles.maxScale = 1.f + 0.3f;
+
+    this->s_AnimationSprite.scalebigger = false;
+    this->s_AnimationSprite.ScaleAnimationAmount = 0.025f;
+    this->s_AnimationSprite.maxScale = 0.35f + 0.05f;
 }
 
-void Bloom::initBaseBloom()
+void Bloom::initCustomInitBloom(sf::Color color, float radius, bool CenterOrigin)
 {
-    this->baseBulletBloom.setRadius(30.f);
-    this->baseBulletBloom.setTexture(&this->texture_bulletbloom);
-    //this->baseBulletBloom.setFillColor(sf::Color::White);
-    sf::FloatRect rect = this->baseBulletBloom.getLocalBounds();
-    this->baseBulletBloom.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
-}
-
-void Bloom::initEnemyBlooms()
-{
-    this->baseBulletBloom.setRadius(60.f);
-    this->baseBulletBloom.setTexture(&this->texture_enemybloom);
-    this->baseBulletBloom.setPosition(-200.f, -200.f);
-    sf::FloatRect rect = this->baseBulletBloom.getLocalBounds();
-    this->baseBulletBloom.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
-
-    for (int i = 0; i < 8; i++)
+    this->CustomInitBloom.setTexture(&this->t_Bloom);
+    this->CustomInitBloom.setRadius(radius);
+    this->CustomInitBloom.setFillColor(color);
+    if (CenterOrigin)
     {
-        this->enemyblooms.push_back(new sf::CircleShape(this->baseBulletBloom));
+        sf::FloatRect rect = this->CustomInitBloom.getLocalBounds();
+        this->CustomInitBloom.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
     }
-
-    this->initBaseBloom();
 }
 
-Bloom::Bloom()
+
+Bloom::Bloom(sf::Texture texture_Bloom, sf::Color color, float radius, bool CenterOrigin)
 {
     this->initVariables();
-    this->initTextures();
-    this->initBaseBloom();
-    this->initEnemyBlooms();
+    this->initTextures(texture_Bloom);
+    this->initCustomInitBloom(color, radius, CenterOrigin);
 }
 
 Bloom::~Bloom()
 {
-    for(int i = 0; i < this->bulletblooms.size(); i++)
+    for(int i = 0; i < this->blooms.size(); i++)
     {
-    delete this->bulletblooms[i];
-    this->bulletblooms.erase(this->bulletblooms.begin(), this->bulletblooms.end());
+    delete this->blooms[i];
+    this->blooms.erase(this->blooms.begin(), this->blooms.end());
     }
 }
 
-void Bloom::createNewBulletBloom(sf::Vector2f& BloomPos, sf::Color color, float radius)
+void Bloom::createBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity)
 {
-    if(radius != 0)
-    this->baseBulletBloom.setRadius(radius);
-    if(color != sf::Color::White)
-    this->baseBulletBloom.setFillColor(color);
-    this->baseBulletBloom.setPosition(BloomPos);
-    this->bulletblooms.push_back(new sf::CircleShape(this->baseBulletBloom));
+    this->CustomInitBloom.setPosition(BloomPos);
+    this->blooms.push_back(new sf::CircleShape(this->CustomInitBloom));
+
+    //Velocity for bloom
+    this->bloomVelocity.push_back(new sf::Vector2f(*velocity));
 }
 
-void Bloom::createNewBloomVelocity(sf::Vector2f* velocity)
+void Bloom::createCustomizedBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius)
 {
-    this->bloomVelocity.push_back(velocity);
+    //New Bloom
+    this->CustomizedBlooms.setRadius(radius);
+    //Center origin
+    sf::FloatRect rect = this->CustomizedBlooms.getLocalBounds();
+    this->CustomizedBlooms.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+    this->CustomizedBlooms.setFillColor(color);
+    this->CustomizedBlooms.setPosition(BloomPos);
+    this->blooms.push_back(new sf::CircleShape(this->CustomizedBlooms));
+
+    //Velocity for bloom
+    this->bloomVelocity.push_back(new sf::Vector2f(*velocity));
 }
 
-void Bloom::deleteSpecificBulletBloom(int index)
+void Bloom::createCustomizedSpriteBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Color color, sf::Vector2f scale)
 {
-    this->bulletblooms.erase(this->bulletblooms.begin() + index);
+    this->CustomizedSpriteBloom.setTexture(texture);
+    this->CustomizedSpriteBloom.scale(scale);
+    this->CustomizedSpriteBloom.setColor(color);
+    this->CustomizedSpriteBloom.setPosition(BloomPos);
+    sf::FloatRect rect = this->CustomizedSpriteBloom.getLocalBounds();
+    this->CustomizedSpriteBloom.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+}
+
+void Bloom::deleteSpecificBloom(int index)
+{
+    this->blooms.erase(this->blooms.begin() + index);
     this->bloomVelocity.erase(this->bloomVelocity.begin() + index);
-    //Debugging
-    //std::cout << "Bloom vector size: " << this->bulletblooms.size() << "\n";
-    //std::cout << "Bloom Velocity vector size: " << this->bloomVelocity.size() << "\n";
-}
 
-void Bloom::setNewEnemyBloomPosition(sf::Vector2f& enemyPos, int index)
-{
-    this->enemyblooms[index]->setPosition(enemyPos);
+    std::cout << "Bloom vector size: " << this->blooms.size() << " Bloom velocity vector size: " << this->bloomVelocity.size() << "\n";
+    //Debugging
+    //std::cout << "Bloom vector size: " << this->blooms.size() << "\n";
+    //std::cout << "Bloom Velocity vector size: " << this->bloomVelocity.size() << "\n";
 }
 
 void Bloom::updateBloomOutOfScreen(int i, sf::Vector2u& winSize)
 {
-    if (this->bulletblooms[i]->getPosition().x < 0 ||
-        this->bulletblooms[i]->getPosition().x > winSize.x ||
-        this->bulletblooms[i]->getPosition().y < 0 ||
-        this->bulletblooms[i]->getPosition().y > winSize.y)
-        this->deleteSpecificBulletBloom(i);
+    if (this->blooms[i]->getPosition().x < 0 ||
+        this->blooms[i]->getPosition().x > winSize.x ||
+        this->blooms[i]->getPosition().y < 0 ||
+        this->blooms[i]->getPosition().y > winSize.y)
+        this->deleteSpecificBloom(i);
 }
 
 void Bloom::updateBloomScaleAnimation(int& i)
 {
-    if (this->scalebigger)
+    if (this->s_AnimationCircles.scalebigger)
     {
-        if (this->bulletblooms[i]->getScale().x > this->maxScale)
+        if (this->blooms[i]->getScale().x > this->s_AnimationCircles.maxScale)
         {
-            this->scalebigger = !this->scalebigger;
+            this->s_AnimationCircles.scalebigger = !this->s_AnimationCircles.scalebigger;
             return;
         }
-            this->bulletblooms[i]->scale(1.f + this->ScaleAnimationAmount, 1.f + this->ScaleAnimationAmount);
+            this->blooms[i]->scale(1.f + this->s_AnimationCircles.ScaleAnimationAmount, 1.f + this->s_AnimationCircles.ScaleAnimationAmount);
     }
     else
     {
-        if (this->bulletblooms[i]->getScale().x < 1.f)
+        if (this->blooms[i]->getScale().x < 1.f)
         {
-            this->scalebigger = !this->scalebigger;
+            this->s_AnimationCircles.scalebigger = !this->s_AnimationCircles.scalebigger;
             return;
         }
-            this->bulletblooms[i]->scale(1.f - this->ScaleAnimationAmount, 1.f - this->ScaleAnimationAmount);
+            this->blooms[i]->scale(1.f - this->s_AnimationCircles.ScaleAnimationAmount, 1.f - this->s_AnimationCircles.ScaleAnimationAmount);
+    }
+}
+
+void Bloom::updateSpriteBloomScaleAnimation()
+{
+    if(this->s_AnimationSprite.scalebigger)
+    {
+        if (this->CustomizedSpriteBloom.getScale().x > this->s_AnimationSprite.maxScale)
+        {
+            this->s_AnimationSprite.scalebigger = !this->s_AnimationSprite.scalebigger;
+            return;
+        }
+        this->CustomizedSpriteBloom.scale(1.f + this->s_AnimationSprite.ScaleAnimationAmount, 1.f + this->s_AnimationSprite.ScaleAnimationAmount);
+    }
+    else
+    {
+        if (this->CustomizedSpriteBloom.getScale().x < 0.3f)
+        {
+            this->s_AnimationSprite.scalebigger = !this->s_AnimationSprite.scalebigger;
+            return;
+        }
+        this->CustomizedSpriteBloom.scale(1.f - this->s_AnimationSprite.ScaleAnimationAmount, 1.f - this->s_AnimationSprite.ScaleAnimationAmount);
     }
 }
 
 void Bloom::updateBloomMovement(int i)
 {    
     // if (this->bloomVelocity[i]->x == 0.f || this->bloomVelocity[i]->y == 0.f)
-    //    this->deleteSpecificBulletBloom(i);
+    //    this->deleteSpecificBloom(i);
     //else
-        this->bulletblooms[i]->move(*this->bloomVelocity[i]);
-}
-
-void Bloom::updateDeletedBullets(bool& deletedbullet, short index)
-{
-    if (deletedbullet)
-        this->deleteSpecificBulletBloom(index);
-    else
-        return;
+        this->blooms[i]->move(*this->bloomVelocity[i]);
+        //std::cout << "Bloom move x: " << this->bloomVelocity[i] << "\n";
 }
 
 void Bloom::updateForLoop(sf::Vector2u& winSize)
@@ -143,26 +160,24 @@ void Bloom::updateForLoop(sf::Vector2u& winSize)
     //this->scalebigger = !this->scalebigger;
 
     //All update functions that need the loop
-    for(int i = 0; i < this->bulletblooms.size(); i++)
+    for(int i = 0; i < this->blooms.size(); i++)
     {
     this->updateBloomMovement(i);
     this->updateBloomScaleAnimation(i);
-    this->updateBloomOutOfScreen(i, winSize);
-    std::cout << "I: " << i << "\n";
+    //std::cout << "I: " << i << "\n";
     }
 }
 
-void Bloom::update(sf::Vector2u& winSize, bool& deletedbullet, short index)
+void Bloom::update(sf::Vector2u& winSize)
 {
     this->updateForLoop(winSize);
-    this->updateDeletedBullets(deletedbullet, index);
 }
 
 void Bloom::renderBulletBlooms(sf::RenderTarget& target)
 {
-    for(int i = 0; i < this->bulletblooms.size(); i++)
+    for(int i = 0; i < this->blooms.size(); i++)
     {
-    target.draw(*this->bulletblooms[i]);
+    target.draw(*this->blooms[i]);
     }
 }
 

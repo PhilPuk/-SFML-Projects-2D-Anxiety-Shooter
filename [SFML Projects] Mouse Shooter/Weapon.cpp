@@ -31,6 +31,14 @@ void Weapon::initTexture()
 	std::cout << "Standart Weapon!\n";
 }
 
+void Weapon::initBloomTexture()
+{
+	if (!this->t_Bloom.loadFromFile("Textures/blooms/bullet.png"))
+	{
+		std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: Textures/blooms/bullet.png!\n";
+	}
+}
+
 void Weapon::initBulletTexture()
 {
 	if (!this->Texture_bullets.loadFromFile("Textures/Player/Bullets/bullet0.png"))
@@ -67,6 +75,11 @@ void Weapon::initTexts(sf::Vector2u& winSize, sf::Font& font)
 	);
 }
 
+void Weapon::initBloom()
+{
+	this->bloom = new Bloom(this->t_Bloom, sf::Color(255, 255, 255, 110), 30.f, true);
+}
+
 Weapon::Weapon()
 {
 	//Standart constructor
@@ -80,8 +93,10 @@ Weapon::Weapon(sf::Vector2f spawningPos, sf::Vector2u& winSize, sf::Font& font)
 	this->initVariables();
 	this->initTexture();
 	this->initSprite(spawningPos);
+	this->initBloomTexture();
 	this->initBulletTexture();
 	this->initTexts(winSize, font);
+	this->initBloom();
 }
 
 Weapon::~Weapon()
@@ -106,6 +121,7 @@ void Weapon::shootBullet(sf::Vector2f& AimDiretionNormal)
 		//Spawning bullet
 		sf::Vector2f spawn = this->sprite_weapon.getPosition();
 		this->bullets.push_back(new Bullet(this->Texture_bullets, spawn, currVelocity));
+		this->bloom->createBloom(spawn, &currVelocity);
 
 		//Removes 1 ammo
 		this->CurrAmmo--;
@@ -253,6 +269,7 @@ void Weapon::updateBulletOutOfScreen(sf::Vector2u& winSize, size_t& i)
 	{
 		this->lastdeletedBulletIndex = static_cast<short>(i);
 		this->bullets.erase(this->bullets.begin() + i);
+		this->bloom->deleteSpecificBloom(i);
 	}
 }
 
@@ -303,6 +320,7 @@ void Weapon::update(sf::Vector2u& winSize, float RotationAngle, sf::Vector2f pos
 	this->updateShootingSystem(AimDiretionNormal);
 	this->updateBulletMoving(winSize);
 	this->updateAmmoText();
+	this->bloom->update(winSize);
 }
 
 void Weapon::renderTexts(sf::RenderTarget& target)
@@ -330,4 +348,6 @@ void Weapon::render(sf::RenderTarget& target)
 	this->renderBullets(target);
 
 	this->renderWeapon(target);
+
+	this->bloom->render(target);
 }

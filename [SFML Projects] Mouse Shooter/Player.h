@@ -2,6 +2,7 @@
 
 //#include"Bullet.h"
 #include"Aiming.h"
+#include"bloom.h"
 #include<string>
 #include<sstream>
 
@@ -14,6 +15,7 @@ private:
 
 	//Textures
 	sf::Texture Texture_Player;
+	sf::Texture t_Bloom;
 	sf::Texture Texture_bullets;
 
 		//Variables for Aiming
@@ -49,12 +51,16 @@ private:
 	void initHPBar();
 	void initText(sf::Font& font);
 	void initHitBoxShape();
+	void initPlayerBloom();
 public:
 	Player(sf::Font& font);
 	virtual ~Player();
 
 	//Aim System
 	Aiming aimSys;
+
+	//Player Bloom
+	Bloom* bloom;
 
 	//Bullet
 	//std::vector<Bullet*> bullets;

@@ -247,7 +247,8 @@ void Game::updateBulletHittingTarget()
 
                 //Bullet deleting
                 this->weapon->bullets.erase(this->weapon->bullets.begin() + i);
-                this->bloom_Manager.deleteSpecificBloom(i);
+                this->weapon->bloom->deleteSpecificBloom(i);
+                //this->bloom_Manager.deleteSpecificBloom(i);
                 break;
             }
 
@@ -276,21 +277,23 @@ void Game::updatePlayerHittingEnemy()
     }
 }
 
-void Game::updateNewBlooms()
+void Game::updateScreenShake()
 {
     if (this->weapon->getBulletShot())
     {
-        this->tileManager->addTimetoShakeScreen(4.f);
+        this->tileManager->addTimetoShakeScreen(3.f);
         this->weapon->resetBulletShoot();
         //Bloom effect
-        sf::Vector2f spawnpos = this->weapon->sprite_weapon.getPosition();
-        sf::Vector2f velocity = this->weapon->bullets[this->weapon->bullets.size() - 1]->getCurrVelocity();
+        //sf::Vector2f spawnpos = this->weapon->sprite_weapon.getPosition();
+        //sf::Vector2f velocity = this->weapon->bullets[this->weapon->bullets.size() - 1]->getCurrVelocity();
+        /*
         this->bloom_Manager.createNewBloom(
             spawnpos,
             &velocity,
             sf::Color(255, 255, 255, 110),
             30.f
         );
+        */
     }
 }
 
@@ -312,12 +315,13 @@ void Game::update()
         //Weapon
         this->weapon->update(this->windowSize, this->player->getRotationAngle(), this->player->getPos(), this->player->aimSys.getAimDirNorm());
 
+        this->updateScreenShake();
+
         //Bloom
-        bool bulletdeleted = this->weapon->getBulledDeleted();
-        sf::Vector2f playerpos = this->player->getPlayerMovement();
-        this->updateNewBlooms();
-        this->bloom_Manager.update(this->windowSize, playerpos, this->player->getRotationAngle());
-        this->weapon->resetBulletDeleted();
+        //bool bulletdeleted = this->weapon->getBulledDeleted();
+        //sf::Vector2f playerpos = this->player->getPlayerMovement();
+        //this->bloom_Manager.update(this->windowSize, playerpos, this->player->getRotationAngle());
+        //this->weapon->resetBulletDeleted();
 
         //Tiles
         this->tileManager->update(this->player->getTileMove(), this->player->getPos());
@@ -372,7 +376,7 @@ void Game::render()
         this->upgrades.render(*this->window);
 
         //Blooms
-        this->bloom_Manager.render(*this->window);
+        //this->bloom_Manager.render(*this->window);
     }
     else
     {

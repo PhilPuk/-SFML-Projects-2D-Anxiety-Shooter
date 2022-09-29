@@ -1,7 +1,6 @@
 #pragma once
 
 #include"Enemy.h"
-#include"bloom.h"
 
 class EnemyManager
 {
@@ -26,9 +25,6 @@ private:
 
 	//used for enemy constructor
 	float enemyHPMax;
-
-	//Bloom
-	Bloom blooms;
 
 	void initVariables();
 	void initTextures();

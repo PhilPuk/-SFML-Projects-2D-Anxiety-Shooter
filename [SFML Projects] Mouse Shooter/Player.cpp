@@ -8,7 +8,6 @@ void Player::initVariables()
     this->sprite.setTexture(this->Texture_Player);
 
     sf::FloatRect rect = this->sprite.getLocalBounds();
-
     this->sprite.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 
     //Game logic
@@ -37,13 +36,11 @@ void Player::initTextures()
     {
         std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: player0.png!\n";
     }
-    
-    /*
-    if (!this->Texture_bullets.loadFromFile("Textures/Player/Bullets/bullet0.png"))
+
+    if (!this->t_Bloom.loadFromFile("Textures/blooms/player.png"))
     {
-        std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: bullet0.png!\n";
+        std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: Textures/blooms/player.png!\n";
     }
-    */
 }
 
 void Player::initHPBar()
@@ -81,6 +78,13 @@ void Player::initHitBoxShape()
     this->shape_hitbox.setFillColor(sf::Color::Red);
 }
 
+void Player::initPlayerBloom()
+{
+    this->bloom = new Bloom(t_Bloom, sf::Color(255, 255, 255, 110), 0, true);
+    sf::Vector2f spawnpos (this->sprite.getPosition().x, this->sprite.getPosition().y);
+    this->bloom->createCustomizedSpriteBloom(t_Bloom, spawnpos, sf::Color(255, 255, 255, 110), sf::Vector2f(0.35f, 0.35f));
+}
+
 Player::Player(sf::Font& font)
 {
     this->initTextures();
@@ -88,6 +92,7 @@ Player::Player(sf::Font& font)
     this->initText(font);
     this->initHPBar();
     this->initHitBoxShape();
+    this->initPlayerBloom();
 }
 
 Player::~Player()
@@ -195,9 +200,9 @@ void Player::updatePlayerMovement()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         this->sprite.move(-this->playerMoveSpeed, 0.f);
-
         //Hitbox
         this->shape_hitbox.move(-this->playerMoveSpeed, 0.f);
+
 
         //Tile movement
         this->tileMove.x = 1.f;
@@ -247,7 +252,8 @@ void Player::updatePlayerMovement()
         this->tileMove.y = 0.f;
         this->playerMove.y = 0.f;
     }
-
+    this->bloom->CustomizedSpriteBloom.move(this->playerMove);
+    this->bloom->CustomizedSpriteBloom.setRotation(this->PlayerAngle);
     this->sprite.setRotation(this->PlayerAngle);
 }
 
@@ -269,6 +275,8 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
 
         this->shape_hitbox.setPosition(newPos);
         this->sprite.setPosition(newPos);
+        this->bloom->CustomizedSpriteBloom.setPosition(newPos);
+        this->playerMove.x = 0.f;
     }
     //BOTTOM
     else if (this->shape_hitbox.getPosition().y + boxSize.y / 2 > winSize.y)
@@ -279,6 +287,8 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
 
         this->shape_hitbox.setPosition(newPos);
         this->sprite.setPosition(newPos);
+        this->bloom->CustomizedSpriteBloom.setPosition(newPos);
+        this->playerMove.x = 0.f;
     }
 
     //LEFT
@@ -290,6 +300,8 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
 
         this->shape_hitbox.setPosition(newPos);
         this->sprite.setPosition(newPos);
+        this->bloom->CustomizedSpriteBloom.setPosition(newPos);
+        this->playerMove.y = 0.f;
     }
     //RIGHT
     else if (this->shape_hitbox.getPosition().x + boxSize.x / 2 > winSize.x)
@@ -300,6 +312,8 @@ void Player::updateWindowBoundCollision(const sf::Vector2u& winSize)
 
         this->shape_hitbox.setPosition(newPos);
         this->sprite.setPosition(newPos);
+        this->bloom->CustomizedSpriteBloom.setPosition(newPos);
+        this->playerMove.y = 0.f;
     }
 }
 
@@ -337,6 +351,8 @@ void Player::update(sf::Vector2f& MousePos, const sf::Vector2u& winSize, sf::Vec
     this->updateHPBar();
 
     this->updateText();
+
+    this->bloom->updateSpriteBloomScaleAnimation();
 }
 
 void Player::renderHitbox(sf::RenderTarget& target)
@@ -347,6 +363,7 @@ void Player::renderHitbox(sf::RenderTarget& target)
 void Player::renderPlayer(sf::RenderTarget& target)
 {
     target.draw(this->sprite);
+    target.draw(this->bloom->CustomizedSpriteBloom);
 }
 
 void Player::renderHPBar(sf::RenderTarget& target)
@@ -363,6 +380,8 @@ void Player::renderText(sf::RenderTarget& target)
 void Player::render(sf::RenderTarget& target)
 {
     this->renderPlayer(target);
+
+    //this->renderHitbox(target);
 
     this->renderHPBar(target);
 

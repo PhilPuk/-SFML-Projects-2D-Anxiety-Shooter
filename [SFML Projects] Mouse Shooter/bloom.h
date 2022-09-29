@@ -12,45 +12,60 @@
 class Bloom
 {
 private:
-    sf::Texture texture_bulletbloom;
-    sf::CircleShape baseBulletBloom;
+    sf::Texture t_Bloom;
+    sf::CircleShape CustomInitBloom;
+    sf::CircleShape CustomizedBlooms;
     std::vector<sf::Vector2f*> bloomVelocity;
-    std::vector<sf::CircleShape*> bulletblooms;
   
     //Animations
-    //Scale animation
-    bool scalebigger;
-    float maxScale;
-    float ScaleAnimationAmount;
+
+        //Scaling Animation
+    struct
+    {
+        bool scalebigger;
+        float maxScale;
+        float ScaleAnimationAmount;
+    } s_AnimationCircles;
+
+    struct
+    {
+        bool scalebigger;
+        float maxScale;
+        float ScaleAnimationAmount;
+    } s_AnimationSprite;
+
   
-    void initTextures();
+    void initTextures(sf::Texture texture);
     void initVariables();
-    void initBaseBloom();
-    void initEnemyBlooms();
+    void initCustomInitBloom(sf::Color color, float radius, bool CenterOrigin);
 public:
-    Bloom();
+    Bloom(sf::Texture texture_Bloom, sf::Color color, float radius, bool CenterOrigin);
     virtual ~Bloom();
-  
-    sf::Texture texture_enemybloom;
-    std::vector<sf::CircleShape*> enemyblooms;
+
+    std::vector<sf::CircleShape*> blooms;
+    sf::Sprite CustomizedSpriteBloom;
 
     //Accessors
   
     //Modifiers
   
     //Functions
-    void createNewBulletBloom(sf::Vector2f& BloomPos, sf::Color color, float radius);
-    void createNewBloomVelocity(sf::Vector2f* velocity);
-    void deleteSpecificBulletBloom(int index);
+
+    //Used for creating initalized custom blooms
+    void createBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity);
+
+    //Used for creating completly customized blooms
+    void createCustomizedBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius);
+    void createCustomizedSpriteBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Color color, sf::Vector2f scale);
+    void deleteSpecificBloom(int index);
   
-    void setNewEnemyBloomPosition(sf::Vector2f& enemyPos, int index);
 
     void updateBloomOutOfScreen(int i, sf::Vector2u& winSize);
     void updateBloomScaleAnimation(int& i);
+    void updateSpriteBloomScaleAnimation();
     void updateBloomMovement(int i);
-    void updateDeletedBullets(bool& deletedbullet, short index);
     void updateForLoop(sf::Vector2u& winSize);
-    void update(sf::Vector2u& winSize, bool& deletedbullet, short index);
+    void update(sf::Vector2u& winSize);
   
     void renderBulletBlooms(sf::RenderTarget& target);
     void render(sf::RenderTarget& target);

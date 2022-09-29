@@ -10,14 +10,15 @@
 #include<SFML/Network.hpp>
 
 #include"Bullet.h"
+#include"bloom.h"
 
 class Weapon abstract
 {
 public:
-
 	sf::Texture texture_weapon;
 	sf::Sprite sprite_weapon;
 	sf::Texture Texture_bullets;
+	sf::Texture t_Bloom;
 
 	//Texts
 	sf::Text Text_Ammo;
@@ -49,15 +50,20 @@ public:
 	//Initialization
 	virtual void initVariables();
 	virtual void initTexture();
+	virtual void initBloomTexture();
 	virtual void initBulletTexture();
 	virtual void initSprite(sf::Vector2f spawningPos);
 	virtual void initTexts(sf::Vector2u& winSize, sf::Font& font);
+	virtual void initBloom();
 	Weapon();
 	Weapon(sf::Vector2f spawningPos, sf::Vector2u& winSize, sf::Font& font);
 	virtual ~Weapon();
 
 	//Bullet
 	std::vector<Bullet*> bullets;
+
+	//Blooms
+	Bloom* bloom;
 
 	//Functions
 	void shootBullet(sf::Vector2f& AimDiretionNormal);
