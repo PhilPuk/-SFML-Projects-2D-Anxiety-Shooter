@@ -4,8 +4,10 @@
 void BeginnerWeapon::initTexture()
 {
 	if (!this->texture_weapon.loadFromFile("Textures/weapons/beginner/weapon1.png"))
-		
 		std::cout<< " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: beginner/weapon1.png!\n";
+
+	if (!this->t_WeaponBloom.loadFromFile("Textures/blooms/beginnerweapon.png"))
+		std::cout << " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: Textures/blooms/beginnerweapon.png!\n";
 
 	std::cout << "BeginnerWeapon!\n";
 }

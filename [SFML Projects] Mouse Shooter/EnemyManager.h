@@ -10,10 +10,10 @@ private:
 	sf::Vector2f moveDirNorm;
 	sf::Vector2f currVelocity;
 
-
 	// Green easy, yellow medium, red hard
 	//Textures
 	sf::Texture Textures_Enemy[3];
+	sf::Texture t_Bloom;
 	const int MaxEnemyTextures = 3;
 
 	float SpawnTimerMax;

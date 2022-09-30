@@ -29,6 +29,9 @@ void Weapon::initTexture()
 	if (!this->texture_weapon.loadFromFile("Textures/weapons/standart/weapon0.png"))
 		std::cout << " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: standart/weapon0.png!\n";
 	std::cout << "Standart Weapon!\n";
+
+	if (!this->t_WeaponBloom.loadFromFile("Textures/blooms/standartweapon.png"))
+		std::cout << " - ERROR::WEAPON::INITTEXTURE::Couldn't load texture: Textures/blooms/standartweapon.png!\n";
 }
 
 void Weapon::initBloomTexture()
@@ -78,6 +81,9 @@ void Weapon::initTexts(sf::Vector2u& winSize, sf::Font& font)
 void Weapon::initBloom()
 {
 	this->bloom = new Bloom(this->t_Bloom, sf::Color(255, 255, 255, 110), 30.f, true);
+
+	sf::Vector2f spawnpos(this->sprite_weapon.getPosition().x + 30.f, this->sprite_weapon.getPosition().y);
+	this->bloom->createCustomizedSpriteBloom(this->t_WeaponBloom, spawnpos, sf::Color(255, 255, 255, 120), sf::Vector2f(1.5f, 1.5f));
 }
 
 Weapon::Weapon()
@@ -106,6 +112,8 @@ Weapon::~Weapon()
 	{
 		this->bullets.erase(this->bullets.begin(), this->bullets.end());
 	}
+
+	delete this->bloom;
 	// std::cout << "Bullets: " << this->bullets.size() << "\n";
 }
 
@@ -251,11 +259,13 @@ void Weapon::updateAmmoText()
 void Weapon::updateWeaponRotation(float RotationAngle)
 {
 	this->sprite_weapon.setRotation(RotationAngle);
+	this->bloom->CustomizedSpriteBloom.setRotation(RotationAngle);
 }
 
 void Weapon::updateWeaponPosition(sf::Vector2f pos)
 {
 	this->sprite_weapon.setPosition(pos);
+	this->bloom->CustomizedSpriteBloom.setPosition(pos);
 }
 
 //Deletes bullet once they're out of the screen
@@ -321,6 +331,7 @@ void Weapon::update(sf::Vector2u& winSize, float RotationAngle, sf::Vector2f pos
 	this->updateBulletMoving(winSize);
 	this->updateAmmoText();
 	this->bloom->update(winSize);
+	this->bloom->updateSpriteBloomScaleAnimation();
 }
 
 void Weapon::renderTexts(sf::RenderTarget& target)
@@ -350,4 +361,5 @@ void Weapon::render(sf::RenderTarget& target)
 	this->renderWeapon(target);
 
 	this->bloom->render(target);
+	target.draw(this->bloom->CustomizedSpriteBloom);
 }

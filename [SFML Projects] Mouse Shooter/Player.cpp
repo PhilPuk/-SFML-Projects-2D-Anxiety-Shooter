@@ -81,8 +81,11 @@ void Player::initHitBoxShape()
 void Player::initPlayerBloom()
 {
     this->bloom = new Bloom(t_Bloom, sf::Color(255, 255, 255, 110), 0, true);
-    sf::Vector2f spawnpos (this->sprite.getPosition().x, this->sprite.getPosition().y);
-    this->bloom->createCustomizedSpriteBloom(t_Bloom, spawnpos, sf::Color(255, 255, 255, 110), sf::Vector2f(0.35f, 0.35f));
+    sf::Vector2f spawnpos (this->sprite.getPosition().x - 20.f, this->sprite.getPosition().y);
+    this->bloom->createCustomizedSpriteBloom(t_Bloom, spawnpos, sf::Color(255, 255, 255, 95), sf::Vector2f(0.35f, 0.35f));
+
+    sf::FloatRect rect = this->bloom->CustomizedSpriteBloom.getLocalBounds();
+    this->bloom->CustomizedSpriteBloom.setOrigin(rect.left + rect.width / 2.0f + 30.f, rect.top + rect.height / 2.0f);
 }
 
 Player::Player(sf::Font& font)
@@ -97,7 +100,7 @@ Player::Player(sf::Font& font)
 
 Player::~Player()
 {
-
+    delete this->bloom;
 }
 
 const sf::Vector2f& Player::getCenterOfPlayer() const

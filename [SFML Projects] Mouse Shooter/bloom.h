@@ -45,17 +45,13 @@ public:
     std::vector<sf::CircleShape*> blooms;
     sf::Sprite CustomizedSpriteBloom;
 
-    //Accessors
-  
-    //Modifiers
-  
     //Functions
 
     //Used for creating initalized custom blooms
     void createBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity);
 
     //Used for creating completly customized blooms
-    void createCustomizedBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius);
+    void createCustomizedBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius);
     void createCustomizedSpriteBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Color color, sf::Vector2f scale);
     void deleteSpecificBloom(int index);
   

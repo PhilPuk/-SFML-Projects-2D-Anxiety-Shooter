@@ -53,10 +53,11 @@ void Bloom::createBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity)
     this->blooms.push_back(new sf::CircleShape(this->CustomInitBloom));
 
     //Velocity for bloom
+    if(velocity != nullptr)
     this->bloomVelocity.push_back(new sf::Vector2f(*velocity));
 }
 
-void Bloom::createCustomizedBloom(sf::Texture& texture, sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius)
+void Bloom::createCustomizedBloom(sf::Vector2f& BloomPos, sf::Vector2f* velocity, sf::Color color, float radius)
 {
     //New Bloom
     this->CustomizedBlooms.setRadius(radius);
@@ -68,6 +69,7 @@ void Bloom::createCustomizedBloom(sf::Texture& texture, sf::Vector2f& BloomPos, 
     this->blooms.push_back(new sf::CircleShape(this->CustomizedBlooms));
 
     //Velocity for bloom
+    if (velocity != nullptr)
     this->bloomVelocity.push_back(new sf::Vector2f(*velocity));
 }
 

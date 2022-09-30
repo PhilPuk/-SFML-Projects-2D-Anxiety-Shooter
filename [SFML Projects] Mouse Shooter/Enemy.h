@@ -11,11 +11,7 @@
 #include<SFML/Audio.hpp>
 #include<SFML/Network.hpp>
 
-
-/*
-* TO-DO:
-*
-*/
+#include"bloom.h"
 
 class Enemy
 {
@@ -75,10 +71,13 @@ private:
 	void initVariables(float& pos_X, float& pos_Y, float hp);
 	void initSprite(sf::Texture& texture);
 	void initHPBar();
+	void initBloom(sf::Texture& texture, float& pos_X, float& pos_Y);
 public:
 	sf::Sprite sprite_enemy;
-	Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp);
+	Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp, sf::Texture& bloom_Texture);
 	virtual ~Enemy();
+
+	Bloom* bloom;
 
 	//Accessors
 	const sf::FloatRect& getBounds() const;

@@ -75,16 +75,28 @@ void Enemy::initHPBar()
 	this->HPBar[1].setSize(sf::Vector2f(this->sprite_enemy.getGlobalBounds().width, 10.f));
 }
 
-Enemy::Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp)
+void Enemy::initBloom(sf::Texture& texture, float& pos_X, float& pos_Y)
+{
+	this->bloom = new Bloom(texture, sf::Color(255, 255, 255, 110), 30.f, true);
+	sf::Vector2f spawnpos = sf::Vector2f(this->posX, this->posY);
+	this->bloom->createBloom(spawnpos, 0);
+	this->bloom->blooms[0]->setRadius(this->sprite_enemy.getGlobalBounds().width / 2.f + 25.f);
+	sf::FloatRect rect = this->bloom->blooms[0]->getLocalBounds();
+	this->bloom->blooms[0]->setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
+	this->bloom->blooms[0]->setPosition(this->posX + this->sprite_enemy.getGlobalBounds().width / 2.f, this->posY + this->sprite_enemy.getGlobalBounds().height / 2.f);
+}
+
+Enemy::Enemy(float& pos_X, float& pos_Y, sf::Texture& texture, float hp, sf::Texture& bloom_Texture)
 {
 	this->initVariables(pos_X, pos_Y, hp);
 	this->initSprite(texture);
 	this->initHPBar();
+	this->initBloom(bloom_Texture, pos_X, pos_Y);
 }
 
 Enemy::~Enemy()
 {
-
+	delete this->bloom;
 }
 
 const sf::FloatRect& Enemy::getBounds() const
@@ -207,6 +219,7 @@ void Enemy::updateBodyAndHPBarMovement(float moveX, float moveY)
 	this->sprite_enemy.move(moveX, moveY);
 	this->HPBar[0].move(moveX, moveY);
 	this->HPBar[1].move(moveX, moveY);
+	this->bloom->blooms[0]->move(moveX, moveY);
 }
 
 void Enemy::updateHPBar()
@@ -267,6 +280,8 @@ void Enemy::update()
 {
 	this->updateHPBar();
 	this->updatePhases();
+	int i = 0;
+	this->bloom->updateBloomScaleAnimation(i);
 	//this->updateMovement();
 }
 
@@ -281,4 +296,6 @@ void Enemy::render(sf::RenderTarget& target)
 	target.draw(this->sprite_enemy);
 
 	this->renderHPBar(target);
+
+	target.draw(*this->bloom->blooms[0]);
 }

@@ -19,6 +19,7 @@ public:
 	sf::Sprite sprite_weapon;
 	sf::Texture Texture_bullets;
 	sf::Texture t_Bloom;
+	sf::Texture t_WeaponBloom;
 
 	//Texts
 	sf::Text Text_Ammo;

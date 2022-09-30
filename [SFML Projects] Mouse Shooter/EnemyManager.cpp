@@ -33,7 +33,15 @@ void EnemyManager::initTextures()
 		{
 			std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: enemy2.png!\n";
 		}
+
+		if (!this->t_Bloom.loadFromFile("Textures/blooms/enemy.png"))
+		{
+			std::cout << " - ERROR::PLAYER::INITTEXTURE::Couldn't load texture: Textures/blooms/enemy.png!\n";
+		}
+
 }
+
+
 
 EnemyManager::EnemyManager()
 {
@@ -137,8 +145,9 @@ void EnemyManager::updateSpawning(sf::Vector2f playerCenter, sf::Vector2u& winSi
 			//HP generation
 			this->updateIncreasingMaxHP(score, time);
 			//Spawn enemy
-			this->enemies.push_back(new Enemy(x, y, this->Textures_Enemy[picktexture], this->enemyHPMax));
+			this->enemies.push_back(new Enemy(x, y, this->Textures_Enemy[picktexture], this->enemyHPMax, this->t_Bloom));
 			this->enemySpawned = true;
+
 			//sf::Vector2f pos = sf::Vector2f(x, y);
 			//this->blooms.setNewEnemyBloomPosition(pos, static_cast<int>(this->enemies.size()));
 
