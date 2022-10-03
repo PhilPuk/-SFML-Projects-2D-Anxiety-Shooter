@@ -17,6 +17,8 @@ void Player::initVariables()
     //player move variables
     this->playerMoveSpeed = 10.f;
 
+    this->incomeincrease = 0.f;
+
     //HP Bar
     this->HPBarx = 200.f;
     this->HPUpdate = -1.f;
@@ -150,6 +152,11 @@ const float& Player::getPlayerMoveSpeed() const
     return this->playerMoveSpeed;
 }
 
+const float& Player::getIncomeIncrease() const
+{
+    return this->incomeincrease;
+}
+
 void Player::TakeDamage(float dmg)
 {
     this->PlayerHP -= dmg;
@@ -182,6 +189,11 @@ void Player::addPlayerMoveSpeed(float add)
 void Player::changePlayerMoveSpeed(float change)
 {
     this->playerMoveSpeed = change;
+}
+
+void Player::addIncomeIncrease(float add)
+{
+    this->incomeincrease += add;
 }
 
 //Update

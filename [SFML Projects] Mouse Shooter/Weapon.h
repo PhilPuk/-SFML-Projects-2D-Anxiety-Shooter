@@ -49,6 +49,9 @@ public:
 	//Damage
 	float damageBullet;
 
+	//Lifesteal
+	float lifesteal;
+
 	std::vector<int> deletedIndexes;
 
 	//Initialization
@@ -79,6 +82,7 @@ public:
 	const bool& getBulledDeleted() const;
 	const short& getLastDeletedBulledIndex() const;
 	const short& getSizeOfBulletArray() const;
+	const float& getLifesteal() const;
 	
 	//Modifiers
 	void ModifyMaxAmmo(int MaxAmmo);
@@ -89,6 +93,7 @@ public:
 	void substractReloadTimerMax(float substract);
 	void addBulletSpeed(float add);
 	void addBulletDamage(float add);
+	void unlockLifesteal();
 	void resetBulletShoot();
 	void resetBulletDeleted();
 	void setLastDeletedBulletIndex(short i);

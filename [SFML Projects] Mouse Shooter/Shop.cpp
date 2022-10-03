@@ -37,6 +37,8 @@ void Shop::initVariables(sf::Vector2u& winSize)
 
 	this->Price_PlayerUpgrades[0] = 100.f;
 	this->Price_PlayerUpgrades[1] = 50.f;
+	this->Price_PlayerUpgrades[2] = 50.f;
+	this->Price_PlayerUpgrades[3] = 300.f;
 
 	this->Price_WeaponUpgrades[0] = 10.f;
 	this->Price_WeaponUpgrades[1] = 15.f;
@@ -45,6 +47,7 @@ void Shop::initVariables(sf::Vector2u& winSize)
 
 	//Upgrades
 	this->Amount_Upgrades = 4;
+	this->lifesteal_unlocked = false;
 
 	this->indexOfChoosenUpgrade = -1.f;
 	this->indexOfChoosenUpgradeSave = -1.f;
@@ -157,9 +160,9 @@ void Shop::initTexts(sf::Vector2u& winSize, sf::Font& font)
 		else if(i == 1)
 			base.setString("Max\nHP" + price.str());
 		else if(i == 2)
-			base.setString("COOMING\nSOON!" + price.str());
+			base.setString("Income\nIncrease!" + price.str());
 		else if(i == 3)
-			base.setString("COOMING\nSOON!" + price.str());
+			base.setString("Unlock\nLifesteal!" + price.str());
 
 		base.setPosition(this->Buttons_Upgrades[i].getPosition().x,
 			this->Buttons_Upgrades[i].getPosition().y);
@@ -283,7 +286,7 @@ void Shop::updateTexts(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 
 		//Update money text
 		std::stringstream ssBank;
-		ssBank << "Money: " << *bank;
+		ssBank << "Money: " << *bank<<"$";
 		this->Texts[4]->setString(ssBank.str());
 
 		//Upgrades
@@ -306,12 +309,13 @@ void Shop::updateTexts(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 				}
 				else if (this->RangeStartPlayerUpgrades + 3 == i)
 				{
-					text = "COOMING\nSOON!";
+					text = "Income\nIncrease!";
 					index = 2;
 				}
 				else if (this->RangeStartPlayerUpgrades + 4 == i)
 				{
-					text = "COOMING\nSOON!";
+					if (!this->lifesteal_unlocked)
+						text = "Unlock\nlifesteal";
 					index = 3;
 				}
 				upg[n] << text <<"\n" << this->Price_PlayerUpgrades[index] << "$" << " x" << this->CounterUpgrade_Player[index];
@@ -319,6 +323,8 @@ void Shop::updateTexts(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 				upg[n].str("");
 				n++;
 			}
+			if(this->lifesteal_unlocked)
+			this->Texts[this->RangeStartPlayerUpgrades + 4]->setString("Lifesteal\nunlocked!");
 
 		}
 		else if (this->WeaponUpgrades)
@@ -429,9 +435,19 @@ void Shop::updateUpgradingAbilities(float* bank, float* ReloadTimerMax, int* Max
 			{
 				if (this->checkUpgradeAvailable(bank , this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade]))
 				{
-					this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
-					this->CurrCounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
-					*bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+					if (this->indexOfChoosenUpgrade == 3 && this->lifesteal_unlocked)
+					{
+						this->indexOfChoosenUpgrade = this->indexOfChoosenUpgradeSave;
+						return;
+					}
+					else
+					{
+						this->CounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
+						this->CurrCounterUpgrade_Player[this->indexOfChoosenUpgrade]++;
+						*bank -= this->Price_PlayerUpgrades[this->indexOfChoosenUpgrade];
+						if (this->indexOfChoosenUpgrade == 3)
+							this->lifesteal_unlocked = true;
+					}
 				}
 				else
 				{

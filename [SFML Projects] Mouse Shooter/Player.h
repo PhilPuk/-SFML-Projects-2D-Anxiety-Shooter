@@ -27,6 +27,8 @@ private:
 	//Shooting
 	//float ShootCDMAX;
 	//float ShootCD;
+	
+	float incomeincrease;
 
 	//Game Logic
 	float PlayerHPMax;
@@ -77,6 +79,7 @@ public:
 	const sf::Vector2f& getPlayerMovement() const;
 	const float& getRotationAngle() const;
 	const float& getPlayerMoveSpeed() const;
+	const float& getIncomeIncrease() const;
 
 	//Modifiers
 	void TakeDamage(float dmg);
@@ -85,6 +88,7 @@ public:
 	void changeHP(float change);
 	void addPlayerMoveSpeed(float add);
 	void changePlayerMoveSpeed(float change);
+	void addIncomeIncrease(float add);
 
 	//Update
 	void updateAimSystem(sf::Vector2f& MousePos);

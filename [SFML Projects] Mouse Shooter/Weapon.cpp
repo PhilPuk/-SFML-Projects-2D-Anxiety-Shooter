@@ -24,6 +24,9 @@ void Weapon::initVariables()
 	
 	//damage bullets
 	this->damageBullet = 1.f;
+
+	//Lifesteal
+	this->lifesteal = 0.f;
 }
 
 void Weapon::initTexture()
@@ -218,6 +221,11 @@ void Weapon::addBulletSpeed(float add)
 	this->BulletSpeed += add;
 }
 
+const float& Weapon::getLifesteal() const
+{
+	return this->lifesteal;
+}
+
 void Weapon::addBulletDamage(float add)
 {
 	this->damageBullet += add;
@@ -292,6 +300,11 @@ void Weapon::updateBulletMoving(sf::Vector2u& winSize)
 		this->bullets[i]->sprite_bullet.move(this->bullets[i]->currVelocity);
 		this->updateBulletOutOfScreen(winSize, i);
 	}
+}
+
+void Weapon::unlockLifesteal()
+{
+	this->lifesteal = 0.1f;
 }
 
 void Weapon::updateShootingSystem(sf::Vector2f& AimDiretionNormal)

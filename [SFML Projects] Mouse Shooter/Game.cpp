@@ -79,6 +79,8 @@ Game::~Game()
 
     delete this->ScoreSys;
 
+    delete this->vignette;
+
     delete this->gameOver;
 }
 
@@ -225,12 +227,18 @@ void Game::updateBulletHittingTarget()
 
                 //Enemy taking dmg
                 this->enemyManager.enemies[n]->takeDamage(this->weapon->getBulletDamage());
-                
+
+                //Lifesteal
+                if (this->player->getHP() < this->player->getHPMax())
+                    this->player->addHP(this->weapon->getLifesteal());
+                else
+                    this->player->changeHP(this->player->getHPMax());
+
                 //Deleting if hp is 0
                 if (this->enemyManager.enemies[n]->getHP() <= 0)
                 {
                     //Add money to bank
-                    this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n]->getMoney());
+                    this->ScoreSys->addMoneybyAddition(this->enemyManager.enemies[n]->getMoney() + this->player->getIncomeIncrease());
                     if (this->enemyManager.enemies[n]->getMoney() > 0)
                     {
                         sf::Vector2f pos = this->enemyManager.enemies[n]->sprite_enemy.getPosition();

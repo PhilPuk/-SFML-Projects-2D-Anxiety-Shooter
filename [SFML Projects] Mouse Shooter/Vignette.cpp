@@ -19,7 +19,8 @@ void Vignette::initVariables()
 void Vignette::initSprite(sf::Vector2u& winSize)
 {
 	this->s_Vignette.setTexture(this->t_Vignette);
-	//this->s_Vignette.setColor(sf::Color(255, 255, 255, 255));
+	
+	this->s_Vignette.setColor(sf::Color(255, 255, 255, 200));
 	sf::FloatRect rect = this->s_Vignette.getLocalBounds();
 	this->s_Vignette.setOrigin(rect.left + rect.width / 2.0f, rect.top + rect.height / 2.0f);
 	this->s_Vignette.setPosition(static_cast<float>(winSize.x) / 2.f, static_cast<float>(winSize.y) / 2.f);

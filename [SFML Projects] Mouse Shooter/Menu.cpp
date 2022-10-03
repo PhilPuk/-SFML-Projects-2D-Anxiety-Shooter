@@ -222,6 +222,11 @@ void Menu::applyShopUpgrades()
 		//std::cout << "Player move speed upgrade : " << this->shop->getPlayer_UpgradeCounters(0);
 		this->game->player->addMaxHP(this->shop->getPlayer_UpgradeCounters(1));
 
+		this->game->player->addIncomeIncrease(this->shop->getPlayer_UpgradeCounters(2) * 0.1f);
+
+		if (this->shop->getPlayer_UpgradeCounters(3) >= 1)
+			this->game->weapon->unlockLifesteal();
+
 		//Weapon
 		this->game->weapon->addBulletSpeed(this->shop->getWeapon_UpgradeCounters(0));
 		//this->game->weapon->addMaxAmmo(this->shop->getWeapon_UpgradeCounters(1));

@@ -50,6 +50,7 @@ private:
 	float CurrCounterUpgrade_Weapon[4];
 	//Upgrades
 	int Amount_Upgrades;
+	bool lifesteal_unlocked;
 
 	int indexOfChoosenUpgrade;
 	int indexOfChoosenUpgradeSave;
@@ -91,8 +92,8 @@ public:
 		/// Index list:
 		/// 0 = Move Speed.
 		/// 1 = Max HP.
-		/// 2 = COOMING SOON.
-		/// 3 = COOMING SOON.
+		/// 2 = Income increase
+		/// 3 = Lifesteal unlock
 	const int getPlayer_UpgradeCounters(int index);
 
 		/// Get weapon upgrades.
