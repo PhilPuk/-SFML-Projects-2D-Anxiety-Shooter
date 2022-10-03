@@ -8,8 +8,10 @@
 #include"BeginnerWeapon.h"
 #include"ScoreSystem.h"
 #include"Upgrades.h"
+#include"Vignette.h"
 //#include"BloomManager.h"
 #include"GameOver.h"
+
 
 class Game
 {
@@ -50,6 +52,7 @@ private:
 	void initTiles();
 	void initWeapons();
 	void initScoreSystem();
+	void initVignette();
 	void initGameOver();
 public:
 	Game(sf::RenderWindow* window, sf::Font& font);
@@ -66,6 +69,9 @@ public:
 
 	//Score Sys
 	ScoreSystem* ScoreSys;
+
+	//Vignette
+	Vignette* vignette;
 
 	//Game over
 	GameOver* gameOver;

@@ -24,6 +24,8 @@ void ScoreSystem::initVariables()
 
 	this->Money = 0.f;
 	this->moneySaved = -1.f;
+
+	this->text_opacity = 70;
 		
 	this->getHighScoreFromTxt();
 }
@@ -40,9 +42,9 @@ void ScoreSystem::initTexts(sf::Vector2u winSize)
 	//Text basic settings 
 	this->Text_Score.setFont(this->font);
 	this->Text_Score.setPosition(10.f, spacingy);
-	this->Text_Score.setFillColor(sf::Color(255,255,255, 110));
+	this->Text_Score.setFillColor(sf::Color(255,255,255, this->text_opacity));
 	this->Text_Score.setOutlineThickness(5.f);
-	this->Text_Score.setOutlineColor(sf::Color(0,0,0, 110));
+	this->Text_Score.setOutlineColor(sf::Color(0,0,0, this->text_opacity));
 
 	//Set text content
 	std::stringstream ssScore;

@@ -88,7 +88,7 @@ void Bloom::deleteSpecificBloom(int index)
     this->blooms.erase(this->blooms.begin() + index);
     this->bloomVelocity.erase(this->bloomVelocity.begin() + index);
 
-    std::cout << "Bloom vector size: " << this->blooms.size() << " Bloom velocity vector size: " << this->bloomVelocity.size() << "\n";
+   // std::cout << "Bloom vector size: " << this->blooms.size() << " Bloom velocity vector size: " << this->bloomVelocity.size() << "\n";
     //Debugging
     //std::cout << "Bloom vector size: " << this->blooms.size() << "\n";
     //std::cout << "Bloom Velocity vector size: " << this->bloomVelocity.size() << "\n";

@@ -15,9 +15,9 @@ void Menu::initVariables()
 		//Text Title
 	this->Application_Title = "360 Shooter";
 		//Text Colors
-	this->Color_Menu = sf::Color::White;
+	this->Color_Menu = sf::Color(255,255,255, 70);
 		//Text Pos
-	this->Vector_Menu_Pos.x = 100.f;
+	this->Vector_Menu_Pos.x = static_cast<float>(this->videoMode.width) / 2.f - 500.f;
 	this->Vector_Menu_Pos.y = static_cast<float>(this->videoMode.height) / 1.7f;
 		//Text spacing
 	this->Spacing_Menu_Pos_Y = 75.f;
@@ -180,7 +180,7 @@ void Menu::pollEvents()
 				else if (this->Menu_Navigation_Index == 1)
 				{
 					//Shop button action
-					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager, &this->game->weapon->ReloadTimerMax, &this->game->weapon->MaxAmmo);
+					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager, &this->game->weapon->ReloadTimerMax, &this->game->weapon->MaxAmmo, *this->game->vignette);
 
 					this->applyShopUpgrades();
 
@@ -268,6 +268,8 @@ void Menu::udpate()
 	this->updateText();
 	
 	this->game->tileManager->update(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f,0.f));
+
+	this->game->vignette->update();
 }
 
 //render
@@ -294,6 +296,8 @@ void Menu::render()
 	this->game->tileManager->render(*this->window);
 	
 	this->renderText();
+
+	this->game->vignette->render(*this->window);
 	//Displays on window
 	this->window->display();
 }

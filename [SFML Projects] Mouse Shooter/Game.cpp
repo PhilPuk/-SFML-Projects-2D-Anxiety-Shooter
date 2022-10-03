@@ -51,6 +51,11 @@ void Game::initGameOver()
     this->gameOver = new GameOver(this->font, this->windowSize, true, false, 0.f);
 }
 
+void Game::initVignette()
+{
+    this->vignette = new Vignette(this->windowSize);
+}
+
 Game::Game(sf::RenderWindow* window, sf::Font& font)
 {
     this->initWindow(window);
@@ -60,6 +65,7 @@ Game::Game(sf::RenderWindow* window, sf::Font& font)
     this->initTiles();
     this->initWeapons();
     this->initScoreSystem();
+    this->initVignette();
     this->initGameOver();
 }
 
@@ -340,11 +346,14 @@ void Game::update()
 
         //Upgrades
         this->upgrades.updateAnimations();
+
+        this->vignette->update();
     }
     else
     {
         this->gameOver->update(&this->endGame, true, this->currScore);
         this->tileManager->update(sf::Vector2f(0.f, 0.f), this->player->getPos());
+        this->vignette->update();
     }
 }
 
@@ -369,19 +378,25 @@ void Game::render()
         //Weapon
         this->weapon->render(*this->window);
 
-        //ScoreSystem
-        this->ScoreSys->render(*this->window);
-
         //Upgrades
         this->upgrades.render(*this->window);
 
         //Blooms
         //this->bloom_Manager.render(*this->window);
+
+        this->vignette->render(*this->window);
+
+        //Stuff above vignette
+        this->ScoreSys->render(*this->window);
+        this->weapon->renderTexts(*this->window);
+        this->player->renderHPBar(*this->window);
+        this->player->renderText(*this->window);
     }
     else
     {
         this->tileManager->render(*this->window);
         this->gameOver->render(*this->window);
+        this->vignette->render(*this->window);
     }
 
     this->window->display();

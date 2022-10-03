@@ -28,6 +28,8 @@ void Player::initVariables()
 
     this->playerMove.x = 0.f;
     this->playerMove.y = 0.f;
+
+    this->opacity = 70;
 }
 
 void Player::initTextures()
@@ -47,10 +49,10 @@ void Player::initHPBar()
 {
     this->redHPBar.setSize(sf::Vector2f(this->HPBarx, 30.f));
     this->redHPBar.setPosition(10.f, 20.f);
-    this->redHPBar.setFillColor(sf::Color(255, 0, 0 ,110));
+    this->redHPBar.setFillColor(sf::Color(255, 0, 0 , this->opacity));
 
     this->backgroundHPBar = this->redHPBar;
-    this->backgroundHPBar.setFillColor(sf::Color(100, 100, 100, 110));
+    this->backgroundHPBar.setFillColor(sf::Color(100, 100, 100, this->opacity));
 }
 
 void Player::initText(sf::Font& font)
@@ -59,7 +61,7 @@ void Player::initText(sf::Font& font)
     this->Text_HP.setFont(font);
     this->Text_HP.setCharacterSize(24);
     this->Text_HP.setPosition(10.f, 20.f);
-    this->Text_HP.setFillColor(sf::Color(255, 255, 255, 110));
+    this->Text_HP.setFillColor(sf::Color(255, 255, 255, this->opacity));
 
 }
 
@@ -386,7 +388,7 @@ void Player::render(sf::RenderTarget& target)
 
     //this->renderHitbox(target);
 
-    this->renderHPBar(target);
+    //this->renderHPBar(target);
 
-    this->renderText(target);
+    //this->renderText(target);
 }

@@ -14,6 +14,9 @@
 
 class Weapon abstract
 {
+private:
+	int opacity;
+
 public:
 	sf::Texture texture_weapon;
 	sf::Sprite sprite_weapon;

@@ -62,7 +62,7 @@ void Shop::initShapes(sf::Vector2u& winSize)
 	this->Buttons_Navigation[0].setFillColor(sf::Color(255, 255, 255, this->UIOpacity));
 	this->Buttons_Navigation[0].setOutlineColor(sf::Color(200, 200, 200, this->UIOpacity));
 	this->Buttons_Navigation[0].setOutlineThickness(5.f);
-	this->Buttons_Navigation[0].setPosition(0.f, 0.f);
+	this->Buttons_Navigation[0].setPosition(200.f, this->Buttons_Navigation[0].getGlobalBounds().height * 1.5f);
 
 	this->Buttons_Navigation[1] = this->Buttons_Navigation[0];
 	this->Buttons_Navigation[2] = this->Buttons_Navigation[0];
@@ -139,8 +139,8 @@ void Shop::initTexts(sf::Vector2u& winSize, sf::Font& font)
 	//Money text
 	base.setString("Money");
 	base.setPosition(
-		winSize.x - base.getGlobalBounds().width * 2.f,
-		this->Buttons_Navigation[0].getPosition().y);
+		winSize.x - base.getGlobalBounds().width * 2.f - 300.f ,
+		0.f);
 
 	this->Texts.push_back(new sf::Text(base));
 
@@ -225,13 +225,13 @@ const int Shop::getPlayer_UpgradeCounters(int index)
 	return CurrCounterUpgrade_Player[index];
 }
 
-void Shop::runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo)
+void Shop::runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo, Vignette& vignette)
 {
 	while (!endShop && !endApplication)
 	{
-		this->update(bank, tileManager, ReloadTimerMax, MaxAmmo);
+		this->update(bank, tileManager, ReloadTimerMax, MaxAmmo, vignette);
 
-		this->render(tileManager);
+		this->render(tileManager, vignette);
 	}
 	this->endShop = false;
 
@@ -488,7 +488,7 @@ void Shop::updateupgradeMain(float* bank, float* ReloadTimerMax, int* MaxAmmo)
 	this->updateUpgradingAbilities(bank, ReloadTimerMax, MaxAmmo);
 }
 
-void Shop::update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo)
+void Shop::update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo, Vignette& vignette)
 {
 	this->pollEvents();
 	this->updateTexts(bank, ReloadTimerMax, MaxAmmo);
@@ -496,6 +496,8 @@ void Shop::update(float* bank, TileManager& tileManager, float* ReloadTimerMax, 
 	this->updateupgradeMain(bank, ReloadTimerMax, MaxAmmo);
 	tileManager.update(sf::Vector2f(0.f , 0.f), sf::Vector2f(0.f , 0.f));
 	tileManager.update(sf::Vector2f(0.f, 0.f), sf::Vector2f(0.f, 0.f));
+	vignette.update();
+	
 }
 
 void Shop::renderButtons()
@@ -532,13 +534,14 @@ void Shop::renderTexts()
 	}
 }
 
-void Shop::render(TileManager& tileManager)
+void Shop::render(TileManager& tileManager, Vignette& vignette)
 {
 	window->clear();
 
 	tileManager.render(*this->window);
 	this->renderButtons();
 	this->renderTexts();
+	vignette.render(*this->window);
 
 	window->display();
 }

@@ -23,6 +23,8 @@ private:
 	sf::Font font;
 	sf::Text Text_Score;
 	sf::Text Text_Time;
+
+	int text_opacity;
 	
 	//To do rename to earnings
 	sf::Text Text_Money;

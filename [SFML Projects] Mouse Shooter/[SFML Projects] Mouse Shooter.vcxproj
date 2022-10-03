@@ -152,6 +152,7 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileManager.cpp" />
     <ClCompile Include="Upgrades.cpp" />
+    <ClCompile Include="Vignette.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileManager.h" />
     <ClInclude Include="Upgrades.h" />
+    <ClInclude Include="Vignette.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

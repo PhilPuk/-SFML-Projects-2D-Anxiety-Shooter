@@ -2,6 +2,8 @@
 
 void Weapon::initVariables()
 {
+	this->opacity = 70;
+
 	this->MaxAmmo = 10;
 	this->CurrAmmo = this->MaxAmmo;
 	this->AmmoSave = this->MaxAmmo;
@@ -69,9 +71,9 @@ void Weapon::initTexts(sf::Vector2u& winSize, sf::Font& font)
 
 	this->Text_Ammo.setFont(font);
 	this->Text_Ammo.setCharacterSize(44);
-	this->Text_Ammo.setFillColor(sf::Color(255, 255, 255, 110));
+	this->Text_Ammo.setFillColor(sf::Color(255, 255, 255, this->opacity));
 	this->Text_Ammo.setOutlineThickness(5.f);
-	this->Text_Ammo.setOutlineColor(sf::Color(0, 0, 0, 110));
+	this->Text_Ammo.setOutlineColor(sf::Color(0, 0, 0, this->opacity));
 	this->Text_Ammo.setPosition(
 		10.f,
 		winSize.y - this->Text_Ammo.getGlobalBounds().height - 10.f
@@ -354,7 +356,7 @@ void Weapon::renderWeapon(sf::RenderTarget& target)
 
 void Weapon::render(sf::RenderTarget& target)
 {
-	this->renderTexts(target);
+	//this->renderTexts(target);
 
 	this->renderBullets(target);
 

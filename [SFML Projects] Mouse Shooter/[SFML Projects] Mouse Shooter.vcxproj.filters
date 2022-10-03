@@ -72,6 +72,9 @@
     <ClCompile Include="BloomManager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Vignette.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -126,6 +129,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="BloomManager.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Vignette.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

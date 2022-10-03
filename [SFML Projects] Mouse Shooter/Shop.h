@@ -4,6 +4,7 @@
 #include<sstream>
 #include<vector>
 #include"TileManager.h"
+#include"Vignette.h"
 
 #include<SFML/Graphics.hpp>
 #include<SFML/System.hpp>
@@ -105,7 +106,7 @@ public:
 
 
 	//Main loop
-	void runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo);
+	void runShop(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo, Vignette& vignette);
 
 	bool checkUpgradeAvailable(float* bank, float upgrade_price);
 
@@ -117,9 +118,9 @@ public:
 	void updateMouseOnButtons();
 	void updateUpgradingAbilities(float* bank, float* ReloadTimerMax, int* MaxAmmo);
 	void updateupgradeMain(float* bank, float* ReloadTimerMax, int* MaxAmmo);
-	void update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo);
+	void update(float* bank, TileManager& tileManager, float* ReloadTimerMax, int* MaxAmmo, Vignette& vignette);
 
 	void renderButtons();
 	void renderTexts();
-	void render(TileManager& tileManager);
+	void render(TileManager& tileManager, Vignette& vignette);
 };

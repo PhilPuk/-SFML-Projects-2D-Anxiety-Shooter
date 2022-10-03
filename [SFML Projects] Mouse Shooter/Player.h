@@ -22,6 +22,8 @@ private:
 		sf::Vector2f playerCenter;
 		float PlayerAngle;
 
+		int opacity;
+
 	//Shooting
 	//float ShootCDMAX;
 	//float ShootCD;
