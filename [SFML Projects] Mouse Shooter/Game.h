@@ -9,7 +9,6 @@
 #include"ScoreSystem.h"
 #include"Upgrades.h"
 #include"Vignette.h"
-//#include"BloomManager.h"
 #include"GameOver.h"
 
 

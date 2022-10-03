@@ -13,7 +13,7 @@ void Menu::initVariables()
 
 	//Texts
 		//Text Title
-	this->Application_Title = "360 Shooter";
+	this->Application_Title = "Anxiety Shooter";
 		//Text Colors
 	this->Color_Menu = sf::Color(255,255,255, 70);
 		//Text Pos

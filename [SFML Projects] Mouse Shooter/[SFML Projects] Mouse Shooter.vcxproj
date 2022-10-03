@@ -168,6 +168,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Money.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="Shop.h" />
     <ClInclude Include="Tile.h" />
@@ -175,6 +176,12 @@
     <ClInclude Include="Upgrades.h" />
     <ClInclude Include="Vignette.h" />
     <ClInclude Include="Weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="[SFML Projects] 2D 360 degree shooter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\x64\Release\Textures\Enemy\enemy2.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
