@@ -52,6 +52,16 @@ END
 
 IDB_PNG1                PNG                     "C:\\Users\\Phil\\source\\repos\\-SFML-Projects-2D-Shooter-Game\\x64\\Release\\Textures\\Enemy\\enemy2.png"
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "C:\\Users\\Phil\\Downloads\\favicon.ico"
+
 #endif    // Deutsch (Deutschland) resources
 /////////////////////////////////////////////////////////////////////////////
 

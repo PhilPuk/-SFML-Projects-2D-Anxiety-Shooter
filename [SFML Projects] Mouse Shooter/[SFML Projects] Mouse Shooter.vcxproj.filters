@@ -144,7 +144,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\x64\Release\Textures\Enemy\enemy2.png">
+    <Image Include="..\..\..\..\Downloads\favicon.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>
