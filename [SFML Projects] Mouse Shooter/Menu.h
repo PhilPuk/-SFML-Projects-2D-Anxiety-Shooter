@@ -6,6 +6,8 @@
 
 #include"Game.h"
 #include"Shop.h"
+#include"Mouse.h"
+#include"Slider.h"
 
 /// <summary>
 /// Engine for Menu
@@ -38,16 +40,23 @@ private:
 	short Menu_Navigation_Index;
 	bool Navigation_Index_Changed;
 
+	//Mouse
+	Mouse mouse;
+
 	//Game
 	Game* game;
 
 	//Shop
 	Shop* shop;
 
+	//Slider
+	Slider* slider;
+
 	//Private functions
 		//Menu_Navigation
 	void navigateUP();
 	void navigateDOWN();
+	void navigateWithMouse();
 	 
 		//Initilalization
 	void initVariables();
@@ -56,11 +65,18 @@ private:
 	void initText();
 	void initGame();
 	void initShop();
+	void initSlider();
 	void initHighScoreText();
 public:
 	//Constructor / Destructor
 	Menu();
 	~Menu();
+
+	//Poll events main functions
+	void pollGame();
+	void pollShop();
+	void pollStop();
+	void pollMainActions();
 
 	//Functions
 	void run();

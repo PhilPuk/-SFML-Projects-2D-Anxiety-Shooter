@@ -6,8 +6,8 @@ void Menu::initVariables()
 {
 	//Window
 		//Screen size
-	this->videoMode.width = 1920;
-	this->videoMode.height = 1080;
+	this->videoMode.width = 1600;
+	this->videoMode.height = 900;
 
 	this->Framerate = 60;
 
@@ -87,6 +87,11 @@ void Menu::initShop()
 	this->shop = new Shop(this->window, winSize, this->font);
 }
 
+void Menu::initSlider()
+{
+	this->slider = new Slider(font, sf::Vector2f(200.f, 35.f), sf::Vector2f(1175.f, 700.f), "Vignette");
+}
+
 void Menu::initHighScoreText()
 {
 	this->Text_Highscore = this->Text_Menu_Options[1];
@@ -114,6 +119,24 @@ void Menu::navigateDOWN()
 	}
 }
 
+void Menu::navigateWithMouse()
+{
+	for (int i = 0; i < sizeof(this->Text_Menu_Options) / sizeof(this->Text_Menu_Options[0]); i++)
+	{
+		if (this->Text_Menu_Options[i].getGlobalBounds().contains(this->mouse.getMousePosView()))
+		{
+				this->Menu_Navigation_Index = i;
+				this->Navigation_Index_Changed = true;
+
+				if (mouse.getMouseLeftClicked())
+				{
+					this->pollMainActions();
+				}
+		}
+	}
+
+}
+
 
 //Constructor / Destructor
 Menu::Menu()
@@ -125,6 +148,7 @@ Menu::Menu()
 	this->initText();
 	this->initGame();
 	this->initShop();
+	this->initSlider();
 	this->initHighScoreText();
 }
 
@@ -135,6 +159,50 @@ Menu::~Menu()
 	delete this->game;
 
 	delete this->shop;
+	
+	delete this->slider;
+}
+
+void Menu::pollGame()
+{
+	//Start button action
+	this->game->run();
+	this->game->resetVariables();
+	//Gets newest highscore
+	this->SetTextToNewHighscore();
+}
+
+void Menu::pollShop()
+{
+	//Shop button action
+	this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager, &this->game->weapon->ReloadTimerMax, &this->game->weapon->MaxAmmo, *this->game->vignette);
+
+	this->applyShopUpgrades();
+
+	this->shop->resetUpgradeCounter();
+}
+
+void Menu::pollStop()
+{
+	//Stop button action
+	this->window->close();
+}
+
+void Menu::pollMainActions()
+{
+	//Menu_Options function called here
+	if (this->Menu_Navigation_Index == 0)
+	{
+		this->pollGame();
+	}
+	else if (this->Menu_Navigation_Index == 1)
+	{
+		this->pollShop();
+	}
+	else if (this->Menu_Navigation_Index == 2)
+	{
+		this->pollStop();
+	}
 }
 
 //Functions
@@ -144,7 +212,6 @@ void Menu::run()
 	while (this->window->isOpen() && !this->game->getEndApplication() && !this->shop->getEndApplication())
 	{
 		this->udpate();
-
 		this->render();
 	}
 }
@@ -168,31 +235,8 @@ void Menu::pollEvents()
 			
 			if (ev.key.code == sf::Keyboard::Enter)
 			{
-				//Menu_Options function called here
-				if (this->Menu_Navigation_Index == 0)
-				{
-					//Start button action
-					this->game->run();
-					this->game->resetVariables();
-					//Gets newest highscore
-					this->SetTextToNewHighscore();
-				}
-				else if (this->Menu_Navigation_Index == 1)
-				{
-					//Shop button action
-					this->shop->runShop(this->game->ScoreSys->getMoney(), *this->game->tileManager, &this->game->weapon->ReloadTimerMax, &this->game->weapon->MaxAmmo, *this->game->vignette);
-
-					this->applyShopUpgrades();
-
-					this->shop->resetUpgradeCounter();
-				}
-				else if (this->Menu_Navigation_Index == 2)
-				{
-					//Stop button action
-					this->window->close();
-				}
+				this->pollMainActions();
 			}
-
 			//Menu Navigation Event
 			if (ev.key.code == sf::Keyboard::W || ev.key.code == sf::Keyboard::Up)
 				this->navigateUP();
@@ -266,8 +310,15 @@ void Menu::udpate()
 {
 	//Calls every function that updates stuff
 
+	//Mouse updates
+	this->mouse.updateMousePositions(*this->window, false);
+
 	//Event polling
 	this->pollEvents();
+
+	this->navigateWithMouse();
+
+	this->slider->update(mouse, *this->window, *this->game->vignette);
 
 	//Text updating
 	this->updateText();
@@ -301,6 +352,8 @@ void Menu::render()
 	this->game->tileManager->render(*this->window);
 	
 	this->renderText();
+
+	this->slider->render(*this->window);
 
 	this->game->vignette->render(*this->window);
 	//Displays on window

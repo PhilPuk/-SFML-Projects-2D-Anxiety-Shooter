@@ -26,6 +26,9 @@ public:
 	Vignette(sf::Vector2u& winSize);
 	virtual ~Vignette();
 
+	//Modifiers
+	void changeOpacity(int opactiy);
+
 	void updateScaling();
 	void update();
 

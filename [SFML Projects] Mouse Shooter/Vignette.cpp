@@ -38,6 +38,11 @@ Vignette::~Vignette()
 
 }
 
+void Vignette::changeOpacity(int opactiy)
+{
+	this->s_Vignette.setColor(sf::Color(255, 255, 255, opactiy));
+}
+
 void Vignette::updateScaling()
 {
 	if (scale)

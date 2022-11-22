@@ -146,9 +146,11 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Money.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="Slider.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileManager.cpp" />
     <ClCompile Include="Upgrades.cpp" />
@@ -167,10 +169,12 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Money.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="Slider.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileManager.h" />
     <ClInclude Include="Upgrades.h" />
@@ -179,9 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="[SFML Projects] 2D 360 degree shooter.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\..\Downloads\favicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
