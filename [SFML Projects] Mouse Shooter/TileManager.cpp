@@ -128,9 +128,9 @@ void TileManager::spawnTiles(sf::RenderTarget& target)
 	//	this->tiles.erase(this->tiles.begin());
 
 	//Debug info
-	std::cout << "Tile Amount X: " << this->AmountX << "\n";
-	std::cout << "Tile Amount Y: " << this->AmountY << "\n";
-	std::cout << "All tiles: " << this->tiles.size() << "\n";
+	//std::cout << "Tile Amount X: " << this->AmountX << "\n";
+	//std::cout << "Tile Amount Y: " << this->AmountY << "\n";
+	//std::cout << "All tiles: " << this->tiles.size() << "\n";
 }
 
 TileManager::TileManager(sf::RenderTarget& target)

@@ -57,7 +57,7 @@ EnemyManager::~EnemyManager()
 
 		this->enemies.erase(this->enemies.begin(), this->enemies.end());
 	}
-	std::cout << this->enemies.size() << "\n";
+	//std::cout << this->enemies.size() << "\n";
 }
 
 const int& EnemyManager::getEnemiesVectorSize() const

@@ -52,17 +52,12 @@ void Slider::SliderMovement(Mouse& mouse, sf::RenderWindow& window, Vignette& vi
 		//Move slider on mouse pos
 		this->r_Slider.setPosition(mouse.getMousePosView().x - this->r_Slider.getGlobalBounds().width / 2.f, this->r_Slider.getPosition().y);
 		mouse.updateMousePositions(window, false);
-		std::cout << "Mouse x: " << mouse.getMousePosView().x << "\n";
-		std::cout << "r_Slider x: " << this->r_Slider.getPosition().x << "\n";
 
 		//Percentage value of the sliders position
 		float posPercentage = ((this->r_Slider.getPosition().x + this->r_Slider.getGlobalBounds().width / 2.f) - this->r_Background.getPosition().x) / (this->r_Background.getGlobalBounds().width);
-		std::cout << "Percentage: " << posPercentage << "\n";
 		int newOpacity = posPercentage * 200 + 65;
 		if (newOpacity > 255)
 			newOpacity = 255;
-
-		std::cout << "Opacity: " << newOpacity << "\n";
 		vignette.changeOpacity(newOpacity);
 		}
 

@@ -11,7 +11,7 @@ void ScoreSystem::getHighScoreFromTxt()
 	{
 		this->HighScore = std::stof(line);
 	}
-	std::cout << "Loaded Highscore: " << this->HighScore<<"\n";
+	//std::cout << "Loaded Highscore: " << this->HighScore<<"\n";
 
 	in.close();
 }
